@@ -11,6 +11,14 @@
     "babel-core": "^6.25.0",
     "babel-loader": "^7.1.0",
     "babel-preset-env": "^1.5.2",
+    "bootstrap-loader": "^2.1.0",
+    "css-loader": "^0.28.4",
+    "extract-text-webpack-plugin": "^2.1.2",
+    "resolve-url-loader": "^2.0.3",
+    "style-loader": "^0.18.2",
+    "stylus": "^0.54.5",
+    "stylus-loader": "^3.0.1",
+    "url-loader": "^0.5.9",
     "webpack": "^3.0.0"
   },
   "scripts": {
