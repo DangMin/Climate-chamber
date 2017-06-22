@@ -1,0 +1,33 @@
+{
+  "name": "climate-chamber",
+  "version": "1.0.0",
+  "description": "remote control for climate chamber",
+  "main": "./src/index.js",
+  "dependencies": {
+    "domready": "^1.0.8",
+    "mithril": "^1.1.1"
+  },
+  "devDependencies": {
+    "babel-core": "^6.25.0",
+    "babel-loader": "^7.1.0",
+    "babel-preset-env": "^1.5.2",
+    "webpack": "^3.0.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/DangMin/climate-chamber.git"
+  },
+  "keywords": [
+    "mithriljs",
+    "climate-chamber"
+  ],
+  "author": "Dang Min",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DangMin/climate-chamber/issues"
+  },
+  "homepage": "https://github.com/DangMin/climate-chamber#readme"
+}
