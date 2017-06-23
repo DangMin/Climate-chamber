@@ -9,12 +9,14 @@ const outputPath = path.resolve(__dirname, 'public/dist')
 module.exports = {
   context: srcPath,
   entry: {
-    'index': './index.js',
-    'style': '../css/style.styl',
-  },
+    'home/index': './index.js',
+    'config/variables': '../config/variables.js',
+    'style': '../css/style.styl'
+},
   output: {
     path: outputPath,
     filename: "[name].js",
+    publicPath: '/public'
   },
   module: {
     rules: [
@@ -27,7 +29,8 @@ module.exports = {
         test: /\.styl$/,
         loader: ExtractTextPlugin.extract({ fallback: 'style-loader', use: 'css-loader!stylus-loader' })
       },
-      { test: /\.(png|jpg|gif|svg|ttf)$/, loader: 'url-loader'}
+      { test: /\.(png|jpg|gif|svg|ttf)$/, loader: 'url-loader'},
+      { test: /\.node$/, use: 'node-loader' }
     ]
   },
   plugins: [
@@ -35,7 +38,7 @@ module.exports = {
     new DashboardPlugin()
   ],
   resolve: {
-    extensions: ['.js'],
+    extensions: ['.js', '.json', '.node'],
     modules: [srcPath, "node_modules"],
     //mainFields: ["loader", "main"]
   },
@@ -44,5 +47,6 @@ module.exports = {
     modules: ["node_modules"],
     //mainFields: ["loader", "main"]
   },
-  watch: true
+  watch: true,
+  target: 'node'
 }

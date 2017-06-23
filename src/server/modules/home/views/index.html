@@ -1,0 +1,186 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, intial-scale=1" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="description" content="Climate Chamber Remote Control" />
+    <meta name="author" content="Dang Min" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="/public/css/style.css" />
+    <!-- script src="" -->
+    <script src="/public/home/index.js"></script>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-2 sidebar">
+                <div class="user-profile">
+                    <header class="user-profile__header">
+                        <div class="user-profile__options dropdown">
+                            <button class="c-button" class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown"><i class="fa fa-bars"></i></button>
+                            <ul class="dropdown-menu">
+                                <li><a href="#profile-pictures">Change profile pictures</a></li>
+                                <li><a href="#signout">Sign out</a></li>
+                            </ul>
+                        </div>
+                    </header>
+                    <div class="user-profile__frame">
+                        <div>
+                            <img class="user-profile__picture" alt="user-profile__image" src="/public/img/default.png" />
+                        </div>
+                    </div>
+                </div>
+                <ul class="nav">
+                    <li class="navs__option navs__option--active"><a class="" data-tab="home" href="#home">Home</a></li>
+                    <li class="navs__option"><a class="" data-tab="programs" href="#programs">Programe</a></li>
+                    <li class="navs__option"><a class="" data-tab="aux-data" href="#aux-data">Aux Data</a></li>
+                    <li class="navs__option"><a class="" data-tab="options" href="#options">Options</a></li>
+                    <li class="navs__option"><a class="" data-tab="quickstart" href="#quickstart">Quick Start</a></li>
+                    <li class="navs__option"><a class="" data-tab="about" href="#about">About</a></li>
+                </ul>
+            </div>
+            <div class="col-md-10 container">
+                <div id="home" class="container__tabs home container__tabs--active">
+                    <header class="container__tabs--header">
+                        <h1 class="">Home</h1>
+                        <div id="serialport-state-js"></div>
+                    </header>
+                    <div class="row home__monitor">
+                        <div class="col-md-3" id="program-table-js">
+
+                        </div>
+                        <div class="col-md-9">
+                            <table class="home__table">
+                                <tr>
+                                    <td>
+                                        <div class="meter">
+                                            <p id="thermometer-display-js">--.--</p>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="meter">
+                                            <p id="humiditymeter-display-js">--.--</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="row home__information">
+                        <div class="col-md-6">
+                            <table class="home__table--info home__table">
+                                <tr>
+                                    <th class=""><button class="c-button">T1</button></th>
+                                    <td class="percentage-bar__container">space filled with value</td>
+                                    <th class=""><button class="c-button">T2</button></th>
+                                    <td class="">space filled with value</td>
+                                </tr>
+                                <tr>
+                                    <th class=""><button class="c-button">H1</button></th>
+                                    <td class="">space filled with value</td>
+                                    <th class=""><button class="c-button">H2</button></th>
+                                    <td class="">space filled with value</td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="row row__buttons">
+                                <button class="c-button">T1</button>
+                                <button class="c-button">H1</button>
+                                <button class="c-button">C1</button>
+                                <button class="c-button">V1</button>
+                                <button class="c-button">V3</button>
+                                <button class="c-button">P1</button>
+                                <button class="c-button">P3</button>
+                                <button class="c-button">Pwr</button>
+                            </div>
+                            <div class="row row__buttons">
+                                <button class="c-button">T2</button>
+                                <button class="c-button">H2</button>
+                                <button class="c-button">C2</button>
+                                <button class="c-button">V2</button>
+                                <button class="c-button">V4</button>
+                                <button class="c-button">P2</button>
+                                <button class="c-button">FN1</button>
+                                <button class="c-button">LNV</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="programs" class="container__tabs">
+                    <header class="tab__header">
+                        <h1 class="">Programs</h1>
+                    </header>
+                    <div class="row content__big ">
+                        <div class="col-md-3 border-right overflow sm-column">
+                            <div id="programs-tb-js" class="striped-tb">
+
+                            </div>
+                        </div>
+                        <div class="col-md-9">
+                            <header class="sub-header">
+                                <button id="removeStep-js"><i class="fa fa-minus"></i></button>
+                                <button id="addStep-js"><i class="fa fa-plus"></i></button>
+                                <p class="">Step</p>
+                            </header>
+                            <div id="steps-tb-js" class="striped-tb clear">
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row content__small">
+                        <div class="control-box">
+                            <button class="s-button">New</button>
+                            <button class="s-button">Load</button>
+                            <button class="s-button">Rename</button>
+                            <button class="s-button">Delete</button>
+                            <button class="s-button">Start</button>
+                            <button class="s-button">Stop</button>
+                        </div>
+                    </div>
+                </div>
+                <div id="aux-data" class="container__tabs">
+                    <header>
+                        <h1>Aux Data</h1>
+                    </header>
+                    <div class="row aux-data content__big">
+                        <div class="col-md-3 border-right">
+                            <div class="" id="programs-list-js">
+
+                            </div>
+                        </div>
+                        <div class="col-md-9 content__small">
+                            <form>
+                                <div class="row">
+                                    <div class="col-md-6 center-container">
+                                        <span>Plot interval:&nbsp;</span>
+                                        <input type="text" />&nbsp;minutes.
+                                    </div>
+                                    <div class="col-md-6 center-container">
+                                        <button type="button">Update</button>
+                                        <button type="button">Generate</button>
+                                    </div>
+                                </div>
+                            </form>
+                            <div id="graph-js">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="options" class="container__tabs">
+
+                </div>
+                <div id="quickstart" class="container__tabs">
+
+                </div>
+                <div id="about" class="container__tabs">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
