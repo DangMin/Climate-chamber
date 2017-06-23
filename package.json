@@ -12,6 +12,7 @@
     "babel-loader": "^7.1.0",
     "babel-preset-env": "^1.5.2",
     "bootstrap-loader": "^2.1.0",
+    "browser-sync": "^2.18.12",
     "css-loader": "^0.28.4",
     "extract-text-webpack-plugin": "^2.1.2",
     "resolve-url-loader": "^2.0.3",
@@ -19,10 +20,12 @@
     "stylus": "^0.54.5",
     "stylus-loader": "^3.0.1",
     "url-loader": "^0.5.9",
-    "webpack": "^3.0.0"
+    "webpack": "^3.0.0",
+    "webpack-dashboard": "^0.4.0"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "browser-sync start --server './public' --port 8080 --files './public/**/*/'",
+    "dev": "webpack-dashboard -- webpack -w"
   },
   "repository": {
     "type": "git",
