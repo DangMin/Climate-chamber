@@ -10,17 +10,16 @@ module.exports = {
   context: srcPath,
   entry: {
     'home/index': './index.js',
-    'config/variables': '../config/variables.js',
     'style': '../css/style.styl'
-},
+  },
   output: {
     path: outputPath,
-    filename: "[name].js",
+    filename: '[name].js',
     publicPath: '/public'
   },
   module: {
     rules: [
-      { test: /\.es6$/, exclude: /node_modules/, loader: "babel-loader" },
+      { test: /\.es6$/, exclude: /node_modules/, loader: 'babel-loader' },
       { test: /\.css$/, use: [
         { loader: 'style-loader' },
         { loader: 'css-loader' }
@@ -34,19 +33,19 @@ module.exports = {
     ]
   },
   plugins: [
-    new ExtractTextPlugin("./css/style.css"),
+    new ExtractTextPlugin('./css/style.css'),
     new DashboardPlugin()
   ],
   resolve: {
-    extensions: ['.js', '.json', '.node'],
-    modules: [srcPath, "node_modules"],
+    extensions: ['.js', '.json', '.node', '.es6'],
+    modules: [srcPath, 'node_modules'],
     //mainFields: ["loader", "main"]
   },
   resolveLoader: {
-    //extensions: ['js'],
-    modules: ["node_modules"],
+    extensions: ['.js'],
+    modules: ['node_modules'],
     //mainFields: ["loader", "main"]
   },
   watch: true,
-  target: 'node'
+  target: 'web'
 }

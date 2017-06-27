@@ -31,8 +31,18 @@ const Config = {
       },
       path: path.resolve(base, 'modules')
     }
-  }
-
+  },
+  serialport: sp => {
+    return {
+      autoOpen: false,
+      baudRate: 9600,
+      parity: 'none',
+      dataBits: 8,
+      stopBits: 1,
+      parser: sp.parsers.byteDelimiter([0x02, 0x0D])
+    }
+  },
+  defaultPort: '/dev/ttyUSB1',
 }
 
 module.exports = Config

@@ -1,0 +1,85 @@
+.sidebar {
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  display: block;
+  overflow-x: hidden;
+  overflow-y: auto;
+  border-right: 1px solid #eee;
+}
+.navs__option--active {
+  background-color: #eee;
+}
+.container {
+  margin-left: 17vw;
+}
+.container__tabs {
+  display: none;
+  min-height: 80vh;
+  max-height: 90vh;
+}
+.container__tabs--active {
+  display: block;
+}
+.container__tabs--header {
+  background-color: #eee;
+}
+.status-bar__right button {
+  float: right;
+  margin: 0 10px;
+}
+.user-profile {
+  height: 30vh;
+  border-bottom: 1px solid #eee;
+}
+.user-profile__header,
+.user-profile__options-button {
+  position: absolute;
+  top: 5px;
+  right: 20px;
+}
+.user-profile__frame {
+  height: 95%;
+  margin: 2px;
+  border: 1px solid #ddd;
+  align-content: center;
+  border-radius: 2%;
+  position: relative;
+}
+.user-profile__picture {
+  width: 120px;
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-top: -60px;
+  margin-left: -60px;
+}
+.home {
+  padding: 20px;
+}
+.home__monitor {
+  height: 50vh;
+  border-bottom: 1px solid #eee;
+}
+.home__information {
+  padding: 15px;
+}
+.home > div {
+  height: 100%;
+  display: flex;
+  align-content: center;
+}
+.program-display {
+  width: 100%;
+}
+.program-display div:nth-child(2n) {
+  background-color: #eee;
+}
+.program-display__header {
+  font-weight: bold;
+}
+.program-display__body {
+  text-align: right;
+}

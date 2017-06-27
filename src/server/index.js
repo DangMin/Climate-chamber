@@ -6,6 +6,8 @@ const Nunjucks = require('nunjucks')
 const Webpack = require('webpack')
 const Dashboard = require('webpack-dashboard/plugin')
 
+const Socket = require('socket.io')
+
 const wpConfig = require('../../webpack.config')
 const Config = require('../config/variables')
 
@@ -14,6 +16,9 @@ const Home = require('./modules/home')
 
 const server = new Server()
 server.connection(Config.server)
+
+const io = Socket(server.listener)
+const Serialport = require('serialport')
 
 const compiler = Webpack(wpConfig)
 compiler.apply(new Dashboard())
@@ -26,6 +31,26 @@ const devMiddleware = require('webpack-dev-middleware')(compiler, {
   historyApiFallback: true,
   publicPath: wpConfig.output.publicPath,
   quiet: true
+})
+
+const serialport = new Serialport(Config.defaultPort, Config.serialport(Serialport))
+
+io.on('connection', socket => {
+  console.log(`Socket is open on ${server.info.port}`)
+  socket.setMaxListeners(0)
+  socket.on('req-connect', _ => {
+    if (!serialport.isOpen()) {
+      serialport.open(err => {
+        if (err) {
+          socket.emit('confirm-connect', { err: true, message: 'Cannot open serialport' })
+        } else {
+          socket.emit('confirm-connect', { err: false, status: true })
+        }
+      })
+    } else {
+      socket.emit('confirm-connect', { err: false, status: true, message: 'Serial connection have already opened!'})
+    }
+  })
 })
 
 server.ext('onRequest', (request, reply) => {
