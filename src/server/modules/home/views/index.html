@@ -49,24 +49,14 @@
                         <div id="serialport-state-js"></div>
                     </header>
                     <div class="row home__monitor">
-                        <div class="col-md-3" id="program-table-js">
-
-                        </div>
-                        <div class="col-md-9">
-                            <table class="home__table">
-                                <tr>
-                                    <td>
-                                        <div class="meter">
-                                            <p id="thermometer-display-js">--.--</p>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="meter">
-                                            <p id="humiditymeter-display-js">--.--</p>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </table>
+                        <div class="col-md-3" id="program-table-js"></div>
+                        <div class="col-md-9 row meter__container">
+                          <div class="col-md-6 meter__display">
+                            <canvas id="thermo-display-js"></canvas>
+                          </div>
+                          <div class="col-md-6 meter__display">
+                            <canvas id="humid-display-js"></canvas>
+                          </div>
                         </div>
                     </div>
                     <div class="row home__information">

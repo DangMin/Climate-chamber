@@ -9,7 +9,7 @@ const outputPath = path.resolve(__dirname, 'public/dist')
 module.exports = {
   context: srcPath,
   entry: {
-    'home/index': './index.js',
+    'home/index': './index.es6',
     'style': '../css/style.styl'
   },
   output: {
