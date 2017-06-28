@@ -39,16 +39,26 @@ io.on('connection', socket => {
   console.log(`Socket is open on ${server.info.port}`)
   socket.setMaxListeners(0)
   socket.on('req-connect', _ => {
+    console.log('request open')
     if (!serialport.isOpen()) {
       serialport.open(err => {
         if (err) {
-          socket.emit('confirm-connect', { err: true, message: 'Cannot open serialport' })
+          socket.emit('serial-status', { err: true, message: 'Cannot open serialport', status: serialport.isOpen() })
         } else {
-          socket.emit('confirm-connect', { err: false, status: true })
+          socket.emit('serial-status', { err: false, status: serialport.isOpen() })
         }
       })
-    } else {
-      socket.emit('confirm-connect', { err: false, status: true, message: 'Serial connection have already opened!'})
+    }
+  })
+  socket.on('req-disconnect', _ => {
+    if (serialport.isOpen()) {
+      serialport.close(err => {
+        if (err) {
+          socket.emit('serial-status', { err: true, message: 'Cannot close serialport', status: serialport.isOpen() })
+        }
+        socket.emit('serial-status', { err: false, status: serialport.isOpen() })
+
+      })
     }
   })
 })

@@ -9,8 +9,13 @@ let SerialState = {
       socket.emit('req-connect')
     }
   },
+  disconnect: () => {
+    if (SerialState.state) {
+      socket.emit('req-disconnect')
+    }
+  },
   update: (() => {
-    socket.on('confirm-connect', data => {
+    socket.on('serial-status', data => {
       console.log(data)
       if (data.err) {
         console.log(`Error: ${data.message}`)

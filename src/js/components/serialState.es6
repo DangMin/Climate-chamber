@@ -13,7 +13,9 @@ const c = {
         ])
       ]),
       m('.col-md-4 .status-bar__right', [
-        m('button', {onclick: SerialState.reqConnection}, 'Connect')
+        SerialState.state ?
+          m('button', { onclick: SerialState.disconnect }, 'Disconnect') :
+          m('button', {onclick: SerialState.reqConnection}, 'Connect')
       ]),
     ])
   }
