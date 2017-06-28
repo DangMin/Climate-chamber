@@ -1,6 +1,6 @@
 // Internal functions
 const switchTab = (activeId, activeClass) => {
-  const target = document.getElementById(id)
+  const target = document.getElementById(activeId)
   const siblings = target.parentNode.children
   Array.prototype.forEach.call(siblings, sibling => {
     sibling.classList.remove(activeClass)
@@ -12,7 +12,7 @@ const switchTab = (activeId, activeClass) => {
 const tabHandler = classname => {
   const targets = document.getElementsByClassName(classname)
   Array.prototype.forEach.call(targets, target => {
-    target.addEventListener('click', switchTab.bind(null, target.dataset.tab, 'main_tabs--active'))
+    target.addEventListener('click', switchTab.bind(null, target.dataset.tab, 'container__tabs--active'))
   })
 }
 

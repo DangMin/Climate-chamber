@@ -34,12 +34,12 @@
                     </div>
                 </div>
                 <ul class="nav">
-                    <li class="navs__option navs__option--active"><a class="" data-tab="home" href="#home">Home</a></li>
-                    <li class="navs__option"><a class="" data-tab="programs" href="#programs">Programe</a></li>
-                    <li class="navs__option"><a class="" data-tab="aux-data" href="#aux-data">Aux Data</a></li>
-                    <li class="navs__option"><a class="" data-tab="options" href="#options">Options</a></li>
-                    <li class="navs__option"><a class="" data-tab="quickstart" href="#quickstart">Quick Start</a></li>
-                    <li class="navs__option"><a class="" data-tab="about" href="#about">About</a></li>
+                    <li class="navs__option navs__option--active" data-tab="home"><a class="" href="#home">Home</a></li>
+                    <li class="navs__option" data-tab="programs"><a class="" href="#programs">Programe</a></li>
+                    <li class="navs__option" data-tab="aux-data"><a class="" href="#aux-data">Aux Data</a></li>
+                    <li class="navs__option" data-tab="options"><a class="" href="#options">Options</a></li>
+                    <li class="navs__option" data-tab="quickstart"><a class="" href="#quickstart">Quick Start</a></li>
+                    <li class="navs__option" data-tab="about"><a class="" href="#about">About</a></li>
                 </ul>
             </div>
             <div class="col-md-10 container">
@@ -60,44 +60,67 @@
                         </div>
                     </div>
                     <div class="row home__information">
-                        <div class="col-md-6">
-                            <table class="home__table--info home__table">
-                                <tr>
-                                    <th class=""><button class="c-button">T1</button></th>
-                                    <td class="percentage-bar__container">space filled with value</td>
-                                    <th class=""><button class="c-button">T2</button></th>
-                                    <td class="">space filled with value</td>
-                                </tr>
-                                <tr>
-                                    <th class=""><button class="c-button">H1</button></th>
-                                    <td class="">space filled with value</td>
-                                    <th class=""><button class="c-button">H2</button></th>
-                                    <td class="">space filled with value</td>
-                                </tr>
-                            </table>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="row row__buttons">
-                                <button class="c-button">T1</button>
-                                <button class="c-button">H1</button>
-                                <button class="c-button">C1</button>
-                                <button class="c-button">V1</button>
-                                <button class="c-button">V3</button>
-                                <button class="c-button">P1</button>
-                                <button class="c-button">P3</button>
-                                <button class="c-button">Pwr</button>
+                      <!-- Left panels -->
+                      <div class="col-md-6 row no-padding">
+                        <!-- Row -->
+                        <div class="row">
+                          <div class="col-md-6 row">
+                            <div class="col-md-3">
+                              <button class="tag">T1</button>
                             </div>
-                            <div class="row row__buttons">
-                                <button class="c-button">T2</button>
-                                <button class="c-button">H2</button>
-                                <button class="c-button">C2</button>
-                                <button class="c-button">V2</button>
-                                <button class="c-button">V4</button>
-                                <button class="c-button">P2</button>
-                                <button class="c-button">FN1</button>
-                                <button class="c-button">LNV</button>
+                            <div class="col-md-9">
+
                             </div>
+                          </div>
+                          <div class="col-md-6 row">
+                            <div class="col-md-3">
+                              <button class="tag">H1</button>
+                            </div>
+                            <div class="col-md-9">
+
+                            </div>
+                          </div>
                         </div>
+                        <div class="row">
+                          <div class="col-md-6 row">
+                            <div class="col-md-3">
+                              <button class="tag">T2</button>
+                            </div>
+                            <div class="col-md-9">
+
+                            </div>
+                          </div>
+                          <div class="col-md-6 row">
+                            <div class="col-md-3">
+                              <button class="tag">H2</button>
+                            </div>
+                            <div class="col-md-9">
+
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <!-- Right panels -->
+                      <div class="col-md-6 row no-padding">
+                        <div class="row tags__row">
+                          <button class="tag">T1</button>
+                          <button class="tag">H1</button>
+                          <button class="tag">C1</button>
+                          <button class="tag">V1</button>
+                          <button class="tag">P1</button>
+                          <button class="tag">P3</button>
+                          <button class="tag">Pwr</button>
+                        </div>
+                        <div class="row tags__row">
+                          <button class="tag">T2</button>
+                          <button class="tag">H3</button>
+                          <button class="tag">C2</button>
+                          <button class="tag">V2</button>
+                          <button class="tag">P2</button>
+                          <button class="tag">FN1</button>
+                          <button class="tag">LNV</button>
+                        </div>
+                      </div>
                     </div>
                 </div>
                 <div id="programs" class="container__tabs">
@@ -146,7 +169,7 @@
                             <form>
                                 <div class="row">
                                     <div class="col-md-6 center-container">
-                                        <span>Plot interval:&nbsp;</span>
+                                        <div>Plot interval:&nbsp;</div>
                                         <input type="text" />&nbsp;minutes.
                                     </div>
                                     <div class="col-md-6 center-container">
