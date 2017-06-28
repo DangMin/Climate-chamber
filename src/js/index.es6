@@ -9,6 +9,7 @@ import SegmentDisplay from 'components/segment-display'
 import {tabHandler} from 'global'
 
 const socket = io('http://localhost:8080')
+console.log(socket)
 
 domready(() => {
   const components = {
@@ -16,7 +17,12 @@ domready(() => {
     'serialport-state-js': SerialState
   }
 
-  tabHandler('tab_navs')
+  const thermoDisplay = new SegmentDisplay('thermo-display-js')
+  const humidDisplay = new SegmentDisplay('humid-display-js')
+  thermoDisplay.setValue('---.--')
+  humidDisplay.setValue('---.--')
+
+  tabHandler('navs__option')
 
   Object.keys(components).map(id => {
     const dom = document.getElementById(id)
@@ -26,4 +32,5 @@ domready(() => {
   socket.on('update-display', data => {
     console.log(data)
   })
+  socket.on('incoming', data => console.log(data))
 })
