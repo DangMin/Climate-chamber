@@ -10,7 +10,8 @@ module.exports = {
   context: srcPath,
   entry: {
     'home/index': './index.es6',
-    'style': '../css/style.styl'
+    'style': '../css/style.styl',
+    'hotMiddleware': 'webpack-hot-middleware/client'
   },
   output: {
     path: outputPath,
@@ -34,7 +35,9 @@ module.exports = {
   },
   plugins: [
     new ExtractTextPlugin('./css/style.css'),
-    new DashboardPlugin()
+    new DashboardPlugin(),
+    new Webpack.HotModuleReplacementPlugin(),
+    new Webpack.NoErrorsPlugin()
   ],
   resolve: {
     extensions: ['.js', '.json', '.node', '.es6'],

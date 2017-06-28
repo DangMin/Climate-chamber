@@ -27,10 +27,14 @@ const host = Config.server.host
 const port = Config.server.port
 
 const devMiddleware = require('webpack-dev-middleware')(compiler, {
-  host, port,
+  host, port, noInfo: true,
   historyApiFallback: true,
   publicPath: wpConfig.output.publicPath,
   quiet: true
+})
+
+const hotMiddleware = require('webpack-hot-middleware')(compiler, {
+  log: () => {}
 })
 
 const serialport = new Serialport(Config.defaultPort, Config.serialport(Serialport))
@@ -68,6 +72,15 @@ server.ext('onRequest', (request, reply) => {
     if (err) {
       return reply(err)
     }
+
+    return reply.continue()
+  })
+})
+
+server.ext('onRequest', (request, reply) => {
+  hotMiddleware(request.raw.req, request.raw.res, err => {
+    if (err)
+      return reply(err)
 
     return reply.continue()
   })
