@@ -11,6 +11,7 @@
     "hapi": "^16.4.3",
     "inert": "^4.2.0",
     "joi": "^10.6.0",
+    "lodash": "^4.17.4",
     "mithril": "^1.1.1",
     "nunjucks": "^3.0.1",
     "serialport": "git+ssh://git@github.com/DangMin/dm-serialport.git#4x",

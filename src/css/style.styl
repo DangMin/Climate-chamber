@@ -1,12 +1,21 @@
-div
-  box-sizing border-box
-
 .no-padding
   padding 0
   div
     padding 0
 
+.no-gutters
+  margin-right 0
+  margin-left 0
+  .col, [class*="col-"]
+    padding-right 0
+    padding-left 0
+
+set-txt-vertical(n)
+  line-height n
+
+
 @import "components/sidebar.styl"
 @import "components/container.styl"
 @import "components/user-profile.styl"
 @import "components/home.styl"
+@import "components/programs.styl"

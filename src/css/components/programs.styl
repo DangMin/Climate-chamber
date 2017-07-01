@@ -1,0 +1,83 @@
+.programs
+  height 70vh
+  margin 5px 10px
+  display flex
+  &__list
+    border-right 1px solid #eee
+    flex 1
+    margin-left -3vw
+  &__table
+    width 100%
+    &--row
+      td
+        margin 5px 0
+        padding 10px 0
+      &:nth-child(2n+1)
+        background-color #fff
+      &:nth-child(2n)
+        background-color #eee
+  &__name
+    font-weight bold
+    font-size 1.2em
+    margin 0 10px
+  &__details
+    font-size 0.8em
+    margin 0 5px
+    text-align right
+
+.steps__table
+  &--header
+    &-cell
+      border 1px solid #eee
+      height 10vh
+      text-align center
+      padding 0
+      div
+        set-txt-vertical(4.6vh)
+        margin 0
+  &--body
+    height 55vh
+    overflow-x hidden
+    margin-left -15px
+    margin-right -15px
+  &--cell
+    text-align center
+    line-height 30px
+    padding 2px 0
+  &--button
+    padding 0 20px
+    height 30px
+    float right
+  &--row
+    margin 4px 0
+    &:nth-child(2n)
+      background-color #ededed
+  &--footer
+    position absolute
+    bottom 0
+    border-top 1px solid #eee
+    width 100%
+    margin-left -15px
+  &--status
+    width 100%
+    text-align center
+    line-height 15px
+    margin 10px 0
+
+.programs__handles
+  width 90%
+  display flex
+  position absolute
+  bottom 0
+  &--button
+    flex 1
+
+.steps__handles
+  width 40%
+  float right
+  display flex
+  &--button
+    flex 1
+
+.txt--vertical
+  set-txt-vertical(10vh)

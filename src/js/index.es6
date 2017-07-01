@@ -5,16 +5,17 @@ import io from 'socket.io-client'
 import ProgramTable from 'components/programTable'
 import SerialState from 'components/serialState'
 import SegmentDisplay from 'components/segment-display'
+import Programs from 'components/programs'
 
 import {tabHandler} from 'global'
 
 const socket = io('http://localhost:8080')
-console.log(socket)
 
 domready(() => {
   const components = {
     'program-table-js': ProgramTable,
-    'serialport-state-js': SerialState
+    'serialport-state-js': SerialState,
+    'programs-js': Programs
   }
 
   const thermoDisplay = new SegmentDisplay('thermo-display-js')
