@@ -1,41 +1,55 @@
 import m from 'mithril'
 import Programs from './models/Programs'
 
+let idNum = 0
 const c = {
+  oninit: (vnode) => {
+    Programs.fetch()
+  },
   view: () => {
     return m('.container-fluid', [
       m('.row.programs', [
         m('.col-md-3.programs__list', [
           // Programs list.
           m('table.programs__table', [
+            Programs.list.map(prgm => {
+              return m('tr.programs__table--row', [
+                m('td', [
+                  m('p.programs__name', prgm.name),
+                  m('p.programs__details', `Cycles: ${prgm.cycles}`),
+                  m('p.programs__details', 'Date created: 27 June 2017')
+                ])
+              ])
+            })
             // Later use map for list all programs.
-            m('tr.programs__table--row', [
-              m('td', [
-                m('p.programs__name', 'Program\'s name'),
-                m('p.programs__details', 'Date created: 27 June 2017')
-              ])
-            ]),
-            m('tr.programs__table--row', [
-              m('td.', [
-                m('p.programs__name', 'Program\'s name'),
-                m('p.programs__details', 'Date created: 27 June 2017')
-              ])
-            ]),
-            m('tr.programs__table--row', [
-              m('td.', [
-                m('p.programs__name', 'Program\'s name'),
-                m('p.programs__details', 'Date created: 27 June 2017')
-              ])
-            ]),
-            m('tr.programs__table--row', [
-              m('td.', [
-                m('p.programs__name', 'Program\'s name'),
-                m('p.programs__details', 'Date created: 27 June 2017')
-              ])
-            ])
+            // m('tr.programs__table--row', [
+            //   m('td', [
+            //     m('p.programs__name', 'Program\'s name'),
+            //     m('p.programs__details', 'Date created: 27 June 2017')
+            //   ])
+            // ]),
+            // m('tr.programs__table--row', [
+            //   m('td.', [
+            //     m('p.programs__name', 'Program\'s name'),
+            //     m('p.programs__details', 'Date created: 27 June 2017')
+            //   ])
+            // ]),
+            // m('tr.programs__table--row', [
+            //   m('td.', [
+            //     m('p.programs__name', 'Program\'s name'),
+            //     m('p.programs__details', 'Date created: 27 June 2017')
+            //   ])
+            // ]),
+            // m('tr.programs__table--row', [
+            //   m('td.', [
+            //     m('p.programs__name', 'Program\'s name'),
+            //     m('p.programs__details', 'Date created: 27 June 2017')
+            //   ])
+            // ])
           ]),
+          m('#add-program-js.programs__form-container'),
           m('.programs__handles', [
-            m('button.programs__handles--button', m('i.fa.fa-plus-circle'), ' Add'),
+            m('button.programs__handles--button', { onclick: addProgramView.bind(null, Programs, idNum) }, m('i.fa.fa-plus-circle'), ' Add'),
             m('button.programs__handles--button', m('i.fa.fa-download'), ' Load'),
             m('button.programs__handles--button', m('i.fa.fa-minus-circle'), ' Remove')
           ])
@@ -137,6 +151,35 @@ const c = {
       ])
     ])
   }
+}
+
+const addProgramView = (prgm, idNum) => {
+  const form = document.createElement('form')
+  form.classList.add('programs__form')
+  form.setAttribute('id', `prmg_${++idNum}`)
+  form.setAttribute('method', 'POST')
+
+  const name = document.createElement('input')
+  name.setAttribute('type', 'text')
+  name.setAttribute('name', 'name')
+  name.setAttribute('placeholder', 'Program name')
+
+  const cycle = document.createElement('input')
+  cycle.setAttribute('name', 'cycles')
+  cycle.setAttribute('type', 'number')
+  cycle.setAttribute('placeholder', 1)
+  cycle.setAttribute('min', 1)
+
+  const submit = document.createElement('input')
+  submit.setAttribute('type', 'submit')
+  submit.setAttribute('value', 'Submit')
+  submit.setAttribute('formaction', '/addProgram')
+
+  form.appendChild(name)
+  form.appendChild(cycle)
+  form.appendChild(submit)
+
+  document.getElementById('add-program-js').appendChild(form)
 }
 
 export default c

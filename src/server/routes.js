@@ -1,11 +1,8 @@
-module.exports = (modules, server) => {
-  modules.map(module => module.routes(server))
+const handlers = require('./handlers')
 
-  server.route({
-    method: 'GET',
-    path: '/public/{params*}',
-    handler: {
-      directory: { path: 'public', listing:true }
-    }
-  })
-}
+exports.endpoints = [
+  { method: 'GET', path: '/public/{param*}', handler: { directory: { path: 'public', listing: true } } },
+  { method: 'GET', path: '/', handler: handlers.index },
+  { method: 'GET', path: '/programs', handler: handlers.getPrograms },
+  { method: 'POST', path: '/addProgram', handler: handlers.addProgram }
+]

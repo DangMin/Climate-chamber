@@ -1,3 +1,5 @@
+
+
 .programs
   height 70vh
   margin 5px 10px
@@ -24,6 +26,28 @@
     font-size 0.8em
     margin 0 5px
     text-align right
+  &__handles
+    display flex
+    position absolute
+    bottom 0
+    left 05px
+    right 5px
+    &--button
+      flex 1
+  &__form-container
+    position absolute
+    bottom 30px
+    left 5px
+    right 5px
+    height 10vh
+    overflow auto
+  &__form
+    width 100%
+    padding 2px 0 5px
+    border-bottom 1px solid black
+    input
+      width 100%
+      margin 2px 0
 
 .steps__table
   &--header
@@ -63,14 +87,6 @@
     text-align center
     line-height 15px
     margin 10px 0
-
-.programs__handles
-  width 90%
-  display flex
-  position absolute
-  bottom 0
-  &--button
-    flex 1
 
 .steps__handles
   width 40%

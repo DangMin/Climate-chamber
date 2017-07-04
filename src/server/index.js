@@ -9,10 +9,10 @@ const Dashboard = require('webpack-dashboard/plugin')
 const Socket = require('socket.io')
 
 const wpConfig = require('../../webpack.config')
-const Config = require('../config/variables')
+const Config = require('../config')
 
-const Routes = require('./routes')
-const Home = require('./modules/home')
+const { db } = require('./db')
+const { endpoints } = require('./routes')
 
 const server = new Server()
 server.connection(Config.server)
@@ -92,7 +92,7 @@ server.register([Config.good, Vision, Inert], err => {
   }
 
   // Register routes
-  Routes([Home], server)
+  server.route(endpoints)
 
   // Nunjucks - view manager
   server.views( Config.engines(Nunjucks, __dirname))
