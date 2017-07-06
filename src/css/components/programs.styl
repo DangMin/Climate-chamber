@@ -1,15 +1,21 @@
-
-
 .programs
   height 70vh
   margin 5px 10px
   display flex
+  &--active
+    background-color azure
   &__list
     border-right 1px solid #eee
     flex 1
     margin-left -3vw
+    display flex
+    flex-direction column
   &__table
     width 100%
+    &--container
+      overflow auto
+      flex 20
+      margin 10px 0
     &--row
       td
         margin 5px 0
@@ -27,20 +33,16 @@
     margin 0 5px
     text-align right
   &__handles
+    flex 1
     display flex
-    position absolute
-    bottom 0
-    left 05px
-    right 5px
+    flex-direction row
     &--button
       flex 1
   &__form-container
-    position absolute
-    bottom 30px
-    left 5px
-    right 5px
-    height 10vh
     overflow auto
+    &--active
+      height 10vh
+      flex 4
   &__form
     width 100%
     padding 2px 0 5px
@@ -94,6 +96,3 @@
   display flex
   &--button
     flex 1
-
-.txt--vertical
-  set-txt-vertical(10vh)

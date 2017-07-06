@@ -1,57 +1,51 @@
 import m from 'mithril'
-import Programs from './models/Programs'
+import P from './models/Programs'
+import { formatDate } from '../global'
 
-let idNum = 0
 const c = {
   oninit: (vnode) => {
-    Programs.fetch()
+    P.fetch()
   },
   view: () => {
     return m('.container-fluid', [
       m('.row.programs', [
         m('.col-md-3.programs__list', [
-          // Programs list.
-          m('table.programs__table', [
-            Programs.list.map(prgm => {
-              return m('tr.programs__table--row', [
-                m('td', [
-                  m('p.programs__name', prgm.name),
-                  m('p.programs__details', `Cycles: ${prgm.cycles}`),
-                  m('p.programs__details', 'Date created: 27 June 2017')
+          // P list.
+          m('.programs__table--container', [
+            m('table.programs__table', [
+              P.list.map(prgm => {
+                const cday = formatDate(new Date(prgm.createdAt))
+                const uday = formatDate(new Date(prgm.updatedAt))
+                return m('tr.programs__table--row', [
+                  m(`td[data-id=${prgm._id}]`, {onclick:P.chooseProgram.bind(event, prgm._id), class: P.currentProgram == prgm._id ? 'programs--active' : ''}, [
+                    m('p.programs__name', prgm.name),
+                    m('p.programs__details', `Cycles: ${prgm.cycles}`),
+                    m('p.programs__details', `Date created: ${cday} - Last updated: ${uday}`)
+                  ])
                 ])
-              ])
-            })
-            // Later use map for list all programs.
-            // m('tr.programs__table--row', [
-            //   m('td', [
-            //     m('p.programs__name', 'Program\'s name'),
-            //     m('p.programs__details', 'Date created: 27 June 2017')
-            //   ])
-            // ]),
-            // m('tr.programs__table--row', [
-            //   m('td.', [
-            //     m('p.programs__name', 'Program\'s name'),
-            //     m('p.programs__details', 'Date created: 27 June 2017')
-            //   ])
-            // ]),
-            // m('tr.programs__table--row', [
-            //   m('td.', [
-            //     m('p.programs__name', 'Program\'s name'),
-            //     m('p.programs__details', 'Date created: 27 June 2017')
-            //   ])
-            // ]),
-            // m('tr.programs__table--row', [
-            //   m('td.', [
-            //     m('p.programs__name', 'Program\'s name'),
-            //     m('p.programs__details', 'Date created: 27 June 2017')
-            //   ])
-            // ])
+              })
+            ])
           ]),
-          m('#add-program-js.programs__form-container'),
+          m('.programs__form-container#add-program-js', {class: P.isPrgmForm ? 'programs__form-container--active' : ''}, [
+            P.isPrgmForm ?
+              m('form.programs__form', [
+                m('input[type=text][name=name][placeholder="Program\'s name"]'),
+                m('input[type=number][name=cycles][placeholder="Cycles"]'),
+                m('.button__group', [
+                  m('button', {onclick: P.addProgram.bind(event)}, 'Add'),
+                  m('button', {onclick: P.cancelAddPrgm.bind(event)}, 'Cancel')
+                ])
+              ]) : ''
+          ]),
           m('.programs__handles', [
-            m('button.programs__handles--button', { onclick: addProgramView.bind(null, Programs, idNum) }, m('i.fa.fa-plus-circle'), ' Add'),
+            m('button.programs__handles--button',
+              { onclick: P.addFormSignal.bind('add'), disabled: !P.isPrgmForm ? false : true },
+              m('i.fa.fa-plus-circle'), ' Add'),
             m('button.programs__handles--button', m('i.fa.fa-download'), ' Load'),
-            m('button.programs__handles--button', m('i.fa.fa-minus-circle'), ' Remove')
+            m('button.programs__handles--button',
+              { onclick: P.addFormSignal.bind('edit'), disabled: !P.currentProgram ? true : false }, m('i.fa.fa-edit'), 'Edit'),
+            m('button.programs__handles--button',
+              { onclick: P.rmPrgm.bind(P.currentProgram, event), disabled: !P.currentProgram ? true : false }, m('i.fa.fa-minus-circle'), ' Remove')
           ])
         ]),
         m('.col-md-9.steps__table', [
@@ -151,35 +145,6 @@ const c = {
       ])
     ])
   }
-}
-
-const addProgramView = (prgm, idNum) => {
-  const form = document.createElement('form')
-  form.classList.add('programs__form')
-  form.setAttribute('id', `prmg_${++idNum}`)
-  form.setAttribute('method', 'POST')
-
-  const name = document.createElement('input')
-  name.setAttribute('type', 'text')
-  name.setAttribute('name', 'name')
-  name.setAttribute('placeholder', 'Program name')
-
-  const cycle = document.createElement('input')
-  cycle.setAttribute('name', 'cycles')
-  cycle.setAttribute('type', 'number')
-  cycle.setAttribute('placeholder', 1)
-  cycle.setAttribute('min', 1)
-
-  const submit = document.createElement('input')
-  submit.setAttribute('type', 'submit')
-  submit.setAttribute('value', 'Submit')
-  submit.setAttribute('formaction', '/addProgram')
-
-  form.appendChild(name)
-  form.appendChild(cycle)
-  form.appendChild(submit)
-
-  document.getElementById('add-program-js').appendChild(form)
 }
 
 export default c

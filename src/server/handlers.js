@@ -18,8 +18,13 @@ exports.getPrograms = (request, reply) => {
 exports.addProgram = (request, reply) => {
   const payload = request.payload
   Models.Program.create(request.payload, err => {
+    let res = {}
     if (err) {
-      reply (Boom.badImplementation(err))
+      res = { success: false, err: err }
+    } else {
+      res = { success: true }
     }
+
+    reply(res)
   })
 }

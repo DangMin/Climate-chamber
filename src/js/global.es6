@@ -16,4 +16,18 @@ const tabHandler = classname => {
   })
 }
 
-export { tabHandler }
+const serialize = element => {
+  const inputs = element.getElementsByTagName('input')
+  const obj = {}
+  Array.prototype.forEach.call(inputs, input => {
+    obj[input.name] = input.value
+  })
+
+  return obj
+}
+
+const formatDate = date => {
+  return `${date.getDay()}/${date.getMonth()}/${date.getYear()}`
+}
+
+export { tabHandler, serialize, formatDate }
