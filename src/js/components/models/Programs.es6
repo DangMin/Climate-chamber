@@ -25,7 +25,21 @@ const Programs = {
       Programs.isPrgmForm = true
     }
   },
-  rmPrgm: () => {},
+  rmPrgm: (id, e) => {
+    console.log(id)
+    m.request({
+      method: 'DELETE',
+      url: '/remove-program',
+      data: {_id: Programs.currentProgram }
+    }).then(result => {
+      console.log(result)
+      if (result.error) {
+        console.log(result.error)
+      } else {
+        Programs.fetch()
+      }
+    })
+  },
   cancelAddPrgm: event => {
     event.preventDefault()
     if (Programs.isPrgmForm) {
@@ -41,7 +55,6 @@ const Programs = {
       url: '/addProgram',
       data: data
     }).then(rslt => {
-      console.log(rslt)
       if (rslt.success) {
         Programs.fetch()
       }

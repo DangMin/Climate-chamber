@@ -28,3 +28,16 @@ exports.addProgram = (request, reply) => {
     reply(res)
   })
 }
+
+exports.removeProgram = (request, reply) => {
+  let res = { error: null }
+  const payload = request.payload
+  Models.Program.remove(payload, err => {
+    if (err) {
+      res.error = err
+      reply(err)
+    }
+
+    reply(res)
+  })
+}

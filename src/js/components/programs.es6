@@ -45,7 +45,7 @@ const c = {
             m('button.programs__handles--button',
               { onclick: P.addFormSignal.bind('edit'), disabled: !P.currentProgram ? true : false }, m('i.fa.fa-edit'), 'Edit'),
             m('button.programs__handles--button',
-              { onclick: P.rmPrgm.bind(P.currentProgram, event), disabled: !P.currentProgram ? true : false }, m('i.fa.fa-minus-circle'), ' Remove')
+              { onclick: P.rmPrgm.bind(event, P.currentProgram), disabled: !P.currentProgram ? true : false }, m('i.fa.fa-minus-circle'), ' Remove')
           ])
         ]),
         m('.col-md-9.steps__table', [
