@@ -6,33 +6,43 @@ const Programs = {
   stepList: [],
   isPrgmForm: false,
   currentProgram: null,
+  formType: null,
   chooseProgram: (id, e) => {
-    Programs.currentProgram = id
+    m.request({
+      method: 'GET',
+      url: `/get-program-by-id/${id}`
+    }).then(result => {
+      if (result.error) {
+        console.log(result.error)
+      } else {
+        Programs.currentProgram = result
+        console.log(Programs.currentProgram)
+      }
+    })
   },
   fetch: () => {
     m.request({
       method: 'GET',
       url: '/programs',
     }).then(result => {
-      console.log(result)
       Programs.list = result
     })
   },
   fetchSteps: (prgm_id) => {
   },
-  addFormSignal: () => {
+  addFormSignal: (type, e) => {
     if (!Programs.isPrgmForm) {
       Programs.isPrgmForm = true
+      Programs.formType = type
+      console.log(Programs.formType)
     }
   },
   rmPrgm: (id, e) => {
-    console.log(id)
     m.request({
       method: 'DELETE',
       url: '/remove-program',
-      data: {_id: Programs.currentProgram }
+      data: {_id: Programs.currentProgram._id }
     }).then(result => {
-      console.log(result)
       if (result.error) {
         console.log(result.error)
       } else {
@@ -40,15 +50,30 @@ const Programs = {
       }
     })
   },
-  cancelAddPrgm: event => {
+  cancelForm: event => {
     event.preventDefault()
     if (Programs.isPrgmForm) {
       Programs.isPrgmForm = false
     }
   },
+  editProgram: event => {
+    event.preventDefault()
+    const data = serialize(document.getElementById('form-program-js'))
+    m.request({
+      method: 'POST',
+      url: '/edit-program',
+      data: data
+    }).then(result => {
+      if (result.error) {
+        console.log(result.error)
+      }
+      Programs.fetch()
+      Programs.isPrgmForm = false
+    })
+  },
   addProgram: event => {
     event.preventDefault()
-    const form = document.getElementById('add-program-js')
+    const form = document.getElementById('form-program-js')
     const data = serialize(form)
     m.request({
       method: 'POST',
@@ -57,6 +82,7 @@ const Programs = {
     }).then(rslt => {
       if (rslt.success) {
         Programs.fetch()
+        Programs.isPrgmForm = false
       }
     })
   }

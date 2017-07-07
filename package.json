@@ -48,7 +48,7 @@
   "scripts": {
     "test": "browser-sync start --server './public' --port 8080 --files './public/**/*/'",
     "build": "webpack-dashboard -- webpack ",
-    "dev": "webpack-dashboard -- node ./src/server"
+    "dev": "webpack-dashboard -- node --optimize_for_size --max_old_space_size=512 --gc_interval=1000 ./src/server"
   },
   "repository": {
     "type": "git",

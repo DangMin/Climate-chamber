@@ -41,3 +41,28 @@ exports.removeProgram = (request, reply) => {
     reply(res)
   })
 }
+
+exports.getProgramById = (request, reply) => {
+  let res = { error: null }
+  Models.Program.findOne({ _id: request.params.programId }, (err, program) => {
+    if (err) {
+      res.error = err
+      reply(res)
+    } else if (!program) {
+      res.error = 'Cannot find program.'
+      reply(res)
+    } else {
+      reply(program)
+    }
+  })
+}
+
+exports.editProgram = (request, reply) => {
+  const payload = request.payload
+  Models.Program.update({ _id: payload._id }, { name: payload.name, cycles: payload.cycles }, error => {
+    if (error) {
+      reply ({ success: false, error: error })
+    }
+    reply({ success: true, error: null })
+  })
+}
