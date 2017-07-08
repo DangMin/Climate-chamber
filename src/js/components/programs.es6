@@ -58,97 +58,207 @@ const c = {
               { onclick: P.rmPrgm.bind(event, P.currentProgram), disabled: !P.currentProgram ? true : false }, m('i.fa.fa-minus-circle'), ' Remove')
           ])
         ]),
-        m('.col-md-9.steps__table', [
-          m('.row.steps__table--header', [
-            m('.col-md-1.steps__table--header-cell.txt--vertical', 'Order'),
-            m('.col-md-2.steps__table--header-cell.txt--vertical', 'Temperature'),
-            m('.col-md-2.steps__table--header-cell.txt--vertical', 'Humidity'),
-            m('.col-md-1.steps__table--header-cell.txt--vertical', 'Time'),
-            m('.col-md-1.steps__table--header-cell.txt--vertical', 'Wait'),
-            m('.col-md-2.steps__table--header-cell.no-gutters', [
-              m('.row', {style: 'border-bottom:1px solid #eee;'}, [
-                m('.col-md-12', 'Options')
-              ]),
-              m('.row', [
-                m('.col-md-4', {style: 'border-right:1px solid #eee;'}, '1'),
-                m('.col-md-4', '2'),
-                m('.col-md-4', {style: 'border-left:1px solid #eee;'}, '3')
+        m('.col-md-9.steps__table.flexbox.flexbox--column', [
+          m('.row.steps__table--header.flexbox.flexbox--row', [
+            m('.flexbox__cell.flexbox__cell-1', m('p', 'Order')),
+            m('.flexbox__cell.flexbox__cell-2', m('p', 'Temperature')),
+            m('.flexbox__cell.flexbox__cell-2', m('p', 'Humidity')),
+            m('.flexbox__cell.flexbox__cell-2', m('p', 'Time')),
+            m('.flexbox__cell.flexbox__cell-2', m('p', 'Wait')),
+            m('.flexbox__cell.flexbox__cell-3.flexbox--column', [
+              m('.flexbox__cell.flexbox__cell-1', m('p', 'Options')),
+              m('.flexbox__cell.flexbox__cell-1.flexbox.flexbox--row', [
+                m('.flexbox__cell.flexbox__cell-1', m('p', '1')),
+                m('.flexbox__cell.flexbox__cell-1', m('p', '2')),
+                m('.flexbox__cell.flexbox__cell-1', m('p', '3'))
               ])
             ]),
-            m('.col-md-3.steps__table--header-cell.txt--vertical', 'Action')
+            m('.flexbox__cell.flexbox__cell-2', 'Actions')
           ]),
           m('.steps__table--body', [
-            m('.row.steps__table--row', [
-              m('.col-md-1.steps__table--cell', '1'),
-              m('.col-md-2.steps__table--cell', '120'),
-              m('.col-md-2.steps__table--cell', '50'),
-              m('.col-md-1.steps__table--cell', '1:30'),
-              m('.col-md-1.steps__table--cell', '1:00'),
-              m('.col-md-2.steps__table--cell.row.no-gutters', [
-                m('.col-md-4', m('i.fa.fa-check')),
-                m('.col-md-4', m('i.fa.fa-times')),
-                m('.col-md-4', m('i.fa.fa-check'))
+            m('.steps__table--row.flexbox--row.flexbox', [
+              m('.flexbox__cell.flexbox__cell-1', '1'),
+              m('.flexbox__cell.flexbox__cell-2', '150'),
+              m('.flexbox__cell.flexbox__cell-2', '89'),
+              m('.flexbox__cell.flexbox__cell-2', '1:30'),
+              m('.flexbox__cell.flexbox__cell-2', 'none'),
+              m('.flexbox__cell.flexbox__cell-3.flexbox--row.flexbox', [
+                m('.flexbox__cell.flexbox__cell-1', m('i.fa.fa-check')),
+                m('.flexbox__cell.flexbox__cell-1', m('i.fa.fa-times')),
+                m('.flexbox__cell.flexbox__cell-1', m('i.fa.fa-times'))
               ]),
-              m('.col-md-3.steps__table--cell.steps__action.no-gutters', [
-                m('button.steps__table--button', m('i.fa.fa-trash')),
-                m('button.steps__table--button', m('i.fa.fa-edit'))
-              ])
+              m('.flexbox__cell.flexbox__cell-2', [
+                m('button.steps__table--button', {}, m('i.fa.fa-trash')),
+                m('button.steps__table--button', {}, m('i.fa.fa-edit'))
+              ]),
             ]),
-            m('.row.steps__table--row', [
-              m('.col-md-1.steps__table--cell', '1'),
-              m('.col-md-2.steps__table--cell', '120'),
-              m('.col-md-2.steps__table--cell', '50'),
-              m('.col-md-1.steps__table--cell', '1:30'),
-              m('.col-md-1.steps__table--cell', '1:00'),
-              m('.col-md-2.steps__table--cell.row.no-gutters', [
-                m('.col-md-4', m('i.fa.fa-check')),
-                m('.col-md-4', m('i.fa.fa-times')),
-                m('.col-md-4', m('i.fa.fa-check'))
+            m('.steps__table--row.flexbox--row.flexbox', [
+              m('.flexbox__cell.flexbox__cell-1', '1'),
+              m('.flexbox__cell.flexbox__cell-2', '150'),
+              m('.flexbox__cell.flexbox__cell-2', '89'),
+              m('.flexbox__cell.flexbox__cell-2', '1:30'),
+              m('.flexbox__cell.flexbox__cell-2', 'none'),
+              m('.flexbox__cell.flexbox__cell-3.flexbox--row.flexbox', [
+                m('.flexbox__cell.flexbox__cell-1', m('i.fa.fa-check')),
+                m('.flexbox__cell.flexbox__cell-1', m('i.fa.fa-times')),
+                m('.flexbox__cell.flexbox__cell-1', m('i.fa.fa-times'))
               ]),
-              m('.col-md-3.steps__table--cell.steps__action.no-gutters', [
-                m('button.steps__table--button', m('i.fa.fa-trash')),
-                m('button.steps__table--button', m('i.fa.fa-edit'))
-              ])
+              m('.flexbox__cell.flexbox__cell-2', [
+                m('button.steps__table--button', {}, m('i.fa.fa-trash')),
+                m('button.steps__table--button', {}, m('i.fa.fa-edit'))
+              ]),
             ]),
-            m('.row.steps__table--row', [
-              m('.col-md-1.steps__table--cell', '1'),
-              m('.col-md-2.steps__table--cell', '120'),
-              m('.col-md-2.steps__table--cell', '50'),
-              m('.col-md-1.steps__table--cell', '1:30'),
-              m('.col-md-1.steps__table--cell', '1:00'),
-              m('.col-md-2.steps__table--cell.row.no-gutters', [
-                m('.col-md-4', m('i.fa.fa-check')),
-                m('.col-md-4', m('i.fa.fa-times')),
-                m('.col-md-4', m('i.fa.fa-check'))
+            m('.steps__table--row.flexbox--row.flexbox', [
+              m('.flexbox__cell.flexbox__cell-1', '1'),
+              m('.flexbox__cell.flexbox__cell-2', '150'),
+              m('.flexbox__cell.flexbox__cell-2', '89'),
+              m('.flexbox__cell.flexbox__cell-2', '1:30'),
+              m('.flexbox__cell.flexbox__cell-2', 'none'),
+              m('.flexbox__cell.flexbox__cell-3.flexbox--row.flexbox', [
+                m('.flexbox__cell.flexbox__cell-1', m('i.fa.fa-check')),
+                m('.flexbox__cell.flexbox__cell-1', m('i.fa.fa-times')),
+                m('.flexbox__cell.flexbox__cell-1', m('i.fa.fa-times'))
               ]),
-              m('.col-md-3.steps__table--cell.steps__action.no-gutters', [
-                m('button.steps__table--button', m('i.fa.fa-trash')),
-                m('button.steps__table--button', m('i.fa.fa-edit'))
-              ])
+              m('.flexbox__cell.flexbox__cell-2', [
+                m('button.steps__table--button', {}, m('i.fa.fa-trash')),
+                m('button.steps__table--button', {}, m('i.fa.fa-edit'))
+              ]),
             ]),
-            m('.row.steps__table--row', [
-              m('.col-md-1.steps__table--cell', '1'),
-              m('.col-md-2.steps__table--cell', '120'),
-              m('.col-md-2.steps__table--cell', '50'),
-              m('.col-md-1.steps__table--cell', '1:30'),
-              m('.col-md-1.steps__table--cell', '1:00'),
-              m('.col-md-2.steps__table--cell.row.no-gutters', [
-                m('.col-md-4', m('i.fa.fa-check')),
-                m('.col-md-4', m('i.fa.fa-times')),
-                m('.col-md-4', m('i.fa.fa-check'))
+            m('.steps__table--row.flexbox--row.flexbox', [
+              m('.flexbox__cell.flexbox__cell-1', '1'),
+              m('.flexbox__cell.flexbox__cell-2', '150'),
+              m('.flexbox__cell.flexbox__cell-2', '89'),
+              m('.flexbox__cell.flexbox__cell-2', '1:30'),
+              m('.flexbox__cell.flexbox__cell-2', 'none'),
+              m('.flexbox__cell.flexbox__cell-3.flexbox--row.flexbox', [
+                m('.flexbox__cell.flexbox__cell-1', m('i.fa.fa-check')),
+                m('.flexbox__cell.flexbox__cell-1', m('i.fa.fa-times')),
+                m('.flexbox__cell.flexbox__cell-1', m('i.fa.fa-times'))
               ]),
-              m('.col-md-3.steps__table--cell.no-gutters', [
-                m('button.steps__table--button', m('i.fa.fa-trash')),
-                m('button.steps__table--button', m('i.fa.fa-edit'))
-              ])
-            ])
+              m('.flexbox__cell.flexbox__cell-2', [
+                m('button.steps__table--button', {}, m('i.fa.fa-trash')),
+                m('button.steps__table--button', {}, m('i.fa.fa-edit'))
+              ]),
+            ]),
           ]),
+          m('#form-step-js.steps__table--form-container.steps__table--form-container--active',
+            { }, [
+              m('form', [
+                m('input[type=hidden][name=program_id][value=empty]'),
+                m('.flexbox.flexbox--row', [
+                  m('.flexbox__cell.flexbox__cell-1'),
+                  m('.flexbox__cell.flexbox__cell-2', [
+                    m('input[type=number][name=temperature][required][placeholder="Temperature"]')
+                  ]),
+                  m('.flexbox__cell.flexbox__cell-2', [
+                    m('input[name=humidity][type=number][placeholder=Humidity]')
+                  ]),
+                  m('.flexbox__cell.flexbox__cell-2', [
+                    m('input[name=time][type=text][placeholder=Time]')
+                  ]),
+                  m('.flexbox__cell.flexbox__cell-2', [
+                    m('input[name=wait][type=text][placeholder=Wait]', 'Wait')
+                  ]),
+                  m('.flexbox__cell.flexbox__cell-3.flexbox.flexbox--row', [
+                    m('.flexbox__cell.flexbox__cell-1', [
+                      m('input[type=checkbox]', { name: 'options' })
+                    ]),
+                    m('.flexbox__cell.flexbox__cell-1', [
+                      m('input[type=checkbox]', { name: 'options' })
+                    ]),
+                    m('.flexbox__cell.flexbox__cell-1', [
+                      m('input[type=checkbox]', { name: 'options' })
+                    ])
+                  ]),
+                  m('.flexbox__cell.flexbox__cell-2', [
+                    m('.button__group', [
+                      m('button.steps__table--button', {  }, m('i.fa.fa-check')),
+                      m('button.steps__table--button', {  }, m('i.fa.fa-times'))
+                    ])
+                  ])
+                ])
+              ])
+              // P.currentProgram && P.isStepForm ?
+              //   ( P.stepFormType == 'add' ?
+              //     m('form', [
+              //       m(`input[type=hidden][name=program_id][value=${P.currentProgram._id}]`),
+              //       m('.flexbox.flexbox--row', [
+              //         m('.flexbox__cell.flexbox__cell-1'),
+              //         m('.flexbox__cell.flexbox__cell-2', [
+              //           m('input[type=number][name=temperature][required][placeholder="Temperature"]')
+              //         ]),
+              //         m('.flexbox__cell.flexbox__cell-2', [
+              //           m('input[name=humidity][type=number][placeholder=Humidity]')
+              //         ]),
+              //         m('.flexbox__cell.flexbox__cell-2', [
+              //           m('input[name=time][type=text][placeholder=Time]')
+              //         ]),
+              //         m('.flexbox__cell.flexbox__cell-2', [
+              //           m('input[name=wait][type=text][placeholder=Wait]', 'Wait')
+              //         ]),
+              //         m('.flexbox__cell.flexbox__cell-3.flexbox.flexbox--row', [
+              //           m('.flexbox__cell.flexbox__cell-1', [
+              //             m('input[type=checkbox]', { name: 'options' })
+              //           ]),
+              //           m('.flexbox__cell.flexbox__cell-1', [
+              //             m('input[type=checkbox]', { name: 'options' })
+              //           ]),
+              //           m('.flexbox__cell.flexbox__cell-1', [
+              //             m('input[type=checkbox]', { name: 'options' })
+              //           ])
+              //         ]),
+              //         m('.flexbox__cell.flexbox__cell-2', [
+              //           m('.button__group', [
+              //             m('button.steps__table--button', { onclick: P.addStep.bind(event) }, m('i.fa.fa-check')),
+              //             m('button.steps__table--button', { onclick: P.cancelStepForm.bind(event) }, m('i.fa.fa-times'))
+              //           ])
+              //         ])
+              //       ])
+              //     ]) : (P.stepFormType == 'edit' ?
+              //       m('form', [
+              //         m(`input[name=program_id][type=hidden][value=${P.currentProgram._id}]`),
+              //         m(`input[name=_id][type=hidden][value=${P.currentStep._id}]`),
+              //         m('.flexbox.flexbox--row', [
+              //           m('.flexbox__cell.flexbox__cell-1'),
+              //           m('.flexbox__cell.flexbox__cell-2', [
+              //             m(`input[type=number][name=temperature][required][value=${P.currentStep.temperature}]`)
+              //           ]),
+              //           m('.flexbox__cell.flexbox__cell-2', [
+              //             m(`input[name=humidity][type=number][required][value=${P.currentStep.humidity}]`)
+              //           ]),
+              //           m('.flexbox__cell.flexbox__cell-2', [
+              //             m(`input[name=time][type=text][required][value=${P.currentStep.time}]`)
+              //           ]),
+              //           m('.flexbox__cell.flexbox__cell-2', [
+              //             m(`input[name=wait][type=text][required][value=${P.currentStep.wait}]`)
+              //           ]),
+              //           m('.flexbox__cell.flexbox__cell-3.flexbox.flexbox--row', [
+              //             m('.flexbox__cell.flexbox__cell-1', [
+              //               m(`input[name=options][type=checkbox][value=${P.currentStep.options[0]}]`)
+              //             ]),
+              //             m('.flexbox__cell.flexbox__cell-1', [
+              //               m(`input[name=options][type=checkbox][value=${P.currentStep.options[1]}]`)
+              //             ]),
+              //             m('.flexbox__cell.flexbox__cell-1', [
+              //               m(`input[name=options][type=checkbox][value=${P.currentStep.options[2]}]`)
+              //             ])
+              //           ]),
+              //           m('.flexbox__cell.flexbox__cell-2', [
+              //             m('.button__group', [
+              //               m('button.steps__table--button', {}, m('i.fa.fa-check')),
+              //               m('button.steps__table--button', {}, m('i.fa.fa-times'))
+              //             ])
+              //           ])
+              //         ])
+              //       ]) : '')) : ''
+            ]),
           m('.steps__table--footer', [
             m('p.steps__table--status', 'Program last for 30 hour 15 minutes, including 3 cycles.'),
             m('.steps__handles', [
-              m('button.steps__handles--button', m('i.fa.fa-plus-circle'), ' Add'),
-              m('button.steps__handles--button', m('i.fa.fa-edit'), ' Edit'),
-              m('button.steps__handles--button', m('i.fa.fa-minus-circle', ' Remove'))
+              m('button.steps__handles--button',
+                { //onclick: P.addStepForm.bind(event, 'add'), disabled: !P.isStepForm && P.currentProgram ? false : true
+                },
+                m('i.fa.fa-plus-circle'), ' Add')
             ])
           ])
         ])

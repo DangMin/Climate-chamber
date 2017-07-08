@@ -3,7 +3,7 @@
   margin 5px 10px
   display flex
   &--active
-    background-color azure
+    background-color blue
   &__list
     border-right 1px solid #eee
     flex 1
@@ -53,46 +53,50 @@
 
 .steps__table
   &--header
-    &-cell
-      border 1px solid #eee
-      height 10vh
-      text-align center
-      padding 0
-      div
-        set-txt-vertical(4.6vh)
-        margin 0
+    border 1px solid black
+    >.flexbox__cell
+      line-height 25px
+      border-right 1px solid black
+      &:last-child
+        border-right none
+      >.flexbox__cell
+        &:first-child
+          border-bottom 1px solid black
+        >.flexbox__cell
+          border-right 1px solid black
+          &:last-child
+            border-right none
   &--body
-    height 55vh
-    overflow-x hidden
-    margin-left -15px
-    margin-right -15px
-  &--cell
-    text-align center
-    line-height 30px
-    padding 2px 0
-  &--button
-    padding 0 20px
-    height 30px
-    float right
-  &--row
-    margin 4px 0
-    &:nth-child(2n)
-      background-color #ededed
+    flex 20
+    margin 2px 15px 2px -15px
+    border 1px solid black
+    .flexbox__cell
+      border-right 1px solid black
+      &:last-child
+        border-right none
+  &--form-container
+    flex 0
+    margin 0 15px 2px -15px
+    &--active
+      flex 1
   &--footer
-    position absolute
-    bottom 0
-    border-top 1px solid #eee
-    width 100%
-    margin-left -15px
+    flex 2
+    border 1px solid black
+    margin 0px 15px 0 -15px
+  &--row
+    margin 5px 0
+    padding 5px 0
+    &:nth-child(2n)
+      background-color #eee
   &--status
-    width 100%
-    text-align center
-    line-height 15px
-    margin 10px 0
+    padding 10px 5px
+    border-bottom 1px solid #ddd
+    line-heigth 1.5em
 
 .steps__handles
-  width 40%
+  width 20%
   float right
   display flex
+  padding 5px
   &--button
     flex 1
