@@ -85,8 +85,21 @@ const Programs = {
         Programs.isPrgmForm = false
       }
     })
-  }
+  },
 
+  isStepForm: false,
+  stepFormType: null,
+  addStepForm: (type, e) => {
+    if (!Programs.isStepForm) {
+      Programs.isStepForm = true
+      Programs.stepFormType = type
+    }
+  },
+  cancelStepForm: _ => {
+    if (Programs.isStepForm) {
+      Programs.isStepForm = false
+    }
+  }
 }
 
 export default Programs

@@ -20,9 +20,18 @@ const serialize = element => {
   const inputs = element.getElementsByTagName('input')
   const obj = {}
   Array.prototype.forEach.call(inputs, input => {
-    obj[input.name] = input.value
+    if (input.name.match(/.*\[\]/g)) {
+      const prop = new RebExp(/.*[^\[\]]/).exec(input.name)
+      if (obj.hasOwnProperty(prop)) {
+        obj.push(input.value)
+      } else {
+        obj[prop] = [input.value]
+      }
+    } else {
+      obj[input.name] = input.value
+    }
   })
-
+  console.log(obj)
   return obj
 }
 
