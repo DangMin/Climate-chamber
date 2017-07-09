@@ -45,14 +45,18 @@ exports.removeProgram = (request, reply) => {
 exports.getProgramById = (request, reply) => {
   let res = { error: null }
   Models.Program.findOne({ _id: request.params.programId }, (err, program) => {
-    if (err) {
-      res.error = err
-      reply(res)
+    if (!err && program) {
+      Models.Step.find({ program_id: request.params.programId }, (err, steps) => {
+        if (!err) {
+          reply({ success: true, program: program, steps: steps })
+        } else {
+          reply({ success: false, error: err })
+        }
+      })
+    } else if (err) {
+      reply({ success: false, error: err })
     } else if (!program) {
-      res.error = 'Cannot find program.'
-      reply(res)
-    } else {
-      reply(program)
+      reply({ success: false, error: 'Cannot find program' })
     }
   })
 }

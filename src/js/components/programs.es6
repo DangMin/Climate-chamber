@@ -76,70 +76,28 @@ const c = {
             m('.flexbox__cell.flexbox__cell-2', 'Actions')
           ]),
           m('.steps__table--body', [
-            m('.steps__table--row.flexbox--row.flexbox', [
-              m('.flexbox__cell.flexbox__cell-1', '1'),
-              m('.flexbox__cell.flexbox__cell-2', '150'),
-              m('.flexbox__cell.flexbox__cell-2', '89'),
-              m('.flexbox__cell.flexbox__cell-2', '1:30'),
-              m('.flexbox__cell.flexbox__cell-2', 'none'),
-              m('.flexbox__cell.flexbox__cell-3.flexbox--row.flexbox', [
-                m('.flexbox__cell.flexbox__cell-1', m('i.fa.fa-check')),
-                m('.flexbox__cell.flexbox__cell-1', m('i.fa.fa-times')),
-                m('.flexbox__cell.flexbox__cell-1', m('i.fa.fa-times'))
-              ]),
-              m('.flexbox__cell.flexbox__cell-2', [
-                m('button.steps__table--button', {}, m('i.fa.fa-trash')),
-                m('button.steps__table--button', {}, m('i.fa.fa-edit'))
-              ]),
-            ]),
-            m('.steps__table--row.flexbox--row.flexbox', [
-              m('.flexbox__cell.flexbox__cell-1', '1'),
-              m('.flexbox__cell.flexbox__cell-2', '150'),
-              m('.flexbox__cell.flexbox__cell-2', '89'),
-              m('.flexbox__cell.flexbox__cell-2', '1:30'),
-              m('.flexbox__cell.flexbox__cell-2', 'none'),
-              m('.flexbox__cell.flexbox__cell-3.flexbox--row.flexbox', [
-                m('.flexbox__cell.flexbox__cell-1', m('i.fa.fa-check')),
-                m('.flexbox__cell.flexbox__cell-1', m('i.fa.fa-times')),
-                m('.flexbox__cell.flexbox__cell-1', m('i.fa.fa-times'))
-              ]),
-              m('.flexbox__cell.flexbox__cell-2', [
-                m('button.steps__table--button', {}, m('i.fa.fa-trash')),
-                m('button.steps__table--button', {}, m('i.fa.fa-edit'))
-              ]),
-            ]),
-            m('.steps__table--row.flexbox--row.flexbox', [
-              m('.flexbox__cell.flexbox__cell-1', '1'),
-              m('.flexbox__cell.flexbox__cell-2', '150'),
-              m('.flexbox__cell.flexbox__cell-2', '89'),
-              m('.flexbox__cell.flexbox__cell-2', '1:30'),
-              m('.flexbox__cell.flexbox__cell-2', 'none'),
-              m('.flexbox__cell.flexbox__cell-3.flexbox--row.flexbox', [
-                m('.flexbox__cell.flexbox__cell-1', m('i.fa.fa-check')),
-                m('.flexbox__cell.flexbox__cell-1', m('i.fa.fa-times')),
-                m('.flexbox__cell.flexbox__cell-1', m('i.fa.fa-times'))
-              ]),
-              m('.flexbox__cell.flexbox__cell-2', [
-                m('button.steps__table--button', {}, m('i.fa.fa-trash')),
-                m('button.steps__table--button', {}, m('i.fa.fa-edit'))
-              ]),
-            ]),
-            m('.steps__table--row.flexbox--row.flexbox', [
-              m('.flexbox__cell.flexbox__cell-1', '1'),
-              m('.flexbox__cell.flexbox__cell-2', '150'),
-              m('.flexbox__cell.flexbox__cell-2', '89'),
-              m('.flexbox__cell.flexbox__cell-2', '1:30'),
-              m('.flexbox__cell.flexbox__cell-2', 'none'),
-              m('.flexbox__cell.flexbox__cell-3.flexbox--row.flexbox', [
-                m('.flexbox__cell.flexbox__cell-1', m('i.fa.fa-check')),
-                m('.flexbox__cell.flexbox__cell-1', m('i.fa.fa-times')),
-                m('.flexbox__cell.flexbox__cell-1', m('i.fa.fa-times'))
-              ]),
-              m('.flexbox__cell.flexbox__cell-2', [
-                m('button.steps__table--button', {}, m('i.fa.fa-trash')),
-                m('button.steps__table--button', {}, m('i.fa.fa-edit'))
-              ]),
-            ]),
+            P.stepList.length !== 0 ?
+              P.stepList.map(step => {
+                console.log(step)
+                return m('.steps__table--row.flexbox--row.flexbox', [
+                  m('.flexbox__cell.flexbox__cell-1', step.order),
+                  m('.flexbox__cell.flexbox__cell-2', step.temperature),
+                  m('.flexbox__cell.flexbox__cell-2', step.humidity),
+                  m('.flexbox__cell.flexbox__cell-2', step.time),
+                  m('.flexbox__cell.flexbox__cell-2', step.wait.option ? step.wait.time : 'none'),
+                  m('.flexbox__cell.flexbox__cell-3.flexbox--row.flexbox', [
+                    m('.flexbox__cell.flexbox__cell-1', step.options[0] ? m('i.fa.fa-check') : m('i.fa.fa-times')),
+                    m('.flexbox__cell.flexbox__cell-1', step.options[1] ? m('i.fa.fa-check') : m('i.fa.fa-times')),
+                    m('.flexbox__cell.flexbox__cell-1', step.options[2] ? m('i.fa.fa-check') : m('i.fa.fa-times'))
+                  ]),
+                  m('.flexbox__cell.flexbox__cell-2', [
+                    m('button.steps__table--button', {}, m('i.fa.fa-trash')),
+                    m('button.steps__table--button', {}, m('i.fa.fa-edit'))
+                  ]),
+                ])
+              }) : m('.stretch-box', [
+                m('.stretch-box--item', ' This program has no step.')
+              ])
           ]),
           m('#form-step-js.steps__table--form-container',
             { class: P.isStepForm ? 'steps__table--form-container--active' : '' }, [

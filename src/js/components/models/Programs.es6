@@ -12,11 +12,14 @@ const Programs = {
       method: 'GET',
       url: `/get-program-by-id/${id}`
     }).then(result => {
-      if (result.error) {
+      console.log(result)
+      if (!result.success) {
         console.log(result.error)
       } else {
-        Programs.currentProgram = result
-        console.log(Programs.currentProgram)
+        console.log(result)
+        Programs.currentProgram = result.program
+        console.log(result)
+        Programs.stepList = result.steps
       }
     })
   },

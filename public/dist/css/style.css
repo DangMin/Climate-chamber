@@ -1,3 +1,44 @@
+.no-padding {
+  padding: 0;
+}
+.no-padding div {
+  padding: 0;
+}
+.no-gutters {
+  margin-right: 0;
+  margin-left: 0;
+}
+.no-gutters .col,
+.no-gutters [class*="col-"] {
+  padding-right: 0;
+  padding-left: 0;
+}
+.button__group {
+  display: flex;
+}
+.button__group button {
+  flex: 1;
+}
+.flexbox {
+  display: flex;
+  text-align: center;
+}
+.flexbox__cell-1 {
+  flex: 1;
+}
+.flexbox__cell-2 {
+  flex: 2;
+}
+.flexbox__cell-3 {
+  flex: 3;
+}
+.flexbox--column {
+  flex-direction: column;
+}
+.flexbox--row {
+  flex-direction: row;
+  width: 100%;
+}
 .sidebar {
   position: fixed;
   left: 0;
@@ -24,6 +65,7 @@
 }
 .container__tabs--header {
   background-color: #eee;
+  margin: 0 15px 0 -15px;
 }
 .status-bar__right button {
   float: right;
@@ -66,10 +108,12 @@
 .home__information {
   padding: 15px;
 }
+.home__information > div {
+  border: 1px solid #eee;
+}
 .home > div {
   height: 100%;
   display: flex;
-  align-content: center;
 }
 .program-display {
   width: 100%;
@@ -82,4 +126,172 @@
 }
 .program-display__body {
   text-align: right;
+}
+.state--active {
+  color: #0f0;
+}
+.state--unactive {
+  color: #f00;
+}
+.meter__container {
+  display: flex;
+  align-items: center;
+}
+.meter__display {
+  flex: 1;
+  height: 90%;
+  align-items: center;
+  display: flex;
+  background-color: #dde;
+  margin: 10px 5px;
+  border: 2px solid #00f;
+  border-radius: 10px;
+}
+canvas {
+  margin: auto;
+}
+button {
+  min-width: 4vw;
+}
+.tag {
+  border-radius: 5px 5px;
+  background-color: #bbb;
+  color: #fff;
+  padding: 2px 2px;
+  margin: 3px 4px;
+}
+.tags__row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.programs {
+  height: 70vh;
+  margin: 5px 10px;
+  display: flex;
+}
+.programs--active {
+  background-color: #00f;
+}
+.programs__list {
+  border-right: 1px solid #eee;
+  flex: 1;
+  margin-left: -3vw;
+  display: flex;
+  flex-direction: column;
+}
+.programs__table {
+  width: 100%;
+}
+.programs__table--container {
+  overflow: auto;
+  flex: 20;
+  margin: 10px 0;
+}
+.programs__table--row td {
+  margin: 5px 0;
+  padding: 10px 0;
+}
+.programs__table--row:nth-child(2n+1) {
+  background-color: #fff;
+}
+.programs__table--row:nth-child(2n) {
+  background-color: #eee;
+}
+.programs__name {
+  font-weight: bold;
+  font-size: 1.2em;
+  margin: 0 10px;
+}
+.programs__details {
+  font-size: 0.8em;
+  margin: 0 5px;
+  text-align: right;
+}
+.programs__handles {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+}
+.programs__handles--button {
+  flex: 1;
+}
+.programs__form-container {
+  overflow: auto;
+}
+.programs__form-container--active {
+  height: 10vh;
+  flex: 4;
+}
+.programs__form {
+  width: 100%;
+  padding: 2px 0 5px;
+  border-bottom: 1px solid #000;
+}
+.programs__form input {
+  width: 100%;
+  margin: 2px 0;
+}
+.steps__table--header {
+  border: 1px solid #000;
+}
+.steps__table--header >.flexbox__cell {
+  line-height: 25px;
+  border-right: 1px solid #000;
+}
+.steps__table--header >.flexbox__cell:last-child {
+  border-right: none;
+}
+.steps__table--header >.flexbox__cell >.flexbox__cell:first-child {
+  border-bottom: 1px solid #000;
+}
+.steps__table--header >.flexbox__cell >.flexbox__cell >.flexbox__cell {
+  border-right: 1px solid #000;
+}
+.steps__table--header >.flexbox__cell >.flexbox__cell >.flexbox__cell:last-child {
+  border-right: none;
+}
+.steps__table--body {
+  flex: 20;
+  margin: 2px 15px 2px -15px;
+  border: 1px solid #000;
+}
+.steps__table--body .flexbox__cell {
+  border-right: 1px solid #000;
+}
+.steps__table--body .flexbox__cell:last-child {
+  border-right: none;
+}
+.steps__table--form-container {
+  flex: 0;
+  margin: 0 15px 2px -15px;
+}
+.steps__table--form-container--active {
+  flex: 1;
+}
+.steps__table--footer {
+  flex: 2;
+  border: 1px solid #000;
+  margin: 0px 15px 0 -15px;
+}
+.steps__table--row {
+  margin: 5px 0;
+  padding: 5px 0;
+}
+.steps__table--row:nth-child(2n) {
+  background-color: #eee;
+}
+.steps__table--status {
+  padding: 10px 5px;
+  border-bottom: 1px solid #ddd;
+  line-heigth: 1.5em;
+}
+.steps__handles {
+  width: 20%;
+  float: right;
+  display: flex;
+  padding: 5px;
+}
+.steps__handles--button {
+  flex: 1;
 }
