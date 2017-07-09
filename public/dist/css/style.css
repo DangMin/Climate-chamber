@@ -295,3 +295,9 @@ button {
 .steps__handles--button {
   flex: 1;
 }
+.stretch-box {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

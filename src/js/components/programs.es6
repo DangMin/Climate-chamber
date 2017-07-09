@@ -78,7 +78,6 @@ const c = {
           m('.steps__table--body', [
             P.stepList.length !== 0 ?
               P.stepList.map(step => {
-                console.log(step)
                 return m('.steps__table--row.flexbox--row.flexbox', [
                   m('.flexbox__cell.flexbox__cell-1', step.order),
                   m('.flexbox__cell.flexbox__cell-2', step.temperature),
@@ -86,12 +85,12 @@ const c = {
                   m('.flexbox__cell.flexbox__cell-2', step.time),
                   m('.flexbox__cell.flexbox__cell-2', step.wait.option ? step.wait.time : 'none'),
                   m('.flexbox__cell.flexbox__cell-3.flexbox--row.flexbox', [
-                    m('.flexbox__cell.flexbox__cell-1', step.options[0] ? m('i.fa.fa-check') : m('i.fa.fa-times')),
-                    m('.flexbox__cell.flexbox__cell-1', step.options[1] ? m('i.fa.fa-check') : m('i.fa.fa-times')),
-                    m('.flexbox__cell.flexbox__cell-1', step.options[2] ? m('i.fa.fa-check') : m('i.fa.fa-times'))
+                    m('.flexbox__cell.flexbox__cell-1', step.options[0] == 'true' ? m('i.fa.fa-check') : m('i.fa.fa-times')),
+                    m('.flexbox__cell.flexbox__cell-1', step.options[1] == 'true' ? m('i.fa.fa-check') : m('i.fa.fa-times')),
+                    m('.flexbox__cell.flexbox__cell-1', step.options[2] == 'true' ? m('i.fa.fa-check') : m('i.fa.fa-times'))
                   ]),
                   m('.flexbox__cell.flexbox__cell-2', [
-                    m('button.steps__table--button', {}, m('i.fa.fa-trash')),
+                    m('button.steps__table--button', { onclick: P.addStep.bind(event) }, m('i.fa.fa-trash')),
                     m('button.steps__table--button', { onclick: P.addStepForm.bind(event, 'edit', step._id) }, m('i.fa.fa-edit'))
                   ]),
                 ])
@@ -99,19 +98,19 @@ const c = {
                 m('.stretch-box--item', ' This program has no step.')
               ])
           ]),
-          m('#form-step-js.steps__table--form-container',
+          m('#step-form-js.steps__table--form-container',
             { class: P.isStepForm ? 'steps__table--form-container--active' : '' }, [
               P.currentProgram && P.isStepForm ?
                 ( P.stepFormType === 'add' ?
                   m('form', [
-                    m('input[type=hidden][name=program_id][value=empty]'),
+                    m(`input[type=hidden][name=program_id][value=${P.currentProgram._id}]`),
                     m('.flexbox.flexbox--row', [
                       m('.flexbox__cell.flexbox__cell-1'),
                       m('.flexbox__cell.flexbox__cell-2', [
                         m('input[type=number][name=temperature][required][placeholder="Temperature"]')
                       ]),
                       m('.flexbox__cell.flexbox__cell-2', [
-                        m('input[name=humidity][type=number][placeholder=Humidity]')
+                        m('input[name=humidity][type=number][required][placeholder=Humidity]')
                       ]),
                       m('.flexbox__cell.flexbox__cell-2', [
                         m('input[name=time][type=text][placeholder=Time]')
@@ -121,18 +120,18 @@ const c = {
                       ]),
                       m('.flexbox__cell.flexbox__cell-3.flexbox.flexbox--row', [
                         m('.flexbox__cell.flexbox__cell-1', [
-                          m('input[type=checkbox][name=options[]]')
+                          m('input[type=checkbox][name="options[]"][value=true]', { })
                         ]),
                         m('.flexbox__cell.flexbox__cell-1', [
-                          m('input[type=checkbox][name=options[]]')
+                          m('input[type=checkbox][name="options[]"][value=true]', { })
                         ]),
                         m('.flexbox__cell.flexbox__cell-1', [
-                          m('input[type=checkbox][name=options[]]')
+                          m('input[type=checkbox][name="options[]"][value=true]', { })
                         ])
                       ]),
                       m('.flexbox__cell.flexbox__cell-2', [
                         m('.button__group', [
-                          m('button.steps__table--button', {  }, m('i.fa.fa-check')),
+                          m('button.steps__table--button', { onclick: P.addStep.bind(event) }, m('i.fa.fa-check')),
                           m('button.steps__table--button', { onclick: P.cancelStepForm }, m('i.fa.fa-times'))
                         ])
                       ])
@@ -144,31 +143,31 @@ const c = {
                       m('.flexbox.flexbox--row', [
                         m('.flexbox__cell.flexbox__cell-1'),
                         m('.flexbox__cell.flexbox__cell-2', [
-                          m('input[type=number][name=temperature][required][value="Temperature"]')
+                          m(`input[type=number][name=temperature][required][value=${P.currentStep.temperature}]`)
                         ]),
                         m('.flexbox__cell.flexbox__cell-2', [
-                          m('input[name=humidity][type=number][placeholder=Humidity]')
+                          m(`input[name=humidity][type=number][value=${P.currentStep.humidity}]`)
                         ]),
                         m('.flexbox__cell.flexbox__cell-2', [
                           m('input[name=time][type=text][placeholder=Time]')
                         ]),
                         m('.flexbox__cell.flexbox__cell-2', [
-                          m('input[name=wait][type=text][placeholder=Wait]', 'Wait')
+                          m('input[name=wait][type=text][placeholder=Wait]\', \'Wait')
                         ]),
                         m('.flexbox__cell.flexbox__cell-3.flexbox.flexbox--row', [
                           m('.flexbox__cell.flexbox__cell-1', [
-                            m('input[type=checkbox][name=options[]]')
+                            m('input[type=checkbox][name="options[]"]')
                           ]),
                           m('.flexbox__cell.flexbox__cell-1', [
-                            m('input[type=checkbox][name=options[]]')
+                            m('input[type=checkbox][name="options[]"]')
                           ]),
                           m('.flexbox__cell.flexbox__cell-1', [
-                            m('input[type=checkbox][name=options[]]')
+                            m('input[type=checkbox][name="options[]"]')
                           ])
                         ]),
                         m('.flexbox__cell.flexbox__cell-2', [
                           m('.button__group', [
-                            m('button.steps__table--button', {  }, m('i.fa.fa-check')),
+                            m('button.steps__table--button', { onclick: P.addStep.bind(event) }, m('i.fa.fa-check')),
                             m('button.steps__table--button', { onclick: P.cancelStepForm }, m('i.fa.fa-times'))
                           ])
                         ])
@@ -179,7 +178,7 @@ const c = {
             m('p.steps__table--status', 'Program last for 30 hour 15 minutes, including 3 cycles.'),
             m('.steps__handles', [
               m('button.steps__handles--button',
-                { onclick: P.addStepForm.bind(event, 'add'), disabled: !P.isStepForm && P.currentProgram ? false : true },
+                { onclick: P.addStepForm.bind(event, 'add', null), disabled: !P.isStepForm && P.currentProgram ? false : true },
                 m('i.fa.fa-plus-circle'), ' Add')
             ])
           ])

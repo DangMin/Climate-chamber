@@ -59,7 +59,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "520768b31b4dc4df8cd7"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "4933de301b4f58e713e3"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
@@ -5929,25 +5929,8 @@ var c = {
       return (0, _mithril2.default)('tr.programs__table--row', [(0, _mithril2.default)('td[data-id=' + prgm._id + ']', { onclick: _Programs2.default.chooseProgram.bind(event, prgm._id), class: _Programs2.default.currentProgram && _Programs2.default.currentProgram._id == prgm._id ? 'programs--active' : '' }, [(0, _mithril2.default)('p.programs__name', prgm.name), (0, _mithril2.default)('p.programs__details', 'Cycles: ' + prgm.cycles), (0, _mithril2.default)('p.programs__details', 'Date created: ' + cday + ' - Last updated: ' + uday)])]);
     })])]), (0, _mithril2.default)('.programs__form-container#form-program-js', { class: _Programs2.default.isPrgmForm ? 'programs__form-container--active' : '' }, [_Programs2.default.isPrgmForm ? _Programs2.default.formType == 'add' ? (0, _mithril2.default)('form.programs__form', [(0, _mithril2.default)('input[type=text][name=name][placeholder="Program\'s name"]'), (0, _mithril2.default)('input[type=number][name=cycles][placeholder="Cycles"]'), (0, _mithril2.default)('.button__group', [(0, _mithril2.default)('button', { onclick: _Programs2.default.addProgram.bind(event) }, 'Add'), (0, _mithril2.default)('button', { onclick: _Programs2.default.cancelForm.bind(event) }, 'Cancel')])]) : _Programs2.default.formType == 'edit' ? (0, _mithril2.default)('form.programs__form', [(0, _mithril2.default)('input[type=hidden][name=_id][value=' + _Programs2.default.currentProgram._id + ']'), (0, _mithril2.default)('input[type=text][name=name][value=' + _Programs2.default.currentProgram.name + ']'), (0, _mithril2.default)('input[type=text][name=cycles][value=' + _Programs2.default.currentProgram.cycles + ']'), (0, _mithril2.default)('.button__group', [(0, _mithril2.default)('button', { onclick: _Programs2.default.editProgram.bind(event) }, 'Confirm'), (0, _mithril2.default)('button', { onclick: _Programs2.default.cancelForm.bind(event) }, 'Cancel')])]) : '' : '']), (0, _mithril2.default)('.programs__handles', [(0, _mithril2.default)('button.programs__handles--button', { onclick: _Programs2.default.addFormSignal.bind(event, 'add'), disabled: !_Programs2.default.isPrgmForm ? false : true }, (0, _mithril2.default)('i.fa.fa-plus-circle'), ' Add'), (0, _mithril2.default)('button.programs__handles--button', (0, _mithril2.default)('i.fa.fa-download'), ' Load'), (0, _mithril2.default)('button.programs__handles--button', { onclick: _Programs2.default.addFormSignal.bind(event, 'edit'), disabled: !_Programs2.default.currentProgram ? true : false }, (0, _mithril2.default)('i.fa.fa-edit'), 'Edit'), (0, _mithril2.default)('button.programs__handles--button', { onclick: _Programs2.default.rmPrgm.bind(event, _Programs2.default.currentProgram), disabled: !_Programs2.default.currentProgram ? true : false }, (0, _mithril2.default)('i.fa.fa-minus-circle'), ' Remove')])]), (0, _mithril2.default)('.col-md-9.steps__table.flexbox.flexbox--column', [(0, _mithril2.default)('.row.steps__table--header.flexbox.flexbox--row', [(0, _mithril2.default)('.flexbox__cell.flexbox__cell-1', (0, _mithril2.default)('p', 'Order')), (0, _mithril2.default)('.flexbox__cell.flexbox__cell-2', (0, _mithril2.default)('p', 'Temperature')), (0, _mithril2.default)('.flexbox__cell.flexbox__cell-2', (0, _mithril2.default)('p', 'Humidity')), (0, _mithril2.default)('.flexbox__cell.flexbox__cell-2', (0, _mithril2.default)('p', 'Time')), (0, _mithril2.default)('.flexbox__cell.flexbox__cell-2', (0, _mithril2.default)('p', 'Wait')), (0, _mithril2.default)('.flexbox__cell.flexbox__cell-3.flexbox--column', [(0, _mithril2.default)('.flexbox__cell.flexbox__cell-1', (0, _mithril2.default)('p', 'Options')), (0, _mithril2.default)('.flexbox__cell.flexbox__cell-1.flexbox.flexbox--row', [(0, _mithril2.default)('.flexbox__cell.flexbox__cell-1', (0, _mithril2.default)('p', '1')), (0, _mithril2.default)('.flexbox__cell.flexbox__cell-1', (0, _mithril2.default)('p', '2')), (0, _mithril2.default)('.flexbox__cell.flexbox__cell-1', (0, _mithril2.default)('p', '3'))])]), (0, _mithril2.default)('.flexbox__cell.flexbox__cell-2', 'Actions')]), (0, _mithril2.default)('.steps__table--body', [_Programs2.default.stepList.length !== 0 ? _Programs2.default.stepList.map(function (step) {
       console.log(step);
-      return (0, _mithril2.default)('.steps__table--row.flexbox--row.flexbox', [(0, _mithril2.default)('.flexbox__cell.flexbox__cell-1', step.order), (0, _mithril2.default)('.flexbox__cell.flexbox__cell-2', step.temperature), (0, _mithril2.default)('.flexbox__cell.flexbox__cell-2', step.humidity), (0, _mithril2.default)('.flexbox__cell.flexbox__cell-2', step.time), (0, _mithril2.default)('.flexbox__cell.flexbox__cell-2', step.wait.option ? step.wait.time : 'none'), (0, _mithril2.default)('.flexbox__cell.flexbox__cell-3.flexbox--row.flexbox', [(0, _mithril2.default)('.flexbox__cell.flexbox__cell-1', step.options[0] ? (0, _mithril2.default)('i.fa.fa-check') : (0, _mithril2.default)('i.fa.fa-times')), (0, _mithril2.default)('.flexbox__cell.flexbox__cell-1', step.options[1] ? (0, _mithril2.default)('i.fa.fa-check') : (0, _mithril2.default)('i.fa.fa-times')), (0, _mithril2.default)('.flexbox__cell.flexbox__cell-1', step.options[2] ? (0, _mithril2.default)('i.fa.fa-check') : (0, _mithril2.default)('i.fa.fa-times'))]), (0, _mithril2.default)('.flexbox__cell.flexbox__cell-2', [(0, _mithril2.default)('button.steps__table--button', {}, (0, _mithril2.default)('i.fa.fa-trash')), (0, _mithril2.default)('button.steps__table--button', {}, (0, _mithril2.default)('i.fa.fa-edit'))])]);
-    }) : ''
-    // m('.steps__table--row.flexbox--row.flexbox', [
-    //   m('.flexbox__cell.flexbox__cell-1', '1'),
-    //   m('.flexbox__cell.flexbox__cell-2', '150'),
-    //   m('.flexbox__cell.flexbox__cell-2', '89'),
-    //   m('.flexbox__cell.flexbox__cell-2', '1:30'),
-    //   m('.flexbox__cell.flexbox__cell-2', 'none'),
-    //   m('.flexbox__cell.flexbox__cell-3.flexbox--row.flexbox', [
-    //     m('.flexbox__cell.flexbox__cell-1', m('i.fa.fa-check')),
-    //     m('.flexbox__cell.flexbox__cell-1', m('i.fa.fa-times')),
-    //     m('.flexbox__cell.flexbox__cell-1', m('i.fa.fa-times'))
-    //   ]),
-    //   m('.flexbox__cell.flexbox__cell-2', [
-    //     m('button.steps__table--button', {}, m('i.fa.fa-trash')),
-    //     m('button.steps__table--button', {}, m('i.fa.fa-edit'))
-    //   ]),
-    // ])
-    ]), (0, _mithril2.default)('#form-step-js.steps__table--form-container', { class: _Programs2.default.isStepForm ? 'steps__table--form-container--active' : '' }, [_Programs2.default.currentProgram && _Programs2.default.isStepForm ? _Programs2.default.stepFormType === 'add' ? (0, _mithril2.default)('form', [(0, _mithril2.default)('input[type=hidden][name=program_id][value=empty]'), (0, _mithril2.default)('.flexbox.flexbox--row', [(0, _mithril2.default)('.flexbox__cell.flexbox__cell-1'), (0, _mithril2.default)('.flexbox__cell.flexbox__cell-2', [(0, _mithril2.default)('input[type=number][name=temperature][required][placeholder="Temperature"]')]), (0, _mithril2.default)('.flexbox__cell.flexbox__cell-2', [(0, _mithril2.default)('input[name=humidity][type=number][placeholder=Humidity]')]), (0, _mithril2.default)('.flexbox__cell.flexbox__cell-2', [(0, _mithril2.default)('input[name=time][type=text][placeholder=Time]')]), (0, _mithril2.default)('.flexbox__cell.flexbox__cell-2', [(0, _mithril2.default)('input[name=wait][type=text][placeholder=Wait]', 'Wait')]), (0, _mithril2.default)('.flexbox__cell.flexbox__cell-3.flexbox.flexbox--row', [(0, _mithril2.default)('.flexbox__cell.flexbox__cell-1', [(0, _mithril2.default)('input[type=checkbox][name=options[]]')]), (0, _mithril2.default)('.flexbox__cell.flexbox__cell-1', [(0, _mithril2.default)('input[type=checkbox][name=options[]]')]), (0, _mithril2.default)('.flexbox__cell.flexbox__cell-1', [(0, _mithril2.default)('input[type=checkbox][name=options[]]')])]), (0, _mithril2.default)('.flexbox__cell.flexbox__cell-2', [(0, _mithril2.default)('.button__group', [(0, _mithril2.default)('button.steps__table--button', {}, (0, _mithril2.default)('i.fa.fa-check')), (0, _mithril2.default)('button.steps__table--button', { onclick: _Programs2.default.cancelStepForm }, (0, _mithril2.default)('i.fa.fa-times'))])])])]) : _Programs2.default.stepFormType === 'edit' ? (0, _mithril2.default)('form', [(0, _mithril2.default)('input[type=hidden][name=program_id][value=empty]'), (0, _mithril2.default)('.flexbox.flexbox--row', [(0, _mithril2.default)('.flexbox__cell.flexbox__cell-1'), (0, _mithril2.default)('.flexbox__cell.flexbox__cell-2', [(0, _mithril2.default)('input[type=number][name=temperature][required][placeholder="Temperature"]')]), (0, _mithril2.default)('.flexbox__cell.flexbox__cell-2', [(0, _mithril2.default)('input[name=humidity][type=number][placeholder=Humidity]')]), (0, _mithril2.default)('.flexbox__cell.flexbox__cell-2', [(0, _mithril2.default)('input[name=time][type=text][placeholder=Time]')]), (0, _mithril2.default)('.flexbox__cell.flexbox__cell-2', [(0, _mithril2.default)('input[name=wait][type=text][placeholder=Wait]', 'Wait')]), (0, _mithril2.default)('.flexbox__cell.flexbox__cell-3.flexbox.flexbox--row', [(0, _mithril2.default)('.flexbox__cell.flexbox__cell-1', [(0, _mithril2.default)('input[type=checkbox][name=options[]]')]), (0, _mithril2.default)('.flexbox__cell.flexbox__cell-1', [(0, _mithril2.default)('input[type=checkbox][name=options[]]')]), (0, _mithril2.default)('.flexbox__cell.flexbox__cell-1', [(0, _mithril2.default)('input[type=checkbox][name=options[]]')])]), (0, _mithril2.default)('.flexbox__cell.flexbox__cell-2', [(0, _mithril2.default)('.button__group', [(0, _mithril2.default)('button.steps__table--button', {}, (0, _mithril2.default)('i.fa.fa-check')), (0, _mithril2.default)('button.steps__table--button', {}, (0, _mithril2.default)('i.fa.fa-times'))])])])]) : '' : '']), (0, _mithril2.default)('.steps__table--footer', [(0, _mithril2.default)('p.steps__table--status', 'Program last for 30 hour 15 minutes, including 3 cycles.'), (0, _mithril2.default)('.steps__handles', [(0, _mithril2.default)('button.steps__handles--button', { onclick: _Programs2.default.addStepForm.bind(event, 'add'), disabled: !_Programs2.default.isStepForm && _Programs2.default.currentProgram ? false : true }, (0, _mithril2.default)('i.fa.fa-plus-circle'), ' Add')])])])])]);
+      return (0, _mithril2.default)('.steps__table--row.flexbox--row.flexbox', [(0, _mithril2.default)('.flexbox__cell.flexbox__cell-1', step.order), (0, _mithril2.default)('.flexbox__cell.flexbox__cell-2', step.temperature), (0, _mithril2.default)('.flexbox__cell.flexbox__cell-2', step.humidity), (0, _mithril2.default)('.flexbox__cell.flexbox__cell-2', step.time), (0, _mithril2.default)('.flexbox__cell.flexbox__cell-2', step.wait.option ? step.wait.time : 'none'), (0, _mithril2.default)('.flexbox__cell.flexbox__cell-3.flexbox--row.flexbox', [(0, _mithril2.default)('.flexbox__cell.flexbox__cell-1', step.options[0] ? (0, _mithril2.default)('i.fa.fa-check') : (0, _mithril2.default)('i.fa.fa-times')), (0, _mithril2.default)('.flexbox__cell.flexbox__cell-1', step.options[1] ? (0, _mithril2.default)('i.fa.fa-check') : (0, _mithril2.default)('i.fa.fa-times')), (0, _mithril2.default)('.flexbox__cell.flexbox__cell-1', step.options[2] ? (0, _mithril2.default)('i.fa.fa-check') : (0, _mithril2.default)('i.fa.fa-times'))]), (0, _mithril2.default)('.flexbox__cell.flexbox__cell-2', [(0, _mithril2.default)('button.steps__table--button', { onclick: _Programs2.default.addStep.bind(event) }, (0, _mithril2.default)('i.fa.fa-trash')), (0, _mithril2.default)('button.steps__table--button', { onclick: _Programs2.default.addStepForm.bind(event, 'edit', step._id) }, (0, _mithril2.default)('i.fa.fa-edit'))])]);
+    }) : (0, _mithril2.default)('.stretch-box', [(0, _mithril2.default)('.stretch-box--item', ' This program has no step.')])]), (0, _mithril2.default)('#step-form-js.steps__table--form-container', { class: _Programs2.default.isStepForm ? 'steps__table--form-container--active' : '' }, [_Programs2.default.currentProgram && _Programs2.default.isStepForm ? _Programs2.default.stepFormType === 'add' ? (0, _mithril2.default)('form', [(0, _mithril2.default)('input[type=hidden][name=program_id][value=empty]'), (0, _mithril2.default)('.flexbox.flexbox--row', [(0, _mithril2.default)('.flexbox__cell.flexbox__cell-1'), (0, _mithril2.default)('.flexbox__cell.flexbox__cell-2', [(0, _mithril2.default)('input[type=number][name=temperature][required][placeholder="Temperature"]')]), (0, _mithril2.default)('.flexbox__cell.flexbox__cell-2', [(0, _mithril2.default)('input[name=humidity][type=number][placeholder=Humidity]')]), (0, _mithril2.default)('.flexbox__cell.flexbox__cell-2', [(0, _mithril2.default)('input[name=time][type=text][placeholder=Time]')]), (0, _mithril2.default)('.flexbox__cell.flexbox__cell-2', [(0, _mithril2.default)('input[name=wait][type=text][placeholder=Wait]', 'Wait')]), (0, _mithril2.default)('.flexbox__cell.flexbox__cell-3.flexbox.flexbox--row', [(0, _mithril2.default)('.flexbox__cell.flexbox__cell-1', [(0, _mithril2.default)('input[type=checkbox][name=options[]]')]), (0, _mithril2.default)('.flexbox__cell.flexbox__cell-1', [(0, _mithril2.default)('input[type=checkbox][name=options[]]')]), (0, _mithril2.default)('.flexbox__cell.flexbox__cell-1', [(0, _mithril2.default)('input[type=checkbox][name=options[]]')])]), (0, _mithril2.default)('.flexbox__cell.flexbox__cell-2', [(0, _mithril2.default)('.button__group', [(0, _mithril2.default)('button.steps__table--button', {}, (0, _mithril2.default)('i.fa.fa-check')), (0, _mithril2.default)('button.steps__table--button', { onclick: _Programs2.default.cancelStepForm }, (0, _mithril2.default)('i.fa.fa-times'))])])])]) : _Programs2.default.stepFormType === 'edit' ? (0, _mithril2.default)('form', [(0, _mithril2.default)('input[type=hidden][name=_id][value=' + _Programs2.default.currentStep + ']'), (0, _mithril2.default)('input[type=hidden][name=program_id][value=' + _Programs2.default.currentProgram._id + ']'), (0, _mithril2.default)('.flexbox.flexbox--row', [(0, _mithril2.default)('.flexbox__cell.flexbox__cell-1'), (0, _mithril2.default)('.flexbox__cell.flexbox__cell-2', [(0, _mithril2.default)('input[type=number][name=temperature][required][value="Temperature"]')]), (0, _mithril2.default)('.flexbox__cell.flexbox__cell-2', [(0, _mithril2.default)('input[name=humidity][type=number][placeholder=Humidity]')]), (0, _mithril2.default)('.flexbox__cell.flexbox__cell-2', [(0, _mithril2.default)('input[name=time][type=text][placeholder=Time]')]), (0, _mithril2.default)('.flexbox__cell.flexbox__cell-2', [(0, _mithril2.default)('input[name=wait][type=text][placeholder=Wait]', 'Wait')]), (0, _mithril2.default)('.flexbox__cell.flexbox__cell-3.flexbox.flexbox--row', [(0, _mithril2.default)('.flexbox__cell.flexbox__cell-1', [(0, _mithril2.default)('input[type=checkbox][name=options[]][value=checked ? true : false]')]), (0, _mithril2.default)('.flexbox__cell.flexbox__cell-1', [(0, _mithril2.default)('input[type=checkbox][name=options[]][value=checked ? true : false]')]), (0, _mithril2.default)('.flexbox__cell.flexbox__cell-1', [(0, _mithril2.default)('input[type=checkbox][name=options[]][value=checked ? true : false]')])]), (0, _mithril2.default)('.flexbox__cell.flexbox__cell-2', [(0, _mithril2.default)('.button__group', [(0, _mithril2.default)('button.steps__table--button', { onclick: _Programs2.default.addStep.bind(event) }, (0, _mithril2.default)('i.fa.fa-check')), (0, _mithril2.default)('button.steps__table--button', { onclick: _Programs2.default.cancelStepForm }, (0, _mithril2.default)('i.fa.fa-times'))])])])]) : '' : '']), (0, _mithril2.default)('.steps__table--footer', [(0, _mithril2.default)('p.steps__table--status', 'Program last for 30 hour 15 minutes, including 3 cycles.'), (0, _mithril2.default)('.steps__handles', [(0, _mithril2.default)('button.steps__handles--button', { onclick: _Programs2.default.addStepForm.bind(event, 'add'), disabled: !_Programs2.default.isStepForm && _Programs2.default.currentProgram ? false : true }, (0, _mithril2.default)('i.fa.fa-plus-circle'), ' Add')])])])])]);
   }
 };
 
@@ -6685,18 +6668,18 @@ var Programs = {
   isPrgmForm: false,
   currentProgram: null,
   formType: null,
+
   chooseProgram: function chooseProgram(id, e) {
     _mithril2.default.request({
       method: 'GET',
-      url: '/get-program-by-id/' + id
+      url: '/program/' + id
     }).then(function (result) {
-      if (result.success) {
+      if (!result.success) {
         console.log(result.error);
       } else {
-        console.log(result);
         Programs.currentProgram = result.program;
-        console.log(result);
         Programs.stepList = result.steps;
+        Programs.resetForm();
       }
     });
   },
@@ -6756,7 +6739,7 @@ var Programs = {
     var data = (0, _global.serialize)(form);
     _mithril2.default.request({
       method: 'POST',
-      url: '/addProgram',
+      url: '/add-program',
       data: data
     }).then(function (rslt) {
       if (rslt.success) {
@@ -6768,16 +6751,38 @@ var Programs = {
 
   isStepForm: false,
   stepFormType: null,
-  addStepForm: function addStepForm(type, e) {
+  currentStep: null,
+  addStepForm: function addStepForm(type, _id, e) {
     if (!Programs.isStepForm) {
       Programs.isStepForm = true;
       Programs.stepFormType = type;
+      if (_id) {
+        _mithril2.default.request({ method: 'GET', url: '/step/' + _id }).then(function (result) {
+          if (!result.success) {
+            Programs.currentStep = result.step;
+          } else {
+            console.log(result.error);
+          }
+        });
+      }
     }
   },
   cancelStepForm: function cancelStepForm(_) {
     if (Programs.isStepForm) {
       Programs.isStepForm = false;
     }
+  },
+  addStep: function addStep(e) {
+    e.preventDefault();
+    console.log('click');
+    var data = (0, _global.serialize)(document.getElementById('step-form-js'));
+    console.log(data);
+  },
+
+  resetForm: function resetForm(_) {
+    Programs.isStepForm = false;
+    Programs.isPrgmForm = false;
+    Programs.currentStep = null;
   }
 };
 

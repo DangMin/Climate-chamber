@@ -7,6 +7,7 @@ const Programs = {
   isPrgmForm: false,
   currentProgram: null,
   formType: null,
+
   chooseProgram: (id, e) => {
     m.request({
       method: 'GET',
@@ -35,7 +36,6 @@ const Programs = {
     if (!Programs.isPrgmForm) {
       Programs.isPrgmForm = true
       Programs.formType = type
-      console.log(Programs.formType)
     }
   },
   rmPrgm: (id, e) => {
@@ -78,7 +78,7 @@ const Programs = {
     const data = serialize(form)
     m.request({
       method: 'POST',
-      url: '/addProgram',
+      url: '/add-program',
       data: data
     }).then(rslt => {
       if (rslt.success) {
@@ -110,6 +110,28 @@ const Programs = {
     if (Programs.isStepForm) {
       Programs.isStepForm = false
     }
+  },
+  addStep: e => {
+    e.preventDefault()
+    const data = serialize(document.getElementById('step-form-js'))
+    m.request({ method: 'POST', url: '/add-step', data: data }).then(result => {
+      if (result.success) {
+        Programs.fetchStep(data.program_id)
+      } else {
+        console.log(result.error)
+      }
+    })
+  },
+  fetchStep: id => {
+    console.log('fetch step')
+    m.request({ method: 'GET', url: `/steps/${id}` }).then(result => {
+      if (result.success) {
+        Programs.stepList = result.steps
+        Programs.isStepForm = false
+      } else {
+        console.log(result.error)
+      }
+    })
   },
 
   resetForm: _ => {

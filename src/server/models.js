@@ -27,11 +27,7 @@ const StepModel = new Schema({
     option: { type: Boolean, default: false },
     time: { type: String, default: '00:00' }
   },
-  options: {
-    opt_1: { type: Boolean, default: false },
-    opt_2: { type: Boolean, default: false },
-    opt_3: { type: Boolean, default: false }
-  }
+  options: { type: Array, default: [false, false, false]}
 }, {
   timestamps: true
 })

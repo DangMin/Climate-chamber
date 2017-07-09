@@ -20,10 +20,13 @@ const serialize = element => {
   const inputs = element.getElementsByTagName('input')
   const obj = {}
   Array.prototype.forEach.call(inputs, input => {
+    if (input.type == 'checkbox') {
+      input.value = input.checked ? (input.value ? input.value : true) : false
+    }
     if (input.name.match(/.*\[\]/g)) {
-      const prop = new RebExp(/.*[^\[\]]/).exec(input.name)
+      const prop = new RegExp(/.*[^\[\]]/).exec(input.name)
       if (obj.hasOwnProperty(prop)) {
-        obj.push(input.value)
+        obj[prop].push(input.value)
       } else {
         obj[prop] = [input.value]
       }
@@ -31,7 +34,6 @@ const serialize = element => {
       obj[input.name] = input.value
     }
   })
-  console.log(obj)
   return obj
 }
 
