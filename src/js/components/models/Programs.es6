@@ -133,6 +133,15 @@ const Programs = {
       }
     })
   },
+  removeStep: (id, event) => {
+    m.request({ method: 'DELETE', url: '/remove-step', data: {_id: id} }).then(result => {
+      if (result.success) {
+        Programs.fetchStep(Programs.currentProgram._id)
+      } else {
+        console.log(result.error)
+      }
+    })
+  },
 
   resetForm: _ => {
     Programs.isStepForm = false

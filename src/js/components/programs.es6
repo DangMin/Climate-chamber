@@ -90,7 +90,7 @@ const c = {
                     m('.flexbox__cell.flexbox__cell-1', step.options[2] == 'true' ? m('i.fa.fa-check') : m('i.fa.fa-times'))
                   ]),
                   m('.flexbox__cell.flexbox__cell-2', [
-                    m('button.steps__table--button', { onclick: P.addStep.bind(event) }, m('i.fa.fa-trash')),
+                    m('button.steps__table--button', { onclick: P.removeStep.bind(event, step._id) }, m('i.fa.fa-trash')),
                     m('button.steps__table--button', { onclick: P.addStepForm.bind(event, 'edit', step._id) }, m('i.fa.fa-edit'))
                   ]),
                 ])

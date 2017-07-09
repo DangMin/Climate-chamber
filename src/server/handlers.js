@@ -125,3 +125,24 @@ exports.getSteps = (request, reply) => {
     }
   })
 }
+exports.removeStep = (request, reply) => {
+  Models.Step.findOne({_id: ObjectId(request.payload._id) }, (err, step) => {
+    if (!err && step) {
+      // Models.Step.find({ order: {$gt: step.order} }, { $inc: {order:-1} }, { multi: true }, (err, steps) => {
+      //   reply({ steps: steps })
+      // })
+      Models.Step.update({ order: {$gt: step.order} }, { $inc: {order:-1} }, { multi: true }, (err, s) => {
+        console.log(s)
+        if (err) {
+          reply({ success: false, error: err })
+        }
+      })
+      step.remove()
+      reply({ success: true })
+    } else if (!step) {
+      reply({ success: false, error: 'Cannot find step.' })
+    } else if (err) {
+      reply({ success: false, error: err })
+    }
+  })
+}

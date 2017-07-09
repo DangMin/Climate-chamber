@@ -10,5 +10,6 @@ exports.endpoints = [
   { method: 'POST', path: '/edit-program', handler: handlers.editProgram },
   { method: 'GET', path: '/step/{_id}', handler: handlers.getStepById },
   { method: 'POST', path: '/add-step', handler: handlers.addStep },
-  { method: 'GET', path: '/steps/{programId}', handler: handlers.getSteps }
+  { method: 'GET', path: '/steps/{programId}', handler: handlers.getSteps },
+  { method: 'DELETE', path: '/remove-step', handler: handlers.removeStep }
 ]
