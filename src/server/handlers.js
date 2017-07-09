@@ -70,3 +70,16 @@ exports.editProgram = (request, reply) => {
     reply({ success: true, error: null })
   })
 }
+
+exports.getStepById = (request, reply) => {
+  const params = request.params
+  Models.Step.findOne({ _id: params._id }, (err, step) => {
+    if (!err && step) {
+      reply({ success: true, step: step })
+    } else if (err) {
+      reply({ success: false, error: err })
+    } else if (step) {
+      reply({ success: false, error: 'Cannot find step.' })
+    }
+  })
+}

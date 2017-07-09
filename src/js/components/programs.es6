@@ -92,7 +92,7 @@ const c = {
                   ]),
                   m('.flexbox__cell.flexbox__cell-2', [
                     m('button.steps__table--button', {}, m('i.fa.fa-trash')),
-                    m('button.steps__table--button', {}, m('i.fa.fa-edit'))
+                    m('button.steps__table--button', { onclick: P.addStepForm.bind(event, 'edit', step._id) }, m('i.fa.fa-edit'))
                   ]),
                 ])
               }) : m('.stretch-box', [
@@ -139,11 +139,12 @@ const c = {
                     ])
                   ]) : P.stepFormType === 'edit' ?
                     m('form', [
-                      m('input[type=hidden][name=program_id][value=empty]'),
+                      m(`input[type=hidden][name=_id][value=${P.currentStep}]`),
+                      m(`input[type=hidden][name=program_id][value=${P.currentProgram._id}]`),
                       m('.flexbox.flexbox--row', [
                         m('.flexbox__cell.flexbox__cell-1'),
                         m('.flexbox__cell.flexbox__cell-2', [
-                          m('input[type=number][name=temperature][required][placeholder="Temperature"]')
+                          m('input[type=number][name=temperature][required][value="Temperature"]')
                         ]),
                         m('.flexbox__cell.flexbox__cell-2', [
                           m('input[name=humidity][type=number][placeholder=Humidity]')
@@ -168,7 +169,7 @@ const c = {
                         m('.flexbox__cell.flexbox__cell-2', [
                           m('.button__group', [
                             m('button.steps__table--button', {  }, m('i.fa.fa-check')),
-                            m('button.steps__table--button', {  }, m('i.fa.fa-times'))
+                            m('button.steps__table--button', { onclick: P.cancelStepForm }, m('i.fa.fa-times'))
                           ])
                         ])
                       ])

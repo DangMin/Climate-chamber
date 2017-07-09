@@ -10,16 +10,14 @@ const Programs = {
   chooseProgram: (id, e) => {
     m.request({
       method: 'GET',
-      url: `/get-program-by-id/${id}`
+      url: `/program/${id}`
     }).then(result => {
-      console.log(result)
       if (!result.success) {
         console.log(result.error)
       } else {
-        console.log(result)
         Programs.currentProgram = result.program
-        console.log(result)
         Programs.stepList = result.steps
+        Programs.resetForm()
       }
     })
   },
@@ -92,16 +90,32 @@ const Programs = {
 
   isStepForm: false,
   stepFormType: null,
-  addStepForm: (type, e) => {
+  currentStep: null,
+  addStepForm: (type, _id, e) => {
     if (!Programs.isStepForm) {
       Programs.isStepForm = true
       Programs.stepFormType = type
+      if (_id) {
+        m.request({ method: 'GET', url: `/step/${_id}` }).then(result => {
+          if (!result.success) {
+            Programs.currentStep = result.step
+          } else {
+            console.log(result.error)
+          }
+        })
+      }
     }
   },
   cancelStepForm: _ => {
     if (Programs.isStepForm) {
       Programs.isStepForm = false
     }
+  },
+
+  resetForm: _ => {
+    Programs.isStepForm = false
+    Programs.isPrgmForm = false
+    Programs.currentStep = null
   }
 }
 
