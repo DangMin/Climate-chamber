@@ -137,9 +137,9 @@ const c = {
                       ])
                     ])
                   ]) : P.stepFormType === 'edit' ?
-                    m('form', [
-                      m(`input[type=hidden][name=_id][value=${P.currentStep}]`),
-                      m(`input[type=hidden][name=program_id][value=${P.currentProgram._id}]`),
+                    m('form', P.currentStep ? [
+                      m(`input[type=hidden][name=_id][value=${P.currentStep._id}]`),
+                      m(`input[type=hidden][name=program_id][value=${P.currentStep.program_id}]`),
                       m('.flexbox.flexbox--row', [
                         m('.flexbox__cell.flexbox__cell-1'),
                         m('.flexbox__cell.flexbox__cell-2', [
@@ -149,20 +149,20 @@ const c = {
                           m(`input[name=humidity][type=number][value=${P.currentStep.humidity}]`)
                         ]),
                         m('.flexbox__cell.flexbox__cell-2', [
-                          m('input[name=time][type=text][placeholder=Time]')
+                          m(`input[name=time][type=text][value=${P.currentStep.time}]`)
                         ]),
                         m('.flexbox__cell.flexbox__cell-2', [
-                          m('input[name=wait][type=text][placeholder=Wait]\', \'Wait')
+                          m('input[name=wait][type=text]', { value: P.currentStep.wait.option === 'true' ? P.currentStep.wait.time : '' })
                         ]),
                         m('.flexbox__cell.flexbox__cell-3.flexbox.flexbox--row', [
                           m('.flexbox__cell.flexbox__cell-1', [
-                            m('input[type=checkbox][name="options[]"]')
+                            m('input[type=checkbox][name="options[]"]', { checked: P.currentStep.options[0] === 'true' ? true : false })
                           ]),
                           m('.flexbox__cell.flexbox__cell-1', [
-                            m('input[type=checkbox][name="options[]"]')
+                            m('input[type=checkbox][name="options[]"]', { checked: P.currentStep.options[1] === 'true' ? true : false })
                           ]),
                           m('.flexbox__cell.flexbox__cell-1', [
-                            m('input[type=checkbox][name="options[]"]')
+                            m('input[type=checkbox][name="options[]"]', { checked: P.currentStep.options[2] === 'true' ? true : false })
                           ])
                         ]),
                         m('.flexbox__cell.flexbox__cell-2', [
@@ -172,7 +172,9 @@ const c = {
                           ])
                         ])
                       ])
-                    ]) : '') : ''
+                    ] : '')
+                    : '')
+                : ''
             ]),
           m('.steps__table--footer', [
             m('p.steps__table--status', 'Program last for 30 hour 15 minutes, including 3 cycles.'),

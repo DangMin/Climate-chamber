@@ -90,20 +90,21 @@ const Programs = {
 
   isStepForm: false,
   stepFormType: null,
-  currentStep: null,
+  currentStep: {},
   addStepForm: (type, _id, e) => {
     if (!Programs.isStepForm) {
       Programs.isStepForm = true
-      Programs.stepFormType = type
-      if (_id) {
-        m.request({ method: 'GET', url: `/step/${_id}` }).then(result => {
-          if (!result.success) {
-            Programs.currentStep = result.step
-          } else {
-            console.log(result.error)
-          }
-        })
-      }
+    }
+    Programs.stepFormType = type
+    if (_id) {
+      m.request({ method: 'GET', url: `/step/${_id}` }).then(result => {
+        if (result.success) {
+          Programs.currentStep = result.step
+          console.log(Programs.currentStep)
+        } else {
+          console.log(result.error)
+        }
+      })
     }
   },
   cancelStepForm: _ => {
@@ -141,6 +142,9 @@ const Programs = {
         console.log(result.error)
       }
     })
+  },
+  editStep: (id, event) => {
+
   },
 
   resetForm: _ => {
