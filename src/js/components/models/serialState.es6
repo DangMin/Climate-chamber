@@ -2,6 +2,7 @@ import m from 'mithril'
 import io from 'socket.io-client'
 
 const socket = io('http://localhost:8080')
+
 let SerialState = {
   state: false,
   reqConnection: () => {

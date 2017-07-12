@@ -41,4 +41,17 @@ const formatDate = date => {
   return `${date.getDay()}/${date.getMonth()}/${date.getYear()}`
 }
 
-export { tabHandler, serialize, formatDate }
+const formatDisplay = value => {
+  let num = parseFloat(value)
+  let str = ''
+  if (num > 0) {
+    str = num > 100 ? num.toString() : (num < 100 && num >= 10 ? `0${num.toString()}` : `00${num.toString()}`)
+  } else if ( num < 0) {
+    num = Math.abs(num)
+    str = '-' + (num >= 10 && num < 100 ? `0${num.toString()}` : `00${num.toString()}`)
+  }
+
+  return str.length == 6 ? str : str+'0'
+}
+
+export { tabHandler, serialize, formatDate, formatDisplay }

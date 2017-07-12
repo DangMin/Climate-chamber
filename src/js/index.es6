@@ -7,7 +7,7 @@ import SerialState from 'components/serialState'
 import SegmentDisplay from 'components/segment-display'
 import Programs from 'components/programs'
 
-import {tabHandler} from 'global'
+import { tabHandler, formatDisplay } from 'global'
 
 const socket = io('http://localhost:8080')
 
@@ -24,14 +24,20 @@ domready(() => {
   humidDisplay.setValue('---.--')
 
   tabHandler('navs__option')
+  window.addEventListener('beforeunload', event => {
+    socket.emit('disconnect-socket')
+  })
 
   Object.keys(components).map(id => {
     const dom = document.getElementById(id)
     dom && m.mount(dom, components[id])
   })
 
-  socket.on('update-display', data => {
+  socket.on('chamber-info', data => {
     console.log(data)
+    formatDisplay(data[0])
+    thermoDisplay.setValue(formatDisplay(data[0]))
+    humidDisplay.setValue(formatDisplay(data[2]))
   })
   socket.on('incoming', data => console.log(data))
 })

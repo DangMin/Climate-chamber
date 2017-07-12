@@ -7,6 +7,8 @@ const Webpack = require('webpack')
 const Dashboard = require('webpack-dashboard/plugin')
 
 const Socket = require('socket.io')
+const EventEmitter = require('events')
+const ControlCommands = require('./modules/control-commands')
 
 const wpConfig = require('../../webpack.config')
 const Config = require('../config')
@@ -38,6 +40,9 @@ const hotMiddleware = require('webpack-hot-middleware')(compiler, {
 })
 
 const serialport = new Serialport(Config.defaultPort, Config.serialport(Serialport))
+const emitter = new EventEmitter()
+const cmd = new ControlCommands()
+const { sendMsg } = require('./helpers')
 
 io.on('connection', socket => {
   console.log(`Socket is open on ${server.info.port}`)
@@ -50,6 +55,7 @@ io.on('connection', socket => {
           socket.emit('serial-status', { err: true, message: 'Cannot open serialport', status: serialport.isOpen() })
         } else {
           socket.emit('serial-status', { err: false, status: serialport.isOpen() })
+          const interval_1 = setInterval(_ => emitter.emit('get-chamber-info'), 1000)
         }
       })
     }
@@ -65,6 +71,47 @@ io.on('connection', socket => {
       })
     }
   })
+  socket.on('disconnect-socket', _ => {
+    socket.disconnect(true)
+    if (serialport.isOpen()) {
+      serialport.close(err => {
+        if (err) {
+          throw err
+        }
+        console.log('serialport closed')
+      })
+    }
+  })
+
+  serialport.on('data', data => {
+    if (cmd.ready && serialport.isOpen()) {
+      if (data[0] == 0x06) {
+        sendMsg(serialport, cmd.createCmd.iy())
+      } else {
+        switch (data[2]) {
+        case 0x41: {
+          socket.emit('chamber-info', cmd.read(data))
+          sendMsg(serialport, cmd.createCmd.br())
+          break
+        }
+        case 0x42: {
+          sendMsg(serialport, cmd.createCmd.o())
+          cmd.unsetReady()
+          break
+        }
+        case 0x49: {
+          sendMsg(serialport, cmd.createCmd.aq())
+          break
+        }
+        }
+      }
+    }
+  })
+})
+
+emitter.on('get-chamber-info', _ => {
+  cmd.setReady()
+  sendMsg(serialport, cmd.createCmd.br())
 })
 
 server.ext('onRequest', (request, reply) => {
