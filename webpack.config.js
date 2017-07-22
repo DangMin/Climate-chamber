@@ -29,7 +29,7 @@ module.exports = {
         test: /\.styl$/,
         loader: ExtractTextPlugin.extract({ fallback: 'style-loader', use: 'css-loader!stylus-loader' })
       },
-      { test: /\.(png|jpg|gif|svg|ttf)$/, loader: 'url-loader'},
+      { test: /\.(png|jpg|gif|svg|ttf|woff|woff2)$/, loader: 'url-loader'},
       { test: /\.node$/, use: 'node-loader' }
     ]
   },
