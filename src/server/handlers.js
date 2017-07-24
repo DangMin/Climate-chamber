@@ -7,7 +7,7 @@ const { isEmpty } = require('lodash')
 const ObjectId = Mongoose.Types.ObjectId
 
 exports.index = (request, reply) => {
-  reply.view('index')
+  reply.view('template')
 }
 exports.getPrograms = (request, reply) => {
   Models.Program.find({}, (err, programs) => {

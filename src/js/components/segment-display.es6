@@ -16,11 +16,11 @@ function SegmentDisplay(displayId, config) {
   this.displayId       = displayId
   this.pattern         = '###.##'
   this.value           = '123.45'
-  this.digitHeight     = 20
-  this.digitWidth      = 10
-  this.digitDistance   = 2.5
-  this.displayAngle    = 12
-  this.segmentWidth    = 2.5
+  this.digitHeight     = 10
+  this.digitWidth      = 4
+  this.digitDistance   = 1.25
+  this.displayAngle    = 6
+  this.segmentWidth    = 1.25
   this.segmentDistance = 0.2
   this.segmentCount    = SegmentDisplay.SevenSegment
   this.cornerType      = SegmentDisplay.RoundedCorner

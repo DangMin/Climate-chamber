@@ -1,0 +1,23 @@
+.header
+  flexbox(row)
+  &--left
+    flex 4
+  &--right
+    flex 1
+  &__title
+    padding 0 10px
+    font-family ForteenSegment
+
+.serialport
+  flexbox column
+  > div
+    flex 1
+  &__state
+    p
+      text-align center
+      margin 5px 0 0
+      span, i
+        vertical-align middle
+  &__control
+    flexbox()
+    justify-content center

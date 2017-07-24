@@ -9,8 +9,8 @@ const outputPath = path.resolve(__dirname, 'public/dist')
 module.exports = {
   context: srcPath,
   entry: {
-    'home/index': './index.es6',
-    'style': '../css/style.styl',
+    'js/index': './index.es6',
+    'css/index': '../css/index.styl',
     'hotMiddleware': 'webpack-hot-middleware/client'
   },
   output: {
@@ -34,7 +34,7 @@ module.exports = {
     ]
   },
   plugins: [
-    new ExtractTextPlugin('./css/style.css'),
+    new ExtractTextPlugin('./css/index.css'),
     new DashboardPlugin(),
     new Webpack.HotModuleReplacementPlugin(),
     new Webpack.NoErrorsPlugin()

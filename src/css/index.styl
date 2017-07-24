@@ -1,0 +1,69 @@
+base-border = 1px solid #eee
+
+locate(pos, t = 0, l = 0, b = 0, r = 0)
+  position pos
+  top t
+  right r
+  bottom b
+  left l
+
+setBorder(thick, style, color)
+  border thick style color
+
+flexbox(d=row)
+  display flex
+  flex-direction d
+
+.main-container
+  width 100%
+  locate(absolute)
+
+.sidebar
+  locate(absolute, 0, 0, 0, null)
+  width 20vw
+  border-right base-border
+  flexbox(column)
+  &--upper
+    height 40vh
+    width 100%
+    border-bottom base-border
+  &--lower
+    flex 1
+
+.header
+  locate(absolute, 0, 20vw, null, 0)
+  height 10vh
+  flexbox(row)
+  border-bottom base-border
+  &--left
+    flex 7
+  &--right
+    flex 3
+    flexbox(column)
+
+.display
+  locate(absolute, 10vh, 20vw, null, 0)
+  height 30vh
+  border-bottom base-border
+
+.content-container
+  locate(absolute, 40vh, 20vw, 0, 0)
+
+@font-face
+  font-family SevenSegment
+  font-style bold
+  src url(../fonts/DSEG7Classic-Bold.ttf) format('truetype'),
+      url(../fonts/DSEG7Classic-Bold.woff) format('woff'),
+      url(../fonts/DSEG7Classic-Bold.woff2) format('woff2')
+
+@font-face
+  font-family ForteenSegment
+  font-style bold
+  src url(../fonts/DSEG14Classic-Bold.ttf) format('truetype'),
+      url(../fonts/DSEG14Classic-Bold.woff) format('woff'),
+      url(../fonts/DSEG14Classic-Bold.woff2) format('woff2')
+
+@import "./components/user.styl"
+@import "./components/navs.styl"
+@import "./components/header.styl"
+@import "./components/display.styl"
