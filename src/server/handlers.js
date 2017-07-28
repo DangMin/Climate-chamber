@@ -3,6 +3,7 @@ const Boom = require('boom')
 const Models = require('./models')
 const Mongoose = require('mongoose')
 const { isEmpty } = require('lodash')
+const { timeFormat } = require('./helpers')
 
 const ObjectId = Mongoose.Types.ObjectId
 
@@ -91,11 +92,8 @@ exports.addStep = (request, reply) => {
         program_id: Mongoose.Types.ObjectId(payload.program_id),
         temperature: payload.temperature,
         humidity: payload.humidity,
-        time: payload.time,
-        wait: {
-          option: payload.wait !== '' ? true : false,
-          time: payload.wait !== '' ? payload.wait : '00:00'
-        },
+        time: timeFormat(payload.time),
+        wait: timeFormat(payload.wait),
         options: payload.options
       }
       if (isEmpty(step)) {
@@ -103,8 +101,6 @@ exports.addStep = (request, reply) => {
       } else {
         pl.order = step[0].order + 1
       }
-
-      //reply({ payload: pl, step: step })
 
       Models.Step.create(pl, err => {
         if (err) {
@@ -128,9 +124,6 @@ exports.getSteps = (request, reply) => {
 exports.removeStep = (request, reply) => {
   Models.Step.findOne({_id: ObjectId(request.payload._id) }, (err, step) => {
     if (!err && step) {
-      // Models.Step.find({ order: {$gt: step.order} }, { $inc: {order:-1} }, { multi: true }, (err, steps) => {
-      //   reply({ steps: steps })
-      // })
       Models.Step.update({ order: {$gt: step.order} }, { $inc: {order:-1} }, { multi: true }, (err, s) => {
         console.log(s)
         if (err) {

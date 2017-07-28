@@ -34,24 +34,23 @@ const Programs = {
   fetchSteps: (prgm_id) => {
   },
   addFormSignal: (_id, e) => {
-    if (!Programs.isPrgmForm) {
-      Programs.isPrgmForm = true
-    }
-
     if (!_id) {
       Programs.currentProgram = null
+    }
+    if (!Programs.isPrgmForm) {
+      Programs.isPrgmForm = true
     }
   },
   rmPrgm: (id, e) => {
     m.request({
       method: 'DELETE',
       url: '/remove-program',
-      data: {_id: Programs.currentProgram._id }
+      data: { _id: Programs.currentProgram._id }
     }).then(result => {
       if (result.error) {
         console.log(result.error)
       } else {
-        Programs.fetch()
+        setTimeout(Programs.fetch, 1000)
       }
     })
   },

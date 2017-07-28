@@ -38,13 +38,13 @@ const c = {
         ]),
         m('.programs__handles.button__group', [
           m('button.programs__handles--button',
-            { onclick: P.addFormSignal.bind(event, 'add'), disabled: !P.isPrgmForm ? false : true },
+            { onclick: P.addFormSignal.bind(event, null), disabled: !P.isPrgmForm ? false : true },
             m('i.fa.fa-plus-circle')),
           m('button.programs__handles--button', m('i.fa.fa-download')),
           m('button.programs__handles--button',
-            { onclick: P.addFormSignal.bind(event, 'edit'), disabled: !P.currentProgram ? true : false }, m('i.fa.fa-edit')),
+            { onclick: P.addFormSignal.bind(event, P.currentProgram ? P.currentProgram._id : null), disabled: !P.currentProgram ? true : false }, m('i.fa.fa-edit')),
           m('button.programs__handles--button',
-            { onclick: P.rmPrgm.bind(event, P.currentProgram), disabled: !P.currentProgram ? true : false }, m('i.fa.fa-minus-circle'))
+            { onclick: P.rmPrgm.bind(event, P.currentProgram ? P.currentProgram._id : null), disabled: !P.currentProgram ? true : false }, m('i.fa.fa-minus-circle'))
         ])
       ]),
       m('.steps__list.table', [
@@ -71,7 +71,7 @@ const c = {
               m('.table__cell-2.centered-text', step.temperature),
               m('.table__cell-2.centered-text', step.humidity),
               m('.table__cell-2.centered-text', step.time),
-              m('.table__cell-2.centered-text', step.wait.option & step.wait.time !== '' ? step.wait.time : 'None'),
+              m('.table__cell-2.centered-text', step.wait),
               m('.table__cell-3.table__cell-queued', step.options.map(opt => {
                 return m('.table__cell.centered-text', opt === 'true' ? m('i.fa.fa-check') : m('i.fa.fa-times'))
               })),
