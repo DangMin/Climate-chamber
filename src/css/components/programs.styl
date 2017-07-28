@@ -1,0 +1,69 @@
+.programs
+  flex 3
+  flexbox(column)
+  &--active
+    background-color #42a1f4
+    color white
+  &__container
+    flex 7
+    overflow auto
+    margin 0 0 5px 0
+    ^[0]__table
+      width 100%
+      tr:nth-child(2n+1)
+        background-color #eee
+    ^[0]__name
+      font-weight bold
+      margin-top 5px
+      padding-left 5px
+    ^[0]__details
+      font-style italic
+      font-size 0.9rem
+      text-align right
+      padding-right 5px
+      line-height 0.8
+  &__form-container
+    flex 1
+    display none
+    &--active
+      display block
+  &__handles
+    flex 1
+
+.steps
+  &__list
+    flex 7
+    flexbox(column)
+    margin-left 5px
+  &__table
+    flex 8
+    overflow auto
+  &__form-container
+    flex 1
+    width 100%
+    display none
+    &--active
+      display block
+      padding 5px
+      border base-border
+  &__footer
+    flex 1
+    flexbox()
+  &__status
+    flex 9
+    p
+      padding 0 10px
+  &__handles
+    flex 1
+    button
+      width 98%
+      border 5px 1%
+
+.button
+  &__group
+    flexbox()
+    width 98%
+    margin 2px 0
+    button
+      flex 1
+      margin 0 2px

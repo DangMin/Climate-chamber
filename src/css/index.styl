@@ -14,6 +14,9 @@ flexbox(d=row)
   display flex
   flex-direction d
 
+flexcell(n=1)
+  flex n
+
 .main-container
   width 100%
   locate(absolute)
@@ -48,6 +51,89 @@ flexbox(d=row)
 
 .content-container
   locate(absolute, 40vh, 20vw, 0, 0)
+  flexbox()
+  padding 5px
+
+.checkbox
+  &--group
+    flexbox()
+    input
+      flex 1
+
+input
+  width 100%
+
+.centered-text
+  display flex
+  align-items center
+  justify-content center
+  text-align center
+
+.flex-container
+  &--horizontal
+    flexbox()
+  &--vertical
+    flexbox(column)
+  &__cell
+    flex 1
+    &-2
+      flex 2
+    &-3
+      flex 3
+    &-4
+      flex 4
+    &-5
+      flex 5
+    &-6
+      flex 6
+    &-7
+      flex 7
+    &-8
+      flex 8
+    &-9
+      flex 9
+
+.table
+  width 100%
+  &__header
+    border base-border
+    flex 1
+    div
+      border-right base-border
+      &:last-child
+        border-right none
+  &__body
+    flex 8
+    margin 5px 0
+    border base-border
+    > ^[0]__row
+      &:nth-child(2n+1)
+        background-color #eee
+  &__row
+    flexbox()
+  &__cell
+    flex 1
+    &-stacked
+      flexbox(column)
+      > div
+        border-bottom base-border
+        &:last-child
+          border-bottom none
+    &-queued
+      flexbox()
+    &-2
+      flex 2
+    &-3
+      flex 3
+  &__footer
+    flex 1
+    padding 5px 0
+
+.center-container
+  display flex
+  height 100%
+  align-items center
+  justify-content center
 
 @font-face
   font-family SevenSegment
@@ -67,3 +153,4 @@ flexbox(d=row)
 @import "./components/navs.styl"
 @import "./components/header.styl"
 @import "./components/display.styl"
+@import "./components/programs.styl"

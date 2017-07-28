@@ -37,11 +37,15 @@
     font-weight bold
   &__meter
     flex 1
-    canvas
-      width 70%
-      height 10vh
-      margin 0 15%
-      border 2px solid black
-      border-radius 3%
+    padding 0 1%
   &__status
     locate(absolute, 70%, 30%, 0, 0)
+  &__container
+    width 98%
+    border base-border
+
+.meter
+  &--large
+    font-size 3em
+    font-family SevenSegment
+    text-align center

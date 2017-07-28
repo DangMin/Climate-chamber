@@ -28,14 +28,18 @@ const Programs = {
       url: '/programs',
     }).then(result => {
       Programs.list = result
+      console.log(Programs.isStepForm)
     })
   },
   fetchSteps: (prgm_id) => {
   },
-  addFormSignal: (type, e) => {
+  addFormSignal: (_id, e) => {
     if (!Programs.isPrgmForm) {
       Programs.isPrgmForm = true
-      Programs.formType = type
+    }
+
+    if (!_id) {
+      Programs.currentProgram = null
     }
   },
   rmPrgm: (id, e) => {
@@ -91,16 +95,15 @@ const Programs = {
   isStepForm: false,
   stepFormType: null,
   currentStep: {},
-  addStepForm: (type, _id, e) => {
+  addStepForm: (_id, e) => {
+    e.preventDefault()
     if (!Programs.isStepForm) {
       Programs.isStepForm = true
     }
-    Programs.stepFormType = type
     if (_id) {
       m.request({ method: 'GET', url: `/step/${_id}` }).then(result => {
         if (result.success) {
           Programs.currentStep = result.step
-          console.log(Programs.currentStep)
         } else {
           console.log(result.error)
         }

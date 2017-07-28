@@ -2,12 +2,6 @@ import m from 'mithril'
 import SegmentDisplay from './segment-display'
 
 const c = {
-  oncreate: _ => {
-    const thermoDisplay = new SegmentDisplay('thermo-display-js')
-    const humidDisplay = new SegmentDisplay('humid-display-js')
-    thermoDisplay.setValue('---.--')
-    humidDisplay.setValue('---.--')
-  },
   view: _ => {
     return [
       m('.display__program', [
@@ -33,11 +27,15 @@ const c = {
       m('.display__meters', [
         m('.display__meter', [
           m('.display__header', m('p', 'Thermometer')),
-          m('canvas#thermo-display-js')
+          m('.display__container', [
+            m('p.meter--large', '---.--')
+          ])
         ]),
         m('.display__meter', [
           m('.display__header', m('p', 'Humidity meter')),
-          m('canvas#humid-display-js')
+          m('.display__container', [
+            m('p.meter--large', '---.--')
+          ])
         ])
       ]),
       m('.display__status')
