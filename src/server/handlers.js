@@ -32,15 +32,19 @@ exports.addProgram = (request, reply) => {
   })
 }
 exports.removeProgram = (request, reply) => {
-  let res = { error: null }
   const payload = request.payload
-  Models.Program.remove(payload, err => {
+  Models.Step.remove({ program_id: payload._id }, err => {
     if (err) {
-      res.error = err
-      reply(err)
+      reply({ success: false, error: err })
     }
 
-    reply(res)
+    Models.Program.remove(payload, err => {
+      if (err) {
+        reply({ success: false, error: err})
+      }
+
+      reply({ success: true })
+    })
   })
 }
 exports.getProgramById = (request, reply) => {
@@ -121,6 +125,7 @@ exports.getSteps = (request, reply) => {
     }
   })
 }
+
 exports.removeStep = (request, reply) => {
   Models.Step.findOne({_id: ObjectId(request.payload._id) }, (err, step) => {
     if (!err && step) {
@@ -137,5 +142,12 @@ exports.removeStep = (request, reply) => {
     } else if (err) {
       reply({ success: false, error: err })
     }
+  })
+}
+
+exports.addPid = (request, reply) => {
+  const payload = request.payload
+  Models.Pid.create(payload, err => {
+    reply( err ? { success: false, error: err } : { success: true })
   })
 }

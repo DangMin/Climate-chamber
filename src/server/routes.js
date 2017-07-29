@@ -5,11 +5,14 @@ exports.endpoints = [
   { method: 'GET', path: '/', handler: handlers.index },
   { method: 'GET', path: '/programs', handler: handlers.getPrograms },
   { method: 'GET', path: '/program/{programId}', handler: handlers.getProgramById },
-  { method: 'POST', path: '/add-program', handler: handlers.addProgram },
-  { method: 'DELETE', path: '/remove-program', handler: handlers.removeProgram },
-  { method: 'POST', path: '/edit-program', handler: handlers.editProgram },
   { method: 'GET', path: '/step/{_id}', handler: handlers.getStepById },
-  { method: 'POST', path: '/add-step', handler: handlers.addStep },
   { method: 'GET', path: '/steps/{programId}', handler: handlers.getSteps },
-  { method: 'DELETE', path: '/remove-step', handler: handlers.removeStep }
+  // Post method
+  { method: 'POST', path: '/add-program', handler: handlers.addProgram },
+  { method: 'POST', path: '/add-step', handler: handlers.addStep },
+  { method: 'POST', path: '/edit-program', handler: handlers.editProgram },
+  { method: 'POST', path: '/add-pid', handler: handlers.addPid },
+  // Delete method
+  { method: 'DELETE', path: '/remove-step', handler: handlers.removeStep },
+  { method: 'DELETE', path: '/remove-program', handler: handlers.removeProgram },
 ]

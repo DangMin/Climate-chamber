@@ -20,7 +20,7 @@ const c = {
             ])
           ]),
           m('.pid__form-container', P.form.temp ? { class: 'pid__form-container--active flex-container--horizontal' } : {}, [
-            P.form.temp ? m('form.flex-container--horizontal', [
+            P.form.temp ? m('form#js-temp-pid.flex-container--horizontal', [
               m('input[type=hidden][name=type][value=temperature]'),
               m('.flex-container__cell.center-container', [
                 m('input[type=checkbox][name=default][value=true]')
@@ -35,7 +35,7 @@ const c = {
                 m('input[type=number][name=derivative][placeholder=Derivative]')
               ]),
               m('.flex-container__cell-2.button__group', [
-                m('button', m('i.fa.fa-check')),
+                m('button', { onclick: P.addPid.bind(event, 'js-temp-pid')}, m('i.fa.fa-check')),
                 m('button', { onclick: P.cancelForm.bind(event, 'temp')}, m('i.fa.fa-times'))
               ])
             ]) : m('div')
