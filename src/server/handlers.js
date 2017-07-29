@@ -74,6 +74,7 @@ exports.editProgram = (request, reply) => {
     reply({ success: true, error: null })
   })
 }
+
 exports.getStepById = (request, reply) => {
   const params = request.params
   Models.Step.findOne({ _id: params._id }, (err, step) => {
@@ -125,7 +126,6 @@ exports.getSteps = (request, reply) => {
     }
   })
 }
-
 exports.removeStep = (request, reply) => {
   Models.Step.findOne({_id: ObjectId(request.payload._id) }, (err, step) => {
     if (!err && step) {
@@ -144,10 +144,29 @@ exports.removeStep = (request, reply) => {
     }
   })
 }
+exports.editStep = (request, reply) => {}
 
+exports.getPids = (request, reply) => {
+  Models.Pid.find({}, (err, pids) => {
+    if (err) {
+      reply({ success: false, error: err })
+    }
+
+    reply({ success: true, pids: pids })
+  })
+}
 exports.addPid = (request, reply) => {
   const payload = request.payload
   Models.Pid.create(payload, err => {
     reply( err ? { success: false, error: err } : { success: true })
+  })
+}
+exports.getPidById = (request, reply) => {
+  Models.Pid.findOne({ _id: request.params._id, type: request.params.type }, (err, pid) => {
+    if (err) {
+      reply({ success: false, error: err })
+    }
+
+    reply({ success: true, pid: pid })
   })
 }
