@@ -19,7 +19,7 @@ const c = {
               })
             ])
           ]),
-          m('.table__body', [
+          m('.table__body', { onclick: P.flushPid.bind(event, 'temperature') }, [
             !isEmpty(P.list.temp) ? P.list.temp.map(item => {
               return m(`.table__row[data-id=${item._id}][data-type=${item.type}]`, {
                 class: P.current[item.type] && item._id === P.current[item.type]._id ? 'pid--active' : '',

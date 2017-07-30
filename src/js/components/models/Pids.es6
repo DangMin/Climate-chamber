@@ -31,6 +31,7 @@ const model = {
       console.log(rslt.pids)
       model.list.temp = filter(rslt.pids, item => item.type == 'temperature')
       model.list.humid = filter(rslt.pids, item => item.type == 'humidity')
+      console.log(model.list.humid)
     })
   },
   addPid: (formId, e) => {
@@ -57,6 +58,10 @@ const model = {
       model.current[rslt.pid.type] = rslt.pid
       console.log(model.current[rslt.pid.type])
     })
+  },
+  flushPid: (type, e) => {
+    const target = e.currentTarget
+    model.current[type] = null
   },
   setDefault: () => {}
 }

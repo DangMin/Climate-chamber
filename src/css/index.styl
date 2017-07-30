@@ -101,6 +101,10 @@ input
 .table
   width 100%
   flexbox(column)
+  &--striped
+    >^[0]__body
+      >^[0]__row:nth-child(2n+1)
+        background-color #eee
   &__header, &__body, &__footer
     border base-border
     margin 5px 0
@@ -115,8 +119,7 @@ input
     flex 8
     border base-border
     ^[0]__row
-      &:nth-child(2n+1)
-        background-color #eee
+      border-bottom base-border
   &__row
     flexbox()
   &__cell
