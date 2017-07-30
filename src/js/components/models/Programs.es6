@@ -11,7 +11,7 @@ const Programs = {
   chooseProgram: (id, e) => {
     m.request({
       method: 'GET',
-      url: `/program/${id}`
+      url: `/programs/${id}`
     }).then(result => {
       if (!result.success) {
         console.log(result.error)
@@ -28,26 +28,29 @@ const Programs = {
       url: '/programs',
     }).then(result => {
       Programs.list = result
+      console.log(Programs.isStepForm)
     })
   },
   fetchSteps: (prgm_id) => {
   },
-  addFormSignal: (type, e) => {
+  addFormSignal: (_id, e) => {
+    if (!_id) {
+      Programs.currentProgram = null
+    }
     if (!Programs.isPrgmForm) {
       Programs.isPrgmForm = true
-      Programs.formType = type
     }
   },
   rmPrgm: (id, e) => {
     m.request({
       method: 'DELETE',
-      url: '/remove-program',
-      data: {_id: Programs.currentProgram._id }
+      url: '/programs/remove',
+      data: { _id: Programs.currentProgram._id }
     }).then(result => {
       if (result.error) {
         console.log(result.error)
       } else {
-        Programs.fetch()
+        setTimeout(Programs.fetch, 1000)
       }
     })
   },
@@ -62,7 +65,7 @@ const Programs = {
     const data = serialize(document.getElementById('form-program-js'))
     m.request({
       method: 'POST',
-      url: '/edit-program',
+      url: '/programs/edit',
       data: data
     }).then(result => {
       if (result.error) {
@@ -78,7 +81,7 @@ const Programs = {
     const data = serialize(form)
     m.request({
       method: 'POST',
-      url: '/add-program',
+      url: '/programs/add',
       data: data
     }).then(rslt => {
       if (rslt.success) {
@@ -91,16 +94,15 @@ const Programs = {
   isStepForm: false,
   stepFormType: null,
   currentStep: {},
-  addStepForm: (type, _id, e) => {
+  addStepForm: (_id, e) => {
+    e.preventDefault()
     if (!Programs.isStepForm) {
       Programs.isStepForm = true
     }
-    Programs.stepFormType = type
     if (_id) {
-      m.request({ method: 'GET', url: `/step/${_id}` }).then(result => {
+      m.request({ method: 'GET', url: `/steps/${_id}` }).then(result => {
         if (result.success) {
           Programs.currentStep = result.step
-          console.log(Programs.currentStep)
         } else {
           console.log(result.error)
         }
@@ -115,7 +117,7 @@ const Programs = {
   addStep: e => {
     e.preventDefault()
     const data = serialize(document.getElementById('step-form-js'))
-    m.request({ method: 'POST', url: '/add-step', data: data }).then(result => {
+    m.request({ method: 'POST', url: '/steps/add', data: data }).then(result => {
       if (result.success) {
         Programs.fetchStep(data.program_id)
       } else {
@@ -125,7 +127,7 @@ const Programs = {
   },
   fetchStep: id => {
     console.log('fetch step')
-    m.request({ method: 'GET', url: `/steps/${id}` }).then(result => {
+    m.request({ method: 'GET', url: `/steps/getOne/${id}` }).then(result => {
       if (result.success) {
         Programs.stepList = result.steps
         Programs.isStepForm = false
@@ -135,7 +137,7 @@ const Programs = {
     })
   },
   removeStep: (id, event) => {
-    m.request({ method: 'DELETE', url: '/remove-step', data: {_id: id} }).then(result => {
+    m.request({ method: 'DELETE', url: '/steps/remove', data: {_id: id} }).then(result => {
       if (result.success) {
         Programs.fetchStep(Programs.currentProgram._id)
       } else {

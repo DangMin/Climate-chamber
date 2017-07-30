@@ -1,0 +1,27 @@
+.pid
+  flex 1
+  flexbox(column)
+  margin 0 5px
+  >div
+    flex 1
+  &__header
+    font-weight bold
+    font-size 1.25em
+  &__form-container
+    flex 1
+    display none
+    &--active
+      display block
+    input
+      margin 2px 0
+      &[type=number], &[type=text]
+        width 98%
+      &[type=checkbox]
+        -ms-transform scale(1.25)
+        -moz-transform scale(1.25)
+        -webkit-transform scale(1.25)
+        -o-transform scale(1.25)
+        margin-top 5px
+  &--active
+    background-color SkyBlue
+    color white

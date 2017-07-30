@@ -1,0 +1,51 @@
+.display
+  &__program
+    locate(absolute, 0, 0, 0, null)
+    width 30%
+  &__table
+    flexbox(column)
+    height 100%
+    width 100%
+  &__tr
+    flexbox(row)
+    flex 1
+    &:nth-child(2n)
+      background-color #eee
+  &__th, &__td
+    flex 1
+    flexbox()
+    align-items center
+    p
+      width 100%
+      padding 0 10px
+  &__th
+    p
+      text-align left
+      align-self flex-start
+      font-weight bold
+      line-height 1.5
+  &__td
+    p
+      text-align right
+      align-self flex-end
+  &__meters
+    locate(absolute, 0, 30%, null, 0)
+    height 20vh
+    flexbox()
+  &__header
+    text-align center
+    font-weight bold
+  &__meter
+    flex 1
+    padding 0 1%
+  &__status
+    locate(absolute, 70%, 30%, 0, 0)
+  &__container
+    width 98%
+    border base-border
+
+.meter
+  &--large
+    font-size 3em
+    font-family SevenSegment
+    text-align center

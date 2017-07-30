@@ -3,11 +3,12 @@ const Boom = require('boom')
 const Models = require('./models')
 const Mongoose = require('mongoose')
 const { isEmpty } = require('lodash')
+const { timeFormat } = require('./helpers')
 
 const ObjectId = Mongoose.Types.ObjectId
 
 exports.index = (request, reply) => {
-  reply.view('index')
+  reply.view('template')
 }
 exports.getPrograms = (request, reply) => {
   Models.Program.find({}, (err, programs) => {
@@ -31,15 +32,19 @@ exports.addProgram = (request, reply) => {
   })
 }
 exports.removeProgram = (request, reply) => {
-  let res = { error: null }
   const payload = request.payload
-  Models.Program.remove(payload, err => {
+  Models.Step.remove({ program_id: payload._id }, err => {
     if (err) {
-      res.error = err
-      reply(err)
+      reply({ success: false, error: err })
     }
 
-    reply(res)
+    Models.Program.remove(payload, err => {
+      if (err) {
+        reply({ success: false, error: err})
+      }
+
+      reply({ success: true })
+    })
   })
 }
 exports.getProgramById = (request, reply) => {
@@ -69,6 +74,7 @@ exports.editProgram = (request, reply) => {
     reply({ success: true, error: null })
   })
 }
+
 exports.getStepById = (request, reply) => {
   const params = request.params
   Models.Step.findOne({ _id: params._id }, (err, step) => {
@@ -91,11 +97,8 @@ exports.addStep = (request, reply) => {
         program_id: Mongoose.Types.ObjectId(payload.program_id),
         temperature: payload.temperature,
         humidity: payload.humidity,
-        time: payload.time,
-        wait: {
-          option: payload.wait !== '' ? true : false,
-          time: payload.wait !== '' ? payload.wait : '00:00'
-        },
+        time: timeFormat(payload.time),
+        wait: timeFormat(payload.wait),
         options: payload.options
       }
       if (isEmpty(step)) {
@@ -103,8 +106,6 @@ exports.addStep = (request, reply) => {
       } else {
         pl.order = step[0].order + 1
       }
-
-      //reply({ payload: pl, step: step })
 
       Models.Step.create(pl, err => {
         if (err) {
@@ -128,9 +129,6 @@ exports.getSteps = (request, reply) => {
 exports.removeStep = (request, reply) => {
   Models.Step.findOne({_id: ObjectId(request.payload._id) }, (err, step) => {
     if (!err && step) {
-      // Models.Step.find({ order: {$gt: step.order} }, { $inc: {order:-1} }, { multi: true }, (err, steps) => {
-      //   reply({ steps: steps })
-      // })
       Models.Step.update({ order: {$gt: step.order} }, { $inc: {order:-1} }, { multi: true }, (err, s) => {
         console.log(s)
         if (err) {
@@ -144,5 +142,31 @@ exports.removeStep = (request, reply) => {
     } else if (err) {
       reply({ success: false, error: err })
     }
+  })
+}
+exports.editStep = (request, reply) => {}
+
+exports.getPids = (request, reply) => {
+  Models.Pid.find({}, (err, pids) => {
+    if (err) {
+      reply({ success: false, error: err })
+    }
+
+    reply({ success: true, pids: pids })
+  })
+}
+exports.addPid = (request, reply) => {
+  const payload = request.payload
+  Models.Pid.create(payload, err => {
+    reply( err ? { success: false, error: err } : { success: true })
+  })
+}
+exports.getPidById = (request, reply) => {
+  Models.Pid.findOne({ _id: request.params._id, type: request.params.type }, (err, pid) => {
+    if (err) {
+      reply({ success: false, error: err })
+    }
+
+    reply({ success: true, pid: pid })
   })
 }

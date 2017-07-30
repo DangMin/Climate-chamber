@@ -54,3 +54,30 @@ exports.arrayCmp = (array_1, array_2) => {
 
   return true
 }
+
+exports.timeFormat = (time) => {
+  console.log(`orgtime ${time}`)
+  if (time === '') {
+    return '00:00'
+  } else if (time.match(/^[0-9]+:[0-9]{2}$/g)) {
+    let factor = time.split(':')
+    if (parseInt(factor[1]) >= 60) {
+      factor[1] = formatTwoDigit(parseInt(factor[1])-60)
+      factor[0] = formatTwoDigit(parseInt(factor[0])+1)
+
+      console.log(factor.join(':'))
+      return factor.join(':')
+    } else {
+      return `${formatTwoDigit(factor[0])}:${formatTwoDigit(factor[1])}`
+    }
+  }
+}
+
+const formatTwoDigit = number => {
+  let num = parseInt(number)
+  if (num >= 10) {
+    return num.toString()
+  }
+
+  return `0${num.toString()}`
+}

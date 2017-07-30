@@ -1,0 +1,168 @@
+fieldset
+  display inline-block
+  margin 0 2px
+
+base-border = 1px solid #eee
+
+locate(pos, t = 0, l = 0, b = 0, r = 0)
+  position pos
+  top t
+  right r
+  bottom b
+  left l
+
+setBorder(thick, style, color)
+  border thick style color
+
+flexbox(d=row)
+  display flex
+  flex-direction d
+
+flexcell(n=1)
+  flex n
+
+.main-container
+  width 100%
+  locate(absolute)
+
+.sidebar
+  locate(absolute, 0, 0, 0, null)
+  width 20vw
+  border-right base-border
+  flexbox(column)
+  &--upper
+    height 40vh
+    width 100%
+    border-bottom base-border
+  &--lower
+    flex 1
+
+.header
+  locate(absolute, 0, 20vw, null, 0)
+  height 10vh
+  flexbox(row)
+  border-bottom base-border
+  &--left
+    flex 7
+  &--right
+    flex 3
+    flexbox(column)
+
+.display
+  locate(absolute, 10vh, 20vw, null, 0)
+  height 30vh
+  border-bottom base-border
+
+.content-container
+  locate(absolute, 40vh, 20vw, 0, 0)
+  flexbox()
+  padding 5px
+
+.checkbox
+  &--group
+    flexbox()
+    input
+      flex 1
+
+input
+  width 100%
+
+.centered-text
+  display flex
+  align-items center
+  justify-content center
+  text-align center
+
+.flex-container
+  &--horizontal
+    flexbox()
+    width 100%
+  &--vertical
+    flexbox(column)
+  &__cell
+    flex 1
+    &-2
+      flex 2
+    &-3
+      flex 3
+    &-4
+      flex 4
+    &-5
+      flex 5
+    &-6
+      flex 6
+    &-7
+      flex 7
+    &-8
+      flex 8
+    &-9
+      flex 9
+
+.table
+  width 100%
+  flexbox(column)
+  &--striped
+    >^[0]__body
+      >^[0]__row:nth-child(2n+1)
+        background-color #eee
+  &__header, &__body, &__footer
+    border base-border
+    margin 5px 0
+  &__header
+    flex 1
+    div
+      height 100%
+      border-right base-border
+      &:last-child
+        border-right none
+  &__body
+    flex 8
+    border base-border
+    ^[0]__row
+      border-bottom base-border
+  &__row
+    flexbox()
+  &__cell
+    flex 1
+    &-stacked
+      flexbox(column)
+      > div
+        border-bottom base-border
+        &:last-child
+          border-bottom none
+    &-queued
+      flexbox()
+    &-2
+      flex 2
+    &-3
+      flex 3
+  &__footer
+    flex 1
+    padding 5px 0
+
+.center-container
+  display flex
+  height 100%
+  align-items center
+  justify-content center
+
+@font-face
+  font-family SevenSegment
+  font-style bold
+  src url(../fonts/DSEG7Classic-Bold.ttf) format('truetype'),
+      url(../fonts/DSEG7Classic-Bold.woff) format('woff'),
+      url(../fonts/DSEG7Classic-Bold.woff2) format('woff2')
+
+@font-face
+  font-family ForteenSegment
+  font-style bold
+  src url(../fonts/DSEG14Classic-Bold.ttf) format('truetype'),
+      url(../fonts/DSEG14Classic-Bold.woff) format('woff'),
+      url(../fonts/DSEG14Classic-Bold.woff2) format('woff2')
+
+@import "./components/user.styl"
+@import "./components/navs.styl"
+@import "./components/header.styl"
+@import "./components/display.styl"
+@import "./components/programs.styl"
+@import "./components/pid.styl"

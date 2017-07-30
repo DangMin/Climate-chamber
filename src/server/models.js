@@ -22,22 +22,29 @@ const StepModel = new Schema({
   program_id: { type: Schema.Types.ObjectId, required: true },
   temperature: { type: Number, default: 0 },
   humidity: { type: Number, default: 0 },
-  time: { type: String, default: '00:00' },
-  wait: {
-    option: { type: Boolean, default: false },
-    time: { type: String, default: '00:00' }
-  },
+  time: { type: String },
+  wait: { type: String },
   options: { type: Array, default: [false, false, false]}
 }, {
   timestamps: true
 })
 
+const PidModel = new Schema({
+  default: { type: Boolean },
+  type: { type: String, enum: ['temperature', 'humidity'] },
+  proportional: { type: Number },
+  integral: { type: Number },
+  derivative: { type: Number }
+})
+
 const program = Mongoose.model('program', ProgramModel)
 const step = Mongoose.model('step', StepModel)
 const user = Mongoose.model('user', UserModel)
+const pid = Mongoose.model('pid', PidModel)
 
 module.exports = {
   Program: program,
   Step: step,
-  User: user
+  User: user,
+  Pid: pid
 }
