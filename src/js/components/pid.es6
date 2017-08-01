@@ -23,7 +23,7 @@ const c = {
             !isEmpty(P.list.temp) ? P.list.temp.map(item => {
               return m(`.table__row[data-id=${item._id}][data-type=${item.type}]`, {
                 class: P.current[item.type] && item._id === P.current[item.type]._id ? 'pid--active' : '',
-                onclick: P.choosePid.bind(event)
+                onclick: P.current[item.type] && item._id === P.current[item.type]._id ? P.flushPid.bind(event, item.type) : P.choosePid.bind(event)
               }, [
                 m('.table__cell.centered-text', item.default ? m('i.fa.fa-check') : ''),
                 m('.table__cell-2.centered-text', item.proportional),
@@ -59,10 +59,13 @@ const c = {
             m('.button__group', [
               m('button', { onclick: P.activateForm.bind(event, 'temp') }, 'Add'),
               m('button', {
-                onclick: P.setDefault.bind(P.current.temperature ? P.current.temperature._id : null, P.current.temperature ? P.current.temperature.type : null),
+                onclick: P.setDefault.bind(event, 'temperature'),
                 disabled: P.current.temperature ? false : true
               }, 'Set as Default'),
-              m('button', 'Remove')
+              m('button', {
+                onclick: P.removePid.bind(event, 'temperature'),
+                disabled: P.current.temperature ? false : true
+              }, 'Remove')
             ])
           ])
         ])

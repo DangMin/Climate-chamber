@@ -157,6 +157,17 @@ exports.getPids = (request, reply) => {
 }
 exports.addPid = (request, reply) => {
   const payload = request.payload
+  console.log(typeof payload.default)
+
+  if (payload.default === 'true') {
+    console.log('here')
+    Models.Pid.where('_id').ne(payload._id).where({ type: payload.type }).updateMany({ $set: { default: false }}, err =>{
+      if (err) {
+        reply({ success: false, error: err })
+      }
+    })
+  }
+
   Models.Pid.create(payload, err => {
     reply( err ? { success: false, error: err } : { success: true })
   })
@@ -168,5 +179,33 @@ exports.getPidById = (request, reply) => {
     }
 
     reply({ success: true, pid: pid })
+  })
+}
+
+exports.setDefaultPid = (request, reply) => {
+  Models.Pid
+    .where('_id').ne(request.payload._id)
+    .where({ type: request.payload.type }).updateMany({ $set: { default: false } }, err => {
+      if (err) {
+        reply({ success: false, error: err })
+      }
+
+      Models.Pid.where({ _id: request.payload._id, type: request.payload.type }).update({ default: true }, err => {
+        if (err) {
+          reply({ success: false, error: err })
+        }
+
+        reply({ success: true })
+      })
+    })
+}
+
+exports.removePid = (request, reply) => {
+  Models.Pid.remove(request.payload, err => {
+    if (err) {
+      reply({ success: false, error: err })
+    }
+
+    reply({ success: true })
   })
 }

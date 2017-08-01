@@ -15,7 +15,9 @@ exports.endpoints = [
   { method: 'POST', path: '/steps/add', handler: handlers.addStep },
   { method: 'POST', path: '/steps/edit', handler: handlers.editStep },
   { method: 'POST', path: '/pids/add', handler: handlers.addPid },
+  { method: 'POST', path: '/pids/set-default', handler: handlers.setDefaultPid },
   // Delete method
   { method: 'DELETE', path: '/programs/remove', handler: handlers.removeProgram },
   { method: 'DELETE', path: '/steps/remove', handler: handlers.removeStep },
+  { method: 'DELETE', path: '/pids/remove', handler: handlers.removePid },
 ]

@@ -31,7 +31,6 @@ const model = {
       console.log(rslt.pids)
       model.list.temp = filter(rslt.pids, item => item.type == 'temperature')
       model.list.humid = filter(rslt.pids, item => item.type == 'humidity')
-      console.log(model.list.humid)
     })
   },
   addPid: (formId, e) => {
@@ -63,7 +62,29 @@ const model = {
     const target = e.currentTarget
     model.current[type] = null
   },
-  setDefault: () => {}
+  setDefault: (type, e) => {
+    if (model.current[type]) {
+      m.request({ method: 'POST', url: '/pids/set-default', data: { _id: model.current[type]._id, type: model.current[type].type }}).then(rslt => {
+        if (rslt.success) {
+          model.fetch()
+        } else {
+          console.log(rslt.error)
+        }
+      })
+    }
+  },
+  removePid: (type, e) => {
+    e.preventDefault()
+    if (model.current[type]) {
+      m.request({ method: 'DELETE', url: '/pids/remove', data: { _id: model.current[type]._id, type: model.current[type].type } }).then(rslt => {
+        if (rslt.success) {
+          model.fetch()
+        } else {
+          console.log(rslt.error)
+        }
+      })
+    }
+  }
 }
 
 export default model
