@@ -1,5 +1,6 @@
 import m from 'mithril'
-import SegmentDisplay from './segment-display'
+// import SegmentDisplay from './segment-display'
+import D from './models/Display'
 
 const c = {
   view: _ => {
@@ -28,13 +29,13 @@ const c = {
         m('.display__meter', [
           m('.display__header', m('p', 'Thermometer')),
           m('.display__container', [
-            m('p.meter--large', '---.--')
+            m('p.meter--large', D.dryTemperature)
           ])
         ]),
         m('.display__meter', [
           m('.display__header', m('p', 'Humidity meter')),
           m('.display__container', [
-            m('p.meter--large', '---.--')
+            m('p.meter--large', D.humidity)
           ])
         ])
       ]),

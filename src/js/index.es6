@@ -30,11 +30,6 @@ domready(() => {
     'programs-js': Programs
   }
 
-  const thermoDisplay = new SegmentDisplay('thermo-display-js')
-  const humidDisplay = new SegmentDisplay('humid-display-js')
-  thermoDisplay.setValue('---.--')
-  humidDisplay.setValue('---.--')
-
   tabHandler('navs__option')
   window.addEventListener('beforeunload', event => {
     socket.emit('disconnect-socket')
@@ -45,11 +40,5 @@ domready(() => {
     dom && m.mount(dom, components[id])
   })
 
-  socket.on('chamber-info', data => {
-    console.log(data)
-    formatDisplay(data[0])
-    thermoDisplay.setValue(formatDisplay(data[0]))
-    humidDisplay.setValue(formatDisplay(data[2]))
-  })
   socket.on('incoming', data => console.log(data))
 })
