@@ -79,9 +79,12 @@ const c = {
               })
             ])
           ]),
-          m('.table__body', [
+          m('.table__body', { onclick: P.flushPid.bind(event, 'humidity') }, [
             !isEmpty(P.list.humid) ? P.list.humid.map(item => {
-              return m(`.table__row[data-id=${item._id}][data-type=${item.type}]`, [
+              return m(`.table__row[data-id=${item._id}][data-type=${item.type}]`, {
+                class: P.current[item.type] && item._id === P.current[item.type]._id ? 'pid--active' : '',
+                onclick: P.current[item.type] && item._id === P.current[item.type]._id ? P.flushPid.bind(event, item.type) : P.choosePid.bind(event)
+              }, [
                 m('.table__cell.centered-text', item.default ? m('i.fa.fa-check') : ''),
                 m('.table__cell-2.centered-text', item.proportional),
                 m('.table__cell-2.centered-text', item.integral),
@@ -116,10 +119,13 @@ const c = {
             m('.button__group', [
               m('button', { onclick: P.activateForm.bind(event, 'humid')}, 'Add'),
               m('button', {
-                // onclick: P.setDefault.bind(P.current.humidity._id, P.current.humidity.type),
-                // disabled: P.current.humidity ? false : true
+                onclick: P.setDefault.bind(event, 'humidity'),
+                disabled: P.current.humidity ? false : true
               }, 'Set as Default'),
-              m('button', 'Remove')
+              m('button', {
+                onclick: P.removePid.bind(event, 'humidity'),
+                disabled: P.current.humidity ? false : true
+              }, 'Remove')
             ])
           ])
         ])
