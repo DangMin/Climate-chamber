@@ -85,8 +85,8 @@ const Programs = {
       data: data
     }).then(rslt => {
       if (rslt.success) {
-        Programs.fetch()
         Programs.isPrgmForm = false
+        Programs.fetch()
       }
     })
   },
@@ -120,6 +120,7 @@ const Programs = {
     m.request({ method: 'POST', url: '/steps/add', data: data }).then(result => {
       if (result.success) {
         Programs.fetchStep(data.program_id)
+        Programs.resetForm()
       } else {
         console.log(result.error)
       }
@@ -127,10 +128,12 @@ const Programs = {
   },
   fetchStep: id => {
     console.log('fetch step')
-    m.request({ method: 'GET', url: `/steps/getOne/${id}` }).then(result => {
+    m.request({ method: 'GET', url: `/steps/${id}` }).then(result => {
       if (result.success) {
+        console.log(result)
         Programs.stepList = result.steps
         Programs.isStepForm = false
+        m.redraw()
       } else {
         console.log(result.error)
       }

@@ -172,6 +172,7 @@ exports.addPid = (request, reply) => {
     reply( err ? { success: false, error: err } : { success: true })
   })
 }
+
 exports.getPidById = (request, reply) => {
   Models.Pid.findOne({ _id: request.params._id, type: request.params.type }, (err, pid) => {
     if (err) {
