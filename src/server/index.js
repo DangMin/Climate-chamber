@@ -9,6 +9,7 @@ const Dashboard = require('webpack-dashboard/plugin')
 const Socket = require('socket.io')
 const EventEmitter = require('events')
 const ControlCommands = require('./modules/control-commands')
+const Chamber = require('./modules/chamber')
 
 const wpConfig = require('../../webpack.config')
 const Config = require('../config')
@@ -42,13 +43,13 @@ const hotMiddleware = require('webpack-hot-middleware')(compiler, {
 const serialport = new Serialport(Config.defaultPort, Config.serialport(Serialport))
 const emitter = new EventEmitter()
 const cmd = new ControlCommands()
+const chamber = new Chamber()
 const { sendMsg } = require('./helpers')
 
 io.on('connection', socket => {
   console.log(`Socket is open on ${server.info.port}`)
   socket.setMaxListeners(0)
   socket.on('req-connect', _ => {
-    console.log('request open')
     if (!serialport.isOpen()) {
       serialport.open(err => {
         if (err) {
@@ -91,6 +92,7 @@ io.on('connection', socket => {
         switch (data[2]) {
         case 0x41: {
           socket.emit('chamber-info', cmd.read(data))
+          chamber.setValue(cmd.read(data))
           sendMsg(serialport, cmd.createCmd.br())
           break
         }

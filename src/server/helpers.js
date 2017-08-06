@@ -73,6 +73,24 @@ exports.timeFormat = (time) => {
   }
 }
 
+exports.obj2array = obj => {
+  let rslt = []
+  for (let prop in obj) {
+    if (obj.hasOwnProperty(prop)) {
+      rslt.push(obj[prop])
+    }
+  }
+  return rslt
+}
+
+exports.bit2value = bits => {
+  let val = 0
+  bits.forEach((bit, index) => {
+    val += bit == 1 ? Math.pow(2,bits.length-index-1) : 0
+  })
+  return val
+}
+
 const formatTwoDigit = number => {
   let num = parseInt(number)
   if (num >= 10) {

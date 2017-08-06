@@ -1,4 +1,4 @@
-const { checkSum, toBitsArray, fillUnicodeValue } = require('../helpers')
+const { checkSum, toBitsArray, fillUnicodeValue, obj2array, bit2value } = require('../helpers')
 
 const SIGNAL = {
   stx: 0x02,
@@ -21,10 +21,18 @@ const BR_MSG = [ SIGNAL.br.b, SIGNAL.ext, SIGNAL.br.r ]
 function ControlCommands () {
   this.ready = false
 
-  this.htBlock = 0 // Equal to 0
-  this.plBlock = 0
-  this.cvBlock = 0
-  this.vfBlock = 0
+  this.htBlock = {
+    h1: 0, h2: 0, t2: 0, t1: 0
+  } // Equal to 0
+  this.plBlock = {
+    p3: 0, p2: 0, p1: 0, lnv: 0
+  }
+  this.cvBlock = {
+    e0: 0, e1: 0, c1: 0, v4: 0
+  }
+  this.vfBlock = {
+    v3: 0, v2c2: 0, v1: 0, fn1: 0
+  }
   this.humidPR1 = 0
   this.humidPR2 = 0
   this.tempPR1 = 0
@@ -38,7 +46,7 @@ function ControlCommands () {
     br: () => Buffer.from(HEADER.concat(BR_MSG, FOOTER)),
     o: () => {
       let header = HEADER.concat(SIGNAL.capO, Array(12).fill(SIGNAL.zero))
-      let body = [].concat(fillUnicodeValue(this.htBlock, this.plBlock, this.cvBlock, this.vfBlock, this.humidPR1, this.humidPR2, this.tempPR1, this.tempPR2), SIGNAL.ext)
+      let body = [].concat(fillUnicodeValue(bit2value(obj2array(this.htBlock)), bit2value(obj2array(this.plBlock)), bit2value(obj2array(this.cvBlock)), bit2value(obj2array(this.vfBlock)), this.humidPR1, this.humidPR2, this.tempPR1, this.tempPR2), SIGNAL.ext)
       let msg = header.concat(body)
       let cks = checkSum(msg)
       return Buffer.from(msg.concat(cks, FOOTER))
