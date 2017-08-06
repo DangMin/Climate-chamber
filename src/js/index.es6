@@ -6,11 +6,7 @@ import User from 'components/user'
 import Header from 'components/header'
 import Display from 'components/display'
 import Navigator from 'components/navigator'
-import PID from 'components/pid'
-import Graph from 'components/graph'
-import About from 'components/about'
-
-import Programs from 'components/programs'
+import Indicator from 'components/indicator'
 
 import { tabHandler, formatDisplay } from 'global'
 
@@ -22,6 +18,7 @@ domready(() => {
     'js-navs': Navigator,
     'js-header': Header,
     'js-display': Display,
+    'js-indicator': Indicator,
   }
 
   tabHandler('navs__option')

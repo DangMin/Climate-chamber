@@ -91,7 +91,6 @@ io.on('connection', socket => {
   /* Block: Controller */
   socket.on('req-startProgram', params => {
     controller.init(params.program, params.steps)
-    console.log(controller.currentStep)
   })
   /* Endblock */
 

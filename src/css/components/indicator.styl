@@ -1,0 +1,29 @@
+.indicator
+  locate(absolute, 20vh, 25vw, null, null)
+  width 50vw
+  min-height 15vh
+  background-color LightGray
+  border-radius 10px
+  z-index 10
+  div
+    padding 0 10px
+  &__header
+    background-color black
+    color white
+    border-radius 10px 10px 0 0
+    flexbox()
+    p, i
+      margin 5px 0
+      align-self center
+    i
+      float right
+  &__title
+    flex 9
+    flexbox()
+  &__close
+    flex 1
+  &__body
+    min-height 15vh
+
+.overlay
+  z-index 2

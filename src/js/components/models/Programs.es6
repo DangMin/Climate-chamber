@@ -1,6 +1,8 @@
 import m from 'mithril'
 import io from 'socket.io-client'
 import { serialize } from '../../global'
+import Indicator from '../indicator'
+import * as Error from '../indicators/errorIndicator'
 
 const socket = io('http://localhost:8080')
 const Programs = {
@@ -19,7 +21,7 @@ const Programs = {
       url: `/programs/${id}`
     }).then(result => {
       if (!result.success) {
-        console.log(result.error)
+        Indicator.setTitle('Error').setBody(Error.body(result.error)).show()
       } else {
         Programs.currentProgram = result.program
         Programs.stepList = result.steps
@@ -32,8 +34,10 @@ const Programs = {
       method: 'GET',
       url: '/programs',
     }).then(result => {
-      Programs.list = result
-      console.log(Programs.isStepForm)
+      console.log(result)
+      if (result.success) {
+        Programs.list = result.programs
+      }
     })
   },
   addFormSignal: (_id, e) => {
@@ -51,7 +55,7 @@ const Programs = {
       data: { _id: Programs.currentProgram._id }
     }).then(result => {
       if (result.error) {
-        console.log(result.error)
+        Indicator.setTitle('Error').setBody(Error.body(result.error)).show()
       } else {
         setTimeout(Programs.fetch, 1000)
       }
@@ -72,7 +76,7 @@ const Programs = {
       data: data
     }).then(result => {
       if (result.error) {
-        console.log(result.error)
+        Indicator.setTitle('Error').setBody(Error.body(result.error)).show()
       }
       Programs.fetch()
       Programs.isPrgmForm = false
@@ -90,6 +94,8 @@ const Programs = {
       if (rslt.success) {
         Programs.isPrgmForm = false
         Programs.fetch()
+      } else {
+        Indicator.setTitle('Error').setBody(rslt.error).show()
       }
     })
   },
@@ -105,7 +111,7 @@ const Programs = {
         if (result.success) {
           Programs.currentStep = result.step
         } else {
-          console.log(result.error)
+          Indicator.setTitle('Error').setBody(Error.body(result.error)).show()
         }
       })
     }
@@ -123,7 +129,7 @@ const Programs = {
         Programs.fetchStep(data.program_id)
         Programs.resetForm()
       } else {
-        console.log(result.error)
+        Indicator.setTitle('Error').setBody(Error.body(result.error)).show()
       }
     })
   },
@@ -136,7 +142,7 @@ const Programs = {
         Programs.isStepForm = false
         m.redraw()
       } else {
-        console.log(result.error)
+        Indicator.setTitle('Error').setBody(Error.body(result.error)).show()
       }
     })
   },
@@ -145,7 +151,7 @@ const Programs = {
       if (result.success) {
         Programs.fetchStep(Programs.currentProgram._id)
       } else {
-        console.log(result.error)
+        Indicator.setTitle('Error').setBody(Error.body(result.error)).show()
       }
     })
   },

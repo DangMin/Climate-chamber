@@ -15,7 +15,7 @@ exports.getPrograms = (request, reply) => {
     if (err) {
       reply(Boom.badImplementation(err))
     }
-    reply(programs)
+    reply({ success: true, programs: programs})
   })
 }
 exports.addProgram = (request, reply) => {
