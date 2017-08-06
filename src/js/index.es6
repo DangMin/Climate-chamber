@@ -10,9 +10,6 @@ import PID from 'components/pid'
 import Graph from 'components/graph'
 import About from 'components/about'
 
-import ProgramTable from 'components/programTable'
-import SerialState from 'components/serialState'
-import SegmentDisplay from 'components/segment-display'
 import Programs from 'components/programs'
 
 import { tabHandler, formatDisplay } from 'global'
@@ -25,9 +22,6 @@ domready(() => {
     'js-navs': Navigator,
     'js-header': Header,
     'js-display': Display,
-    'program-table-js': ProgramTable,
-    'serialport-state-js': SerialState,
-    'programs-js': Programs
   }
 
   tabHandler('navs__option')
