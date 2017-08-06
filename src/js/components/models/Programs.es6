@@ -1,13 +1,18 @@
 import m from 'mithril'
+import io from 'socket.io-client'
 import { serialize } from '../../global'
 
+const socket = io('http://localhost:8080')
 const Programs = {
-  list: [],
-  stepList: [],
-  isPrgmForm: false,
-  currentProgram: null,
-  formType: null,
+  list: [],                 /* list of programs */
+  stepList: [],             /* list of steps - fetched with program id */
+  isPrgmForm: false,        /* is form used */
+  currentProgram: null,     /* current chosen program */
 
+  isStepForm: false,        /* is form for adding/editting step used */
+  currentStep: {},          /* current chosen step */
+
+  /* Program list related function */
   chooseProgram: (id, e) => {
     m.request({
       method: 'GET',
@@ -30,8 +35,6 @@ const Programs = {
       Programs.list = result
       console.log(Programs.isStepForm)
     })
-  },
-  fetchSteps: (prgm_id) => {
   },
   addFormSignal: (_id, e) => {
     if (!_id) {
@@ -91,9 +94,7 @@ const Programs = {
     })
   },
 
-  isStepForm: false,
-  stepFormType: null,
-  currentStep: {},
+  /* Step list related function */
   addStepForm: (_id, e) => {
     e.preventDefault()
     if (!Programs.isStepForm) {
@@ -152,6 +153,13 @@ const Programs = {
 
   },
 
+  /* Request control */
+  startProgram: (e) => {
+    e.preventDefault()
+    socket.emit('req-startProgram', { program: Programs.currentProgram, steps: Programs.stepList } )
+  },
+
+  /* helpers */
   resetForm: _ => {
     Programs.isStepForm = false
     Programs.isPrgmForm = false

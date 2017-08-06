@@ -10,6 +10,7 @@ const Socket = require('socket.io')
 const EventEmitter = require('events')
 const ControlCommands = require('./modules/control-commands')
 const Chamber = require('./modules/chamber')
+const Controller = require('./modules/controller')
 
 const wpConfig = require('../../webpack.config')
 const Config = require('../config')
@@ -44,6 +45,7 @@ const serialport = new Serialport(Config.defaultPort, Config.serialport(Serialpo
 const emitter = new EventEmitter()
 const cmd = new ControlCommands()
 const chamber = new Chamber()
+const controller = new Controller()
 const { sendMsg } = require('./helpers')
 
 io.on('connection', socket => {
@@ -83,6 +85,13 @@ io.on('connection', socket => {
         console.log('serialport closed')
       })
     }
+  })
+  /* Endblock */
+
+  /* Block: Controller */
+  socket.on('req-startProgram', params => {
+    controller.init(params.program, params.steps)
+    console.log(controller.currentStep)
   })
   /* Endblock */
 

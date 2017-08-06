@@ -36,15 +36,24 @@ const c = {
               ])
             ])  : ''
         ]),
-        m('.programs__handles.button__group', [
-          m('button.programs__handles--button',
-            { onclick: P.addFormSignal.bind(event, null), disabled: !P.isPrgmForm ? false : true },
-            m('i.fa.fa-plus-circle')),
-          m('button.programs__handles--button', m('i.fa.fa-download')),
-          m('button.programs__handles--button',
-            { onclick: P.addFormSignal.bind(event, P.currentProgram ? P.currentProgram._id : null), disabled: !P.currentProgram ? true : false }, m('i.fa.fa-edit')),
-          m('button.programs__handles--button',
-            { onclick: P.rmPrgm.bind(event, P.currentProgram ? P.currentProgram._id : null), disabled: !P.currentProgram ? true : false }, m('i.fa.fa-minus-circle'))
+        m('.programs__handles', [
+          m('.button__group' ,[
+            m('button.programs__handles--button',
+              { onclick: P.addFormSignal.bind(event, null), disabled: !P.isPrgmForm ? false : true },
+              m('i.fa.fa-plus-circle')),
+            m('button.programs__handles--button', m('i.fa.fa-download')),
+            m('button.programs__handles--button',
+              { onclick: P.addFormSignal.bind(event, P.currentProgram ? P.currentProgram._id : null), disabled: !P.currentProgram ? true : false }, m('i.fa.fa-edit')),
+            m('button.programs__handles--button',
+              { onclick: P.rmPrgm.bind(event, P.currentProgram ? P.currentProgram._id : null), disabled: !P.currentProgram ? true : false }, m('i.fa.fa-minus-circle'))
+          ]),
+          m('.button__group', [
+            m('button.programs__handles--button', {
+              onclick: P.startProgram.bind(event),
+              disabled: P.currentProgram ? false : true
+            }, 'Start'),
+            m('button.programs__handles--button', 'Stop')
+          ])
         ])
       ]),
       m('.steps__list.table', [
