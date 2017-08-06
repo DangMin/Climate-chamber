@@ -49,6 +49,7 @@ const { sendMsg } = require('./helpers')
 io.on('connection', socket => {
   console.log(`Socket is open on ${server.info.port}`)
   socket.setMaxListeners(0)
+  /* Block: Open - close serial connection */
   socket.on('req-connect', _ => {
     if (!serialport.isOpen()) {
       serialport.open(err => {
@@ -83,7 +84,9 @@ io.on('connection', socket => {
       })
     }
   })
+  /* Endblock */
 
+  /* Block: Read from/ reply to serial connection */
   serialport.on('data', data => {
     if (cmd.ready && serialport.isOpen()) {
       if (data[0] == 0x06) {
@@ -109,6 +112,7 @@ io.on('connection', socket => {
       }
     }
   })
+  /* Endblock */
 })
 
 emitter.on('get-chamber-info', _ => {

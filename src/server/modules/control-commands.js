@@ -86,6 +86,9 @@ function ControlCommands () {
     let bits = Array(4).fill(0)
     this['humidPR' + humidID] = bits.concat(value)
   }
+  this.setParams = (block, subblock, value) => {
+    this[block][subblock] = value
+  }
 
   this.setReady = () => {
     if (!this.ready) {
