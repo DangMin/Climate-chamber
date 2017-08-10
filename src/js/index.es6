@@ -7,6 +7,7 @@ import Header from 'components/header'
 import Display from 'components/display'
 import Navigator from 'components/navigator'
 import Indicator from 'components/indicator'
+import * as Error from 'components/indicators/errorIndicator'
 
 import { tabHandler, formatDisplay } from 'global'
 
@@ -32,4 +33,9 @@ domready(() => {
   })
 
   socket.on('incoming', data => console.log(data))
+  socket.on('err', data => {
+    Indicator.setTitle(Error.title).setBody(Error.body(data.msg)).show()
+  })
 })
+
+export { socket }

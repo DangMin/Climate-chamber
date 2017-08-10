@@ -164,6 +164,10 @@ const Programs = {
     e.preventDefault()
     socket.emit('req-startProgram', { program: Programs.currentProgram, steps: Programs.stepList } )
   },
+  stopProgram: e => {
+    e.preventDefault()
+    socket.emit('req-stopProgram', { program: Programs.currentProgram })
+  },
 
   /* helpers */
   resetForm: _ => {

@@ -7,7 +7,7 @@ const Webpack = require('webpack')
 const Dashboard = require('webpack-dashboard/plugin')
 
 const Socket = require('socket.io')
-const EventEmitter = require('events')
+// const EventEmitter = require('events')
 const ControlCommands = require('./modules/control-commands')
 const Chamber = require('./modules/chamber')
 const Controller = require('./modules/controller')
@@ -23,6 +23,8 @@ server.connection(Config.server)
 
 const io = Socket(server.listener)
 const Serialport = require('serialport')
+
+module.exports.listener = server.listener
 
 const compiler = Webpack(wpConfig)
 compiler.apply(new Dashboard())
@@ -42,7 +44,7 @@ const hotMiddleware = require('webpack-hot-middleware')(compiler, {
 })
 
 const serialport = new Serialport(Config.defaultPort, Config.serialport(Serialport))
-const emitter = new EventEmitter()
+const emitter = require('./emitter')
 const cmd = new ControlCommands()
 const chamber = new Chamber()
 const controller = new Controller()
@@ -89,8 +91,15 @@ io.on('connection', socket => {
   /* Endblock */
 
   /* Block: Controller */
+  socket.on('req-display', _ => {
+    console.log('request display')
+    controller.fetch()
+  })
   socket.on('req-startProgram', params => {
     controller.init(params.program, params.steps)
+  })
+  socket.on('req-stopProgram', params => {
+    controller.reset(params.program)
   })
   /* Endblock */
 
@@ -121,6 +130,10 @@ io.on('connection', socket => {
     }
   })
   /* Endblock */
+
+  emitter.on('control', data => {
+    socket.emit(data.signal, data.data)
+  })
 })
 
 emitter.on('get-chamber-info', _ => {

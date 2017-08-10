@@ -3,25 +3,28 @@ import m from 'mithril'
 import D from './models/Display'
 
 const c = {
+  oninit: _ => {
+    D.fetch()
+  },
   view: _ => {
     return [
       m('.display__program', [
         m('.display__table', [
           m('.display__tr', [
             m('.display__th', m('p', 'Program name:')),
-            m('.display__td', m('p', 'Misterious program'))
+            m('.display__td', m('p', D.name))
           ]),
           m('.display__tr', [
             m('.display__th', m('p', 'Cycles:')),
-            m('.display__td', m('p', '5'))
+            m('.display__td', m('p', D.cycle))
           ]),
           m('.display__tr', [
             m('.display__th', m('p', 'Step:')),
-            m('.display__td', m('p', '4'))
+            m('.display__td', m('p', D.step))
           ]),
           m('.display__tr', [
             m('.display__th', m('p', 'Time:')),
-            m('.display__td', m('p', '00:00'))
+            m('.display__td', m('p', D.timeLeft))
           ])
         ])
       ]),

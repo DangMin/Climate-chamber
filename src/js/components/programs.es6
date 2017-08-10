@@ -1,5 +1,6 @@
 import m from 'mithril'
 import P from './models/Programs'
+import Pid from './models/Pids'
 import { formatDate } from '../global'
 
 const c = {
@@ -52,7 +53,10 @@ const c = {
               onclick: P.startProgram.bind(event),
               disabled: P.currentProgram ? false : true
             }, 'Start'),
-            m('button.programs__handles--button', 'Stop')
+            m('button.programs__handles--button', {
+              onclick: P.stopProgram.bind(event),
+              disabled: P.currentProgram ? false : true
+            },'Stop')
           ])
         ])
       ]),

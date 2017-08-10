@@ -62,10 +62,24 @@ function ControlCommands () {
     return info.join('').split(' ')
   }
 
-  this.switchValves = (value) => {}
-  this.switchHeaters = (value) => {}
-  this.switchCoolers = (value) => {}
-  this.switchHumidifier = (value) => {}
+  this.switchValves = (value) => {
+    this.vfBlock.v1 = value
+    this.vfBlock.v3 = value
+    this.vfBlock.v4 = value
+    this.vfBlock.v2c2 = value
+  }
+  this.switchHeaters = (value) => {
+    this.htBlock.t1 = value
+    this.htBlock.t2 = value
+  }
+  this.switchCoolers = (value) => {
+    this.cvBlock.c1 = value
+    this.vfBlock.v2c2 = value
+  }
+  this.switchHumidifier = (value) => {
+    this.htBlock.h1 = value
+    this.htBlock.h2 = value
+  }
 
   this.onTempPwChanged = (value) => {
     let bits = toBitsArray(value)
@@ -90,6 +104,14 @@ function ControlCommands () {
     this[block][subblock] = value
   }
 
+  this.onParamsChanged = (main, sub, value) => {
+    if (!sub) {
+      this[main] = value
+    } else {
+      this[main][sub] = value
+    }
+  }
+
   this.setReady = () => {
     if (!this.ready) {
       this.ready = true
@@ -99,6 +121,16 @@ function ControlCommands () {
     if (this.ready) {
       this.ready = false
     }
+  }
+
+  this.resetParams = _ => {
+    this.idle = true
+    this.humidityPower = 0
+    this.temperaturePower = 0
+    this.switchCoolers(false)
+    this.switchHeaters(false)
+    this.switchHumidifier(false)
+    this.switchValves(false)
   }
 }
 

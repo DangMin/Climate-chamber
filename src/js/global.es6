@@ -54,4 +54,16 @@ const formatDisplay = value => {
   return str.length == 6 ? str : str+'0'
 }
 
-export { tabHandler, serialize, formatDate, formatDisplay }
+const setDigit = (value, digit = 2) => {
+  if (value.toString().length < digit) {
+    let str = ''
+    for (let i = 0; i < digit-value.toString().length; ++i) {
+      str+= '0'
+    }
+    str += value.toString()
+    return str
+  }
+  return value.toString()
+}
+
+export { tabHandler, serialize, formatDate, formatDisplay, setDigit }
