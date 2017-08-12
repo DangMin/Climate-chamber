@@ -29,7 +29,6 @@ function Controller() {
 
   this.init = (program, steps, tempPid, humidPid) => {
     if (isEmpty(this.program)) {
-      console.log('assign')
       this.program = program
       if (!isEmpty(steps)) {
         this.steps = steps
@@ -41,7 +40,7 @@ function Controller() {
         this.reset()
       }
     } else {
-      emitter.emit('control', { signal: 'err', data: { msg: 'Another program is running.' } })
+      emitter.emit('control', { signal: 'err', data: { msg: this.program && this.program._id == program._id ? 'This program is already started' : 'Another program is running.' } })
     }
   }
   this.fetch = _ => {

@@ -2,7 +2,7 @@ const Joi = require('joi')
 const Boom = require('boom')
 const Models = require('./models')
 const Mongoose = require('mongoose')
-const { isEmpty } = require('lodash')
+const { isEmpty, keyBy } = require('lodash')
 const { timeFormat } = require('./helpers')
 
 const ObjectId = Mongoose.Types.ObjectId
@@ -201,6 +201,16 @@ exports.setDefaultPid = (request, reply) => {
     })
 }
 
+exports.unsetDefaultPid = (request, reply) => {
+  Models.Pid.update(request.payload, { $set: { default: false } }, err => {
+    if (err) {
+      reply({ success: false, error: err })
+    }
+
+    reply({ success: true })
+  })
+}
+
 exports.removePid = (request, reply) => {
   Models.Pid.remove(request.payload, err => {
     if (err) {
@@ -208,5 +218,17 @@ exports.removePid = (request, reply) => {
     }
 
     reply({ success: true })
+  })
+}
+
+exports.getDefaultPids = (request, reply) => {
+  Models.Pid.find({ default: true }).select('proportional integral derivative type').exec((err, pids) => {
+    if (err) {
+      reply({ success: false, error: err })
+    }
+
+    let rslt = keyBy(pids, 'type')
+    rslt.success = true
+    reply(rslt)
   })
 }

@@ -1,5 +1,5 @@
 import m from 'mithril'
-import { filter } from 'lodash'
+import { filter, find } from 'lodash'
 import { serialize } from '../../global'
 
 const model = {
@@ -14,6 +14,10 @@ const model = {
   current: {
     temperature: null,
     humidity: null
+  },
+  default: {
+    temperature: null,
+    humidity: null,
   },
 
   activateForm: (type, event) => {
@@ -31,6 +35,9 @@ const model = {
       console.log(rslt.pids)
       model.list.temp = filter(rslt.pids, item => item.type == 'temperature')
       model.list.humid = filter(rslt.pids, item => item.type == 'humidity')
+      model.default.temperature = find(rslt.pids, { 'type': 'temperature', 'default': true })
+      model.default.humidity = find(rslt.pids, { 'type': 'humidity', 'default': true })
+      console.log(model.default)
     })
   },
   addPid: (formId, e) => {
@@ -84,6 +91,17 @@ const model = {
         }
       })
     }
+  },
+
+  unsetDefault: (type, e) => {
+    e.preventDefault()
+    m.request({ method: 'POST', url: '/pids/unset-default', data: { _id: model.current[type]._id, type: model.current[type].type } }).then(rslt => {
+      if(rslt.success) {
+        model.fetch()
+      } else {
+        Indicator.setTitle(Error.title()).setBody(Error.body(rslt.error)).show()
+      }
+    })
   }
 }
 

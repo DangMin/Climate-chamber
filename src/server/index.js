@@ -96,7 +96,7 @@ io.on('connection', socket => {
     controller.fetch()
   })
   socket.on('req-startProgram', params => {
-    controller.init(params.program, params.steps)
+    controller.init(params.program, params.steps, params.pids)
   })
   socket.on('req-stopProgram', params => {
     controller.reset(params.program)

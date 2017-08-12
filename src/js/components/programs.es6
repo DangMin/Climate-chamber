@@ -1,6 +1,5 @@
 import m from 'mithril'
 import P from './models/Programs'
-import Pid from './models/Pids'
 import { formatDate } from '../global'
 
 const c = {

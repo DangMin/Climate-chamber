@@ -5,7 +5,6 @@ import { isEmpty } from 'lodash'
 const headers = ['', 'Proportional', 'Integral', 'Derivative']
 const c = {
   oninit: vnode => {
-    console.log('init')
     P.fetch()
   },
   view: _ => {

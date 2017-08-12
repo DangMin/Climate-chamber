@@ -9,6 +9,7 @@ exports.endpoints = [
   { method: 'GET', path: '/steps/{programId}', handler: handlers.getSteps },
   { method: 'GET', path: '/pids', handler: handlers.getPids },
   { method: 'GET', path: '/pids/{_id}-{type}', handler: handlers.getPidById },
+  { method: 'GET', path: '/pids/default', handler: handlers.getDefaultPids },
   // Post method
   { method: 'POST', path: '/programs/add', handler: handlers.addProgram },
   { method: 'POST', path: '/programs/edit', handler: handlers.editProgram },

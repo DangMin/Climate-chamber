@@ -162,7 +162,24 @@ const Programs = {
   /* Request control */
   startProgram: (e) => {
     e.preventDefault()
-    socket.emit('req-startProgram', { program: Programs.currentProgram, steps: Programs.stepList } )
+    m.request({ method: 'GET', url: '/pids/default' }).then(rslt => {
+      if (rslt.success) {
+        if (!rslt.temperature || !rslt.humidity) {
+          Indicator.setTitle(Error.title()).setBody(Error.body('Either temperature or humidity pid is set.')).show()
+        } else {
+          socket.emit('req-startProgram', {
+            program: Programs.currentProgram,
+            steps: Programs.stepList,
+            pids: {
+              temperature: rslt.temperature,
+              humidity: rslt.humidity
+            }
+          })
+        }
+      } else {
+        Indicator.setTitle(Error.title()).setBody(Error.body(rslt.error)).show()
+      }
+    })
   },
   stopProgram: e => {
     e.preventDefault()
