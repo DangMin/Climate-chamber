@@ -7,7 +7,8 @@ const Webpack = require('webpack')
 const Dashboard = require('webpack-dashboard/plugin')
 
 const Socket = require('socket.io')
-// const EventEmitter = require('events')
+const Serialport = require('serialport')
+
 const ControlCommands = require('./modules/control-commands')
 const Chamber = require('./modules/chamber')
 const Controller = require('./modules/controller')
@@ -17,12 +18,12 @@ const Config = require('../config')
 
 const { db } = require('./db')
 const { endpoints } = require('./routes')
+const { sendMsg } = require('./helpers')
 
 const server = new Server()
 server.connection(Config.server)
 
 const io = Socket(server.listener)
-const Serialport = require('serialport')
 
 module.exports.listener = server.listener
 
@@ -48,7 +49,9 @@ const emitter = require('./emitter')
 const cmd = new ControlCommands()
 const chamber = new Chamber()
 const controller = new Controller()
-const { sendMsg } = require('./helpers')
+
+let connectionCounter = 0
+let connectionTimeout = null
 
 io.on('connection', socket => {
   console.log(`Socket is open on ${server.info.port}`)
@@ -58,10 +61,20 @@ io.on('connection', socket => {
     if (!serialport.isOpen()) {
       serialport.open(err => {
         if (err) {
-          socket.emit('serial-status', { err: true, message: 'Cannot open serialport', status: serialport.isOpen() })
+          socket.emit('serial-status', { error: true, message: 'Cannot open serialport', status: serialport.isOpen() })
         } else {
-          socket.emit('serial-status', { err: false, status: serialport.isOpen() })
+          socket.emit('serial-status', { error: false, status: serialport.isOpen() })
           const interval_1 = setInterval(_ => emitter.emit('get-chamber-info'), 1000)
+          connectionTimeout = setInterval( _ => {
+            console.log(`counter: ${connectionCounter}`)
+            if (connectionCounter >= 5) {
+              emitter.emit('terminate-serial')
+              connectionCounter = 0
+              clearInterval(connectionTimeout)
+            } else {
+              ++connectionCounter
+            }
+          }, 1000)
         }
       })
     }
@@ -70,11 +83,14 @@ io.on('connection', socket => {
     if (serialport.isOpen()) {
       serialport.close(err => {
         if (err) {
-          socket.emit('serial-status', { err: true, message: 'Cannot close serialport', status: serialport.isOpen() })
-        }
-        socket.emit('serial-status', { err: false, status: serialport.isOpen() })
+          socket.emit('serial-status', { error: true, message: 'Cannot close serialport', status: serialport.isOpen() })
+        } else {
 
+          socket.emit('serial-status', { error: false, status: serialport.isOpen() })
+        }
       })
+    } else {
+      socket.emit('serial-status', { error: true, message: 'Serialport is already closed.', status: serialport.isOpen() })
     }
   })
   socket.on('disconnect-socket', _ => {
@@ -105,6 +121,7 @@ io.on('connection', socket => {
 
   /* Block: Read from/ reply to serial connection */
   serialport.on('data', data => {
+    connectionCounter = 0
     if (cmd.ready && serialport.isOpen()) {
       if (data[0] == 0x06) {
         sendMsg(serialport, cmd.createCmd.iy())
@@ -134,8 +151,21 @@ io.on('connection', socket => {
   emitter.on('control', data => {
     socket.emit(data.signal, data.data)
   })
-})
 
+  emitter.on('terminate-serial', _ => {
+    console.log('prepare terminate')
+    if (serialport.isOpen()) {
+      serialport.close(err => {
+        if (err) {
+          socket.emit('connection-timeout', { error: true, status: serialport.isOpen(), message: 'Connection timeout but cannot close serial connection.'})
+        } else {
+          console.log('terminating')
+          socket.emit('connection-timeout', { error: false, status: serialport.isOpen(), message: 'Connection timeout' })
+        }
+      })
+    }
+  })
+})
 emitter.on('get-chamber-info', _ => {
   cmd.setReady()
   sendMsg(serialport, cmd.createCmd.br())

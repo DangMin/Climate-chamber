@@ -1,5 +1,7 @@
 import m from 'mithril'
 import io from 'socket.io-client'
+import Indicator from '../indicator'
+import Error from '../indicators/errorIndicator'
 
 const socket = io('http://localhost:8080')
 
@@ -17,16 +19,28 @@ let SerialState = {
   },
   update: (() => {
     socket.on('serial-status', data => {
-      console.log(data)
-      if (data.err) {
-        console.log(`Error: ${data.message}`)
+      if (data.error) {
+        Indicator.setTitle(Error.title).setBody(Error.body(data.message)).show()
+        SerialState.state = data.status
+        m.redraw()
       } else {
-        console.log(`Message: ${data.message}`)
         SerialState.state = data.status
         m.redraw()
       }
     })
   })()
 }
+
+socket.on('connection-timeout', data => {
+  console.log(data)
+  if (data.error) {
+    Indicator.setTitle(Error.title).setBody(Error.body(data.message)).show()
+    SerialState.state = data.status
+    m.redraw()
+  } else {
+    SerialState.state = data.status
+    m.redraw()
+  }
+})
 
 export default SerialState
