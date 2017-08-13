@@ -36,17 +36,17 @@ function Controller() {
         this.programStart = new Date()
         this.setTimeout()
       } else {
-        emitter.emit('control', { signal: 'err', data: { msg: 'No step has been set.' } })
+        emitter.emit('control-error', { signal: 'err', data: { msg: 'No step has been set.' } })
         this.reset()
       }
     } else {
-      emitter.emit('control', { signal: 'err', data: { msg: this.program && this.program._id == program._id ? 'This program is already started' : 'Another program is running.' } })
+      emitter.emit('control-error', { signal: 'err', data: { msg: this.program && this.program._id == program._id ? 'This program is already started' : 'Another program is running.' } })
     }
   }
   this.fetch = _ => {
     if (!isEmpty(this.program)) {
       console.log(this.currentStep)
-      emitter.emit('control', { signal: 'display', data: {
+      emitter.emit('control-error', { signal: 'display', data: {
         timeleft: this.timeLeft,
         program: {
           name: this.program.name,
@@ -54,7 +54,7 @@ function Controller() {
           currentStep: this.currentStep.order
         }}})
     } else {
-      emitter.emit('control', { signal: 'display', data: {}})
+      emitter.emit('control-error', { signal: 'display', data: {}})
     }
   }
 
@@ -78,7 +78,7 @@ function Controller() {
         this.timeLeft = (this.timeEnd.getTime() - new Date().getTime())/1000
         // console.log(this.timeLeft)
         // console.log(`Time left: ${parseInt(this.timeLeft/3600)}:${parseInt(this.timeLeft/60)}:${parseInt(this.timeLeft%60)}`)
-        emitter.emit('control', { signal: 'display', data: {
+        emitter.emit('control-error', { signal: 'display', data: {
           timeleft: this.timeLeft,
           program: {
             name: this.program.name,
@@ -110,7 +110,7 @@ function Controller() {
       const total = this.programEnd.getTime() - this.programStart.getTime()
       console.log(`${parseInt(total/(60*60*1000))}:${parseInt(total/(60*1000))}:${parseInt(total%1000)}`)
       this.reset()
-      emitter.emit('control', { signal: 'reset-display' })
+      emitter.emit('control-error', { signal: 'reset-display' })
     }
   }
 

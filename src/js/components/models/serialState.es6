@@ -20,7 +20,7 @@ let SerialState = {
   update: (() => {
     socket.on('serial-status', data => {
       if (data.error) {
-        Indicator.setTitle(Error.title).setBody(Error.body(data.message)).show()
+        // Indicator.setTitle(Error.title).setBody(Error.body(data.message)).show()
         SerialState.state = data.status
         m.redraw()
       } else {
@@ -34,7 +34,7 @@ let SerialState = {
 socket.on('connection-timeout', data => {
   console.log(data)
   if (data.error) {
-    Indicator.setTitle(Error.title).setBody(Error.body(data.message)).show()
+    //Indicator.setTitle(Error.title).setBody(Error.body(data.message)).show()
     SerialState.state = data.status
     m.redraw()
   } else {
