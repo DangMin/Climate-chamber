@@ -9,6 +9,8 @@ function Controller() {
   this.program = {}
   this.steps = []
 
+  this.running = false
+
   this.currentIndex = 0
   this.currentCycle = 1
   this.currentStep = {}
@@ -27,14 +29,16 @@ function Controller() {
   this.temperaturePid = null
   this.humidityPid = null
 
-  this.init = (program, steps, tempPid, humidPid) => {
+  this.init = (program, steps, pids) => {
     if (isEmpty(this.program)) {
       this.program = program
       if (!isEmpty(steps)) {
         this.steps = steps
         this.currentStep = isEmpty(steps) ? {} : this.steps[this.currentIndex]
         this.programStart = new Date()
-        this.setTimeout()
+        this.temperaturePid = new Pid(pids.temperature)
+        this.humidityPid = new Pid(pids.humidity)
+        this.setup()
       } else {
         emitter.emit('control-error', { signal: 'err', data: { msg: 'No step has been set.' } })
         this.reset()
@@ -43,6 +47,7 @@ function Controller() {
       emitter.emit('control-error', { signal: 'err', data: { msg: this.program && this.program._id == program._id ? 'This program is already started' : 'Another program is running.' } })
     }
   }
+
   this.fetch = _ => {
     if (!isEmpty(this.program)) {
       console.log(this.currentStep)
@@ -58,11 +63,15 @@ function Controller() {
     }
   }
 
-  this.setTimeout = _ => {
+  this.setup = _ => {
     let time = this.currentStep.time.split(':')
     let ms = parseInt(time[0])*hour + parseInt(time[1])*minute
     const timeStart = new Date()
+    this.running = true
     this.timeEnd = new Date(timeStart.getTime() + ms)
+    this.temperaturePid.targetValue = this.currentStep.temperature
+    this.humidityPid.targetValue = this.currentStep.humidity
+    console.log(`temperature target value: ${this.temperaturePid.targetValue}`)
     //this.currentTimeout = setTimeout(this.switchStep, ms)
     this.setInterval()
     // this.currentInterval = setInterval(this.control, 1000)
@@ -95,20 +104,18 @@ function Controller() {
       ++this.currentIndex
       console.log(`next step: ${this.currentIndex}`)
       this.currentStep = this.steps[this.currentIndex]
-      this.setTimeout()
+      this.setup()
     } else if (this.currentCycle < this.program.cycles) {
       ++this.currentCycle
       console.log(`next cycle: ${this.currentCycle}`)
       this.currentIndex = 0
       this.currentStep = this.steps[this.currentIndex]
-      this.setTimeout()
+      this.setup()
     } else {
       console.log('end program')
-      emitter.emit('program-finish')
+      emitter.emit('program', { signal: 'program', data: { message: 'Program is finish.' }})
       this.programEnd = new Date()
-      console.log(`${this.programEnd} - ${this.programStart}`)
       const total = this.programEnd.getTime() - this.programStart.getTime()
-      console.log(`${parseInt(total/(60*60*1000))}:${parseInt(total/(60*1000))}:${parseInt(total%1000)}`)
       this.reset()
       emitter.emit('control-error', { signal: 'reset-display' })
     }
@@ -117,6 +124,8 @@ function Controller() {
   this.reset = _ => {
     this.program = {}
     this.steps = []
+
+    this.running = false
 
     this.currentIndex = 0
     this.currentCycle = 1

@@ -1,7 +1,7 @@
 import m from 'mithril'
 import io from 'socket.io-client'
 import Indicator from '../indicator'
-import Error from '../indicators/errorIndicator'
+import * as Error from '../indicators/errorIndicator'
 
 const socket = io('http://localhost:8080')
 
@@ -20,7 +20,7 @@ let SerialState = {
   update: (() => {
     socket.on('serial-status', data => {
       if (data.error) {
-        // Indicator.setTitle(Error.title).setBody(Error.body(data.message)).show()
+        Indicator.setTitle(Error.title).setBody(Error.body(data.message)).show()
         SerialState.state = data.status
         m.redraw()
       } else {

@@ -20,6 +20,7 @@ const BR_MSG = [ SIGNAL.br.b, SIGNAL.ext, SIGNAL.br.r ]
 
 function ControlCommands () {
   this.ready = false
+  this.isConnected = false
 
   this.htBlock = {
     h1: 0, h2: 0, t2: 0, t1: 0

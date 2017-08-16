@@ -57,12 +57,16 @@ let serialCheck = setInterval(_ => {
     cmd.isConnected = true
   } else {
     cmd.isConnected = false
+    if (controller.running) {
+      emitter.emit('program', { signal: 'program', data: { message: 'Program is terminated due to connection loss.' }})
+      controller.reset()
+    }
   }
 }, 1000)
 
 io.on('connection', socket => {
   console.log(`Socket is open on ${server.info.port}`)
-  // socket.setMaxListeners(20)
+  socket.setMaxListeners(100)
   /* Block: Open - close serial connection */
   socket.on('req-connect', _ => {
     if (!serialport.isOpen()) {
@@ -74,7 +78,6 @@ io.on('connection', socket => {
           const interval_1 = setInterval(_ => emitter.emit('get-chamber-info'), 1000)
           if (connectionTimeout == null) {
             connectionTimeout = setInterval( _ => {
-              console.log(`counter: ${connectionCounter}`)
               if (connectionCounter >= 5) {
                 emitter.emit('terminate-serial')
                 connectionCounter = 0
@@ -95,7 +98,6 @@ io.on('connection', socket => {
         if (err) {
           socket.emit('serial-status', { error: true, message: 'Cannot close serialport', status: serialport.isOpen() })
         } else {
-
           socket.emit('serial-status', { error: false, status: serialport.isOpen() })
         }
       })
@@ -110,6 +112,7 @@ io.on('connection', socket => {
         if (err) {
           throw err
         }
+
         console.log('serialport closed')
       })
     }
@@ -166,6 +169,10 @@ io.on('connection', socket => {
 
   emitter.on('control-error', data => {
     socket.emit(data.signal, data.data)
+  })
+
+  emitter.on('program', msg => {
+    socket.emit(msg.signal, msg.data)
   })
 
   emitter.on('terminate-serial', _ => {

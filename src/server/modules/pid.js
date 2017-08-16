@@ -1,4 +1,4 @@
-function Pid (val) {
+function Pid (pid) {
   this.error = 0
   this.previousError = 0
 
@@ -6,15 +6,14 @@ function Pid (val) {
   this.proportional = null
   this.derivative = null
 
-  this.ki = val.i
-  this.kd = val.d
-  this.kp = val.p
+  this.ki = pid.integral
+  this.kd = pid.derivative
+  this.kp = pid.proportional
   this.dt = 1
   this.targetValue = null
-  this.measuredValue = null
 
-  this.output = _ => {
-    this.error = this.setValue - this.measuredValue
+  this.output = measuredValue => {
+    this.error = this.targetValue - measuredValue
     if (this.error > 190 || this.error < -190) {
       return 0
     }

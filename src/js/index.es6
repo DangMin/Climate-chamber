@@ -36,6 +36,10 @@ domready(() => {
   socket.on('err', data => {
     Indicator.setTitle(Error.title).setBody(Error.body(data.msg)).show()
   })
+
+  socket.on('program', data => {
+    Indicator.setTitle(Error.title).setBody(Error.body(data.message)).show()
+  })
 })
 
 export { socket }
