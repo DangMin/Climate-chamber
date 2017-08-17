@@ -7,26 +7,36 @@ let SerialState = {
   state: false,
   reqConnection: () => {
     if (!SerialState.state) {
-      socket.emit('req-connect')
+      socket.emit('req-connect', data => {
+        if (data.error) {
+          console.log(`Error: ${data.message}`)
+        } else {
+          SerialState.state = data.state
+        }
+      })
     }
   },
   disconnect: () => {
     if (SerialState.state) {
-      socket.emit('req-disconnect')
+      socket.emit('req-disconnect', data => {
+        if (data.error) {
+          console.log(`Error: ${data.message}`)
+        } else {
+          SerialState.state = data.state
+        }
+      })
     }
-  },
-  update: (() => {
-    socket.on('serial-status', data => {
-      console.log(data)
-      if (data.err) {
-        console.log(`Error: ${data.message}`)
-      } else {
-        console.log(`Message: ${data.message}`)
-        SerialState.state = data.status
-        m.redraw()
-      }
-    })
-  })()
+  }
 }
+
+socket.on('serial-state', data => {
+  if (data.error) {
+    console.log(`Error: ${data.message}`)
+  } else {
+    SerialState.state = data.state
+  }
+
+  m.redraw()
+})
 
 export default SerialState

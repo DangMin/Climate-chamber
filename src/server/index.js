@@ -48,43 +48,44 @@ const chamber = new Chamber()
 const controller = new Controller()
 const { sendMsg } = require('./helpers')
 
+const state = {
+  connected: false
+}
+
 io.on('connection', socket => {
   console.log(`Socket is open on ${server.info.port}`)
   socket.setMaxListeners(0)
   /* Block: Open - close serial connection */
-  socket.on('req-connect', _ => {
+  socket.on('req-connect', cb => {
     if (!serialport.isOpen()) {
       serialport.open(err => {
         if (err) {
-          socket.emit('serial-status', { err: true, message: 'Cannot open serialport', status: serialport.isOpen() })
+          cb({ error: true, message: 'Cannot open serialport', status: serialport.isOpen() })
         } else {
-          socket.emit('serial-status', { err: false, status: serialport.isOpen() })
+          cb({ error: false, state: serialport.isOpen() })
+          state.connected = true
           const interval_1 = setInterval(_ => emitter.emit('get-chamber-info'), 1000)
         }
       })
+    } else {
+      cb({ error: false, state: serialport.isOpen() })
+      const interval_1 = setInterval(_ => emitter.emit('get-chamber-info'), 1000)
     }
   })
   socket.on('req-disconnect', _ => {
     if (serialport.isOpen()) {
       serialport.close(err => {
         if (err) {
-          socket.emit('serial-status', { err: true, message: 'Cannot close serialport', status: serialport.isOpen() })
+          cb({ err: true, message: 'Cannot close serialport', status: serialport.isOpen() })
+        } else {
+          state.connected = false
+          cb({ err: false, status: serialport.isOpen() })
         }
-        socket.emit('serial-status', { err: false, status: serialport.isOpen() })
-
       })
     }
   })
   socket.on('disconnect-socket', _ => {
     socket.disconnect(true)
-    if (serialport.isOpen()) {
-      serialport.close(err => {
-        if (err) {
-          throw err
-        }
-        console.log('serialport closed')
-      })
-    }
   })
   /* Endblock */
 
@@ -118,6 +119,14 @@ io.on('connection', socket => {
         }
         }
       }
+    }
+  })
+
+  serialport.on('close', err => {
+    if (err) {
+      socket.emit('serial-state', { error: true, message: 'Error on closing serial port.', state: serialport.isOpen() })
+    } else {
+      socket.emit('serial-state', { error: false, state: serialport.isOpen() })
     }
   })
   /* Endblock */
