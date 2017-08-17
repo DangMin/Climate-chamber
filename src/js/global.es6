@@ -66,4 +66,15 @@ const setDigit = (value, digit = 2) => {
   return value.toString()
 }
 
-export { tabHandler, serialize, formatDate, formatDisplay, setDigit }
+const toTimer = ms => {
+  let mins = parseInt(ms/60)
+  let hours = 0
+  if (mins >= 60) {
+    hours = parseInt(mins/60)
+    mins = parseInt(mins%60)
+  }
+  let sec = parseInt(ms - (hours*3600 + mins*60))
+  return `${hours}:${mins}:${sec}`
+}
+
+export { tabHandler, serialize, formatDate, formatDisplay, setDigit, toTimer }

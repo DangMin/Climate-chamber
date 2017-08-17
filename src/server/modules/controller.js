@@ -29,7 +29,10 @@ function Controller() {
   this.temperaturePid = null
   this.humidityPid = null
 
-  this.init = (program, steps, pids) => {
+  this.chamber = null
+  this.command = null
+
+  this.init = (program, chamber, cmd, steps, pids) => {
     if (isEmpty(this.program)) {
       this.program = program
       if (!isEmpty(steps)) {
@@ -38,6 +41,8 @@ function Controller() {
         this.programStart = new Date()
         this.temperaturePid = new Pid(pids.temperature)
         this.humidityPid = new Pid(pids.humidity)
+        this.chamber = chamber
+        this.command = cmd
         this.setup()
       } else {
         emitter.emit('control-error', { signal: 'err', data: { msg: 'No step has been set.' } })
@@ -71,7 +76,9 @@ function Controller() {
     this.timeEnd = new Date(timeStart.getTime() + ms)
     this.temperaturePid.targetValue = this.currentStep.temperature
     this.humidityPid.targetValue = this.currentStep.humidity
-    console.log(`temperature target value: ${this.temperaturePid.targetValue}`)
+    this.command.idle = false
+    console.log(`temperature target value: ${this.temperaturePid.targetValue}\n
+PID: ${this.temperaturePid.kp} - ${this.temperaturePid.ki} - ${this.temperaturePid.kd}`)
     //this.currentTimeout = setTimeout(this.switchStep, ms)
     this.setInterval()
     // this.currentInterval = setInterval(this.control, 1000)
@@ -84,9 +91,8 @@ function Controller() {
         this.switchStep()
         this.timeLeft = null
       } else {
+        this.prepareControl()
         this.timeLeft = (this.timeEnd.getTime() - new Date().getTime())/1000
-        // console.log(this.timeLeft)
-        // console.log(`Time left: ${parseInt(this.timeLeft/3600)}:${parseInt(this.timeLeft/60)}:${parseInt(this.timeLeft%60)}`)
         emitter.emit('control-error', { signal: 'display', data: {
           timeleft: this.timeLeft,
           program: {
@@ -101,11 +107,13 @@ function Controller() {
   this.switchStep = _ => {
     console.log('enter switch step')
     if (this.steps[this.currentIndex+1]) {
+      this.command.idle = true
       ++this.currentIndex
       console.log(`next step: ${this.currentIndex}`)
       this.currentStep = this.steps[this.currentIndex]
       this.setup()
     } else if (this.currentCycle < this.program.cycles) {
+      this.command.idle = true
       ++this.currentCycle
       console.log(`next cycle: ${this.currentCycle}`)
       this.currentIndex = 0
@@ -116,8 +124,35 @@ function Controller() {
       emitter.emit('program', { signal: 'program', data: { message: 'Program is finish.' }})
       this.programEnd = new Date()
       const total = this.programEnd.getTime() - this.programStart.getTime()
+      this.command.idle = true
       this.reset()
       emitter.emit('control-error', { signal: 'reset-display' })
+    }
+  }
+
+  this.prepareControl = _ => {
+    const on = 1
+    const off = 0
+
+    const tempOutput = this.chamber.dryTemperature
+    const humidOutput = this.chamber.humidity
+
+    this.command.tempPower = this.temperaturePid.output(tempOutput)
+    this.command.humidPower = this.humidityPid.output(humidOutput)
+
+    if (tempOutput <= 0) {
+      this.command.cvBlock.c1 = on
+      this.command.vfBlock.v1 = on
+      this.command.switchHeaters(off)
+    } else {
+      this.command.switchHeaters(on)
+      this.command.switchCoolers(off)
+    }
+
+    if (humidOutput <= 0) {
+      this.command.switchHumidifiers(off)
+    } else {
+      this.command.switchHumidifiers(on)
     }
   }
 

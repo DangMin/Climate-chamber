@@ -1,6 +1,6 @@
 import m from 'mithril'
 import io from 'socket.io-client'
-import { setDigit } from '../../global'
+import { setDigit, toTimer } from '../../global'
 import { isEmpty } from 'lodash'
 
 const socket = io('http://localhost:8080')
@@ -27,8 +27,7 @@ socket.on('chamber-info', data => {
 socket.on('display', data => {
   console.log(data)
   if (!isEmpty(data)) {
-    const t = data.timeleft
-    model.timeLeft = `${setDigit(parseInt(t/3600))}:${setDigit(parseInt(t/60))}:${setDigit(parseInt(t%60))}`
+    model.timeLeft = toTimer(data.timeleft)
     model.cycle = data.program.currentCycle
     model.step = data.program.currentStep
     model.name = data.program.name

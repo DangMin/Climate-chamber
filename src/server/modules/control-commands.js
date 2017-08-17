@@ -32,7 +32,7 @@ function ControlCommands () {
     e0: 0, e1: 0, c1: 0, v4: 0
   }
   this.vfBlock = {
-    v3: 0, v2c2: 0, v1: 0, fn1: 0
+    v3: 0, v2c2: 0, v1: 0, fan: 0
   }
   this.humidPR1 = 0
   this.humidPR2 = 0
@@ -40,6 +40,29 @@ function ControlCommands () {
   this.tempPR2 = 0
   this.tempPower
   this.humidPower
+
+  this.idle = true
+
+  this.signalOutput = _ => {
+    return {
+      h1:   this.htBlock.h1,
+      h2:   this.htBlock.h2,
+      t1:   this.htBlock.t1,
+      t2:   this.htBlock.t2,
+      p1:   this.plBlock.p1,
+      p2:   this.plBlock.p2,
+      p3:   this.plBlock.p3,
+      lnv:  this.plBlock.lnv,
+      v1:   this.vfBlock.v1,
+      v2c2: this.vfBlock.v2c2,
+      v3:   this.vfBlock.v3,
+      fan:  this.vfBlock.fan,
+      c1:   this.cvBlock.c1,
+      v4:   this.cvBlock.v4,
+      tempPower: this.tempPower,
+      humidPower: this.humidPower
+    }
+  }
 
   this.createCmd = {
     iy: () => Buffer.from(HEADER.concat(IY_MSG, FOOTER)),
@@ -52,7 +75,7 @@ function ControlCommands () {
       let cks = checkSum(msg)
       return Buffer.from(msg.concat(cks, FOOTER))
     },
-    idle: () => Buffer.from(header.concat(SIGNAL.capO, Array(20).fill(SIGNAL.zero), SIGNAL.ext, SIGNAL.question, SIGNAL.linebreak))
+    idle: () => Buffer.from(HEADER.concat(SIGNAL.capO, Array(20).fill(SIGNAL.zero), SIGNAL.ext, SIGNAL.question, SIGNAL.linebreak))
   }
 
   this.read = (data) => {
@@ -77,7 +100,7 @@ function ControlCommands () {
     this.cvBlock.c1 = value
     this.vfBlock.v2c2 = value
   }
-  this.switchHumidifier = (value) => {
+  this.switchHumidifiers = (value) => {
     this.htBlock.h1 = value
     this.htBlock.h2 = value
   }

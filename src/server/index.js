@@ -57,10 +57,6 @@ let serialCheck = setInterval(_ => {
     cmd.isConnected = true
   } else {
     cmd.isConnected = false
-    if (controller.running) {
-      emitter.emit('program', { signal: 'program', data: { message: 'Program is terminated due to connection loss.' }})
-      controller.reset()
-    }
   }
 }, 1000)
 
@@ -75,7 +71,7 @@ io.on('connection', socket => {
           socket.emit('serial-status', { error: true, message: 'Cannot open serialport', status: serialport.isOpen() })
         } else {
           socket.emit('serial-status', { error: false, status: serialport.isOpen() })
-          const interval_1 = setInterval(_ => emitter.emit('get-chamber-info'), 1000)
+          const interval_1 = setInterval(_ => emitter.emit('get-chamber-info'), 5000)
           if (connectionTimeout == null) {
             connectionTimeout = setInterval( _ => {
               if (connectionCounter >= 5) {
@@ -127,7 +123,7 @@ io.on('connection', socket => {
   socket.on('req-startProgram', params => {
     setImmediate( _ => {
       if (cmd.isConnected) {
-        controller.init(params.program, params.steps, params.pids)
+        controller.init(params.program, chamber, cmd, params.steps, params.pids)
       } else {
         emitter.emit('terminate-serial', { signal: 'err', data:{ msg: 'Serialport is not connected.' } })
       }
@@ -153,7 +149,8 @@ io.on('connection', socket => {
           break
         }
         case 0x42: {
-          sendMsg(serialport, cmd.createCmd.o())
+          cmd.idle ? sendMsg(serialport, cmd.createCmd.idle()) : sendMsg(serialport, cmd.createCmd.o())
+          console.log(cmd.signalOutput())
           cmd.unsetReady()
           break
         }
@@ -191,11 +188,17 @@ io.on('connection', socket => {
       })
     }
   })
+
+  console.log(`Socket: ${socket.eventNames()}`)
+  console.log(`Emitter: ${emitter.eventNames()}`)
 })
+
 emitter.on('get-chamber-info', _ => {
   cmd.setReady()
   sendMsg(serialport, cmd.createCmd.br())
 })
+
+console.log(emitter.eventNames())
 
 server.ext('onRequest', (request, reply) => {
   devMiddleware(request.raw.req, request.raw.res, err => {

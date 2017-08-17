@@ -1,5 +1,4 @@
 import m from 'mithril'
-// import SegmentDisplay from './segment-display'
 import D from './models/Display'
 
 const c = {
