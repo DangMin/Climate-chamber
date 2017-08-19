@@ -1,3 +1,7 @@
+import Io from 'socket.io-client'
+
+export const socket = Io('http://localhost:8080')
+
 // Internal functions
 const switchTab = (activeId, activeClass) => {
   const target = document.getElementById(activeId)

@@ -1,9 +1,7 @@
 import m from 'mithril'
-import io from 'socket.io-client'
 import { setDigit, toTimer } from '../../global'
 import { isEmpty } from 'lodash'
-
-const socket = io('http://localhost:8080')
+import { socket } from '../../global'
 
 const model = {
   dryTemperature: '---.--',

@@ -1,10 +1,9 @@
 import m from 'mithril'
-import io from 'socket.io-client'
 import { serialize } from '../../global'
 import Indicator from '../indicator'
 import * as Error from '../indicators/errorIndicator'
+import { socket } from '../../global'
 
-const socket = io('http://localhost:8080')
 const Programs = {
   list: [],                 /* list of programs */
   stepList: [],             /* list of steps - fetched with program id */

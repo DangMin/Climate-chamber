@@ -64,13 +64,12 @@ io.on('connection', socket => {
   console.log(`Socket is open on ${server.info.port}`)
   socket.setMaxListeners(100)
   /* Block: Open - close serial connection */
-  socket.on('req-connect', _ => {
+  socket.on('req-connect', cb => {
     if (!serialport.isOpen()) {
       serialport.open(err => {
         if (err) {
-          socket.emit('serial-status', { error: true, message: 'Cannot open serialport', status: serialport.isOpen() })
+          cb({ error: true, message: 'Cannot open serialport', status: serialport.isOpen() })
         } else {
-          socket.emit('serial-status', { error: false, status: serialport.isOpen() })
           const interval_1 = setInterval(_ => emitter.emit('get-chamber-info'), 1000)
           if (connectionTimeout == null) {
             connectionTimeout = setInterval( _ => {
@@ -84,21 +83,25 @@ io.on('connection', socket => {
               }
             }, 1000)
           }
-        }
-      })
-    }
-  })
-  socket.on('req-disconnect', _ => {
-    if (serialport.isOpen()) {
-      serialport.close(err => {
-        if (err) {
-          socket.emit('serial-status', { error: true, message: 'Cannot close serialport', status: serialport.isOpen() })
-        } else {
-          socket.emit('serial-status', { error: false, status: serialport.isOpen() })
+
+          cb({ error: false, message: null, status: serialport.isOpen() })
         }
       })
     } else {
-      socket.emit('serial-status', { error: true, message: 'Serialport is already closed.', status: serialport.isOpen() })
+      cb ({ error: true, message: 'Serialport is already open.', status: serialport.isOpen() })
+    }
+  })
+  socket.on('req-disconnect', cb => {
+    if (serialport.isOpen()) {
+      serialport.close(err => {
+        if (err) {
+          cb({ error: true, message: 'Cannot close serialport', status: serialport.isOpen() })
+        } else {
+          cb({ error: false, status: serialport.isOpen() })
+        }
+      })
+    } else {
+      cb({ error: true, message: 'Serialport is already closed.', status: serialport.isOpen() })
     }
   })
   socket.on('disconnect-socket', _ => {

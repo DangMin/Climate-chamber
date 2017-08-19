@@ -1,7 +1,7 @@
 import m from 'mithril'
 import domready from 'domready'
-import io from 'socket.io-client'
 
+import { socket } from './global'
 import User from 'components/user'
 import Header from 'components/header'
 import Display from 'components/display'
@@ -11,7 +11,7 @@ import * as Error from 'components/indicators/errorIndicator'
 
 import { tabHandler, formatDisplay } from 'global'
 
-const socket = io('http://localhost:8080')
+// const socket = io('http://localhost:8080')
 
 domready(() => {
   const components = {
