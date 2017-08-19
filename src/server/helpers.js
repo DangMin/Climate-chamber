@@ -1,15 +1,17 @@
+const fs = require('fs')
+
 exports.checkSum = (arg) => {
   return Number(arg.reduce((acc, curr, index) => {
     return acc + curr > 256 ? acc + curr - 256 : acc + curr
   }, 0)).toString(16)
 }
 
-exports.toBitsArray = int => {
-  if (int > 255 || int < 0) {
+exports.toBitsArray = (int, digit = 8) => {
+  if (digit == 8 ? int > 255 : int > 15 || int < 0) {
     return null
   }
 
-  let i = 7, bits = []
+  let i = digit-1, bits = []
   while (i >= 0) {
     if (int - Math.pow(2, i) >= 0) {
       int = int - Math.pow(2, i)
@@ -33,10 +35,11 @@ exports.fillUnicodeValue = (...args) => {
 
 exports.sendMsg = (port, message) => {
   if (port.isOpen()) {
-    port.write(message, err => {
-      if (err) {
-        console.log(err)
-      }
+    port.write(message, _ => {
+      port.drain(err => {
+        if (err)
+          console.log(err)
+      })
     })
   }
 }

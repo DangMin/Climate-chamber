@@ -137,12 +137,12 @@ PID: ${this.temperaturePid.kp} - ${this.temperaturePid.ki} - ${this.temperatureP
     const tempOutput = this.chamber.dryTemperature
     const humidOutput = this.chamber.humidity
 
-    this.command.tempPower = this.temperaturePid.output(tempOutput)
-    this.command.humidPower = this.humidityPid.output(humidOutput)
+    this.command.temperaturePower = this.temperaturePid.output(tempOutput)
+    this.command.humidityPower = this.humidityPid.output(humidOutput)
 
     if (tempOutput <= 0) {
-      this.command.cvBlock.c1 = on
-      this.command.vfBlock.v1 = on
+      this.command.cvBlock.set(1, on)
+      this.command.vfBlock.set(1, on)
       this.command.switchHeaters(off)
     } else {
       this.command.switchHeaters(on)

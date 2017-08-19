@@ -9,7 +9,7 @@ const Dashboard = require('webpack-dashboard/plugin')
 const Socket = require('socket.io')
 const Serialport = require('serialport')
 
-const ControlCommands = require('./modules/control-commands')
+const Command = require('./modules/commands')
 const Chamber = require('./modules/chamber')
 const Controller = require('./modules/controller')
 
@@ -46,7 +46,7 @@ const hotMiddleware = require('webpack-hot-middleware')(compiler, {
 
 const serialport = new Serialport(Config.defaultPort, Config.serialport(Serialport))
 const emitter = require('./emitter')
-const cmd = new ControlCommands()
+const command = new Command()
 const chamber = new Chamber()
 const controller = new Controller()
 
@@ -54,9 +54,9 @@ let connectionCounter = 0
 let connectionTimeout = null
 let serialCheck = setInterval(_ => {
   if (serialport.isOpen()) {
-    cmd.isConnected = true
+    command.isConnected = true
   } else {
-    cmd.isConnected = false
+    command.isConnected = false
   }
 }, 1000)
 
@@ -71,7 +71,7 @@ io.on('connection', socket => {
           socket.emit('serial-status', { error: true, message: 'Cannot open serialport', status: serialport.isOpen() })
         } else {
           socket.emit('serial-status', { error: false, status: serialport.isOpen() })
-          const interval_1 = setInterval(_ => emitter.emit('get-chamber-info'), 5000)
+          const interval_1 = setInterval(_ => emitter.emit('get-chamber-info'), 1000)
           if (connectionTimeout == null) {
             connectionTimeout = setInterval( _ => {
               if (connectionCounter >= 5) {
@@ -122,8 +122,8 @@ io.on('connection', socket => {
   })
   socket.on('req-startProgram', params => {
     setImmediate( _ => {
-      if (cmd.isConnected) {
-        controller.init(params.program, chamber, cmd, params.steps, params.pids)
+      if (command.isConnected) {
+        controller.init(params.program, chamber, command, params.steps, params.pids)
       } else {
         emitter.emit('terminate-serial', { signal: 'err', data:{ msg: 'Serialport is not connected.' } })
       }
@@ -137,25 +137,24 @@ io.on('connection', socket => {
   /* Block: Read from/ reply to serial connection */
   serialport.on('data', data => {
     connectionCounter = 0
-    if (cmd.ready && serialport.isOpen()) {
+    if (command.ready && serialport.isOpen()) {
       if (data[0] == 0x06) {
-        sendMsg(serialport, cmd.createCmd.iy())
+        sendMsg(serialport, command.command.iy())
       } else {
         switch (data[2]) {
         case 0x41: {
-          socket.emit('chamber-info', cmd.read(data))
-          chamber.setValue(cmd.read(data))
-          sendMsg(serialport, cmd.createCmd.br())
+          socket.emit('chamber-info', command.read(data))
+          chamber.setValue(command.read(data))
+          sendMsg(serialport, command.command.br())
           break
         }
         case 0x42: {
-          cmd.idle ? sendMsg(serialport, cmd.createCmd.idle()) : sendMsg(serialport, cmd.createCmd.o())
-          console.log(cmd.signalOutput())
-          cmd.unsetReady()
+          command.idle ? sendMsg(serialport, command.command.idle()) : sendMsg(serialport, command.command.o())
+          command.setReady(false)
           break
         }
         case 0x49: {
-          sendMsg(serialport, cmd.createCmd.aq())
+          sendMsg(serialport, command.command.aq())
           break
         }
         }
@@ -188,17 +187,13 @@ io.on('connection', socket => {
       })
     }
   })
-
-  console.log(`Socket: ${socket.eventNames()}`)
-  console.log(`Emitter: ${emitter.eventNames()}`)
 })
 
 emitter.on('get-chamber-info', _ => {
-  cmd.setReady()
-  sendMsg(serialport, cmd.createCmd.br())
+  //cmd.setReady()
+  command.setReady(true)
+  sendMsg(serialport, command.command.br())
 })
-
-console.log(emitter.eventNames())
 
 server.ext('onRequest', (request, reply) => {
   devMiddleware(request.raw.req, request.raw.res, err => {

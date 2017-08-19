@@ -1,10 +1,11 @@
 function Pid (pid) {
   this.error = 0
   this.previousError = 0
+  this.accumulator = 0
 
-  this.integral = null
-  this.proportional = null
-  this.derivative = null
+  this.integral = 0
+  this.proportional = 0
+  this.derivative = 0
 
   this.ki = pid.integral
   this.kd = pid.derivative
@@ -13,19 +14,24 @@ function Pid (pid) {
   this.targetValue = null
 
   this.output = measuredValue => {
+    console.log(`${this.targetValue} - ${measuredValue}`)
     this.error = this.targetValue - measuredValue
     if (this.error > 190 || this.error < -190) {
       return 0
     }
+    console.log(`Error: ${this.error}`)
+    this.accumulator += this.error
 
-    this.integral = this.integral + (this.error * this.dt)
-    this.derivative = (this.error - this.previousError) / this.dt
     this.proportional = this.kp * this.error
+    this.integral     = this.ki * this.accumulator
+    this.derivative   = this.kd * (this.previousError - this.error)
+    console.log(`PID: ${this.proportional} - ${this.integral} - ${this.derivative}`)
 
+    let output = this.proportional + this.integral + this.derivative
+    console.log(`output: ${output}`)
     this.previousError = this.error
-    let output = this.proportional + (this.ki * this.integral) + (this.kd * this.derivative)
 
-    return output < 0 ? 0 : (output > 255 ? 255 : output)
+    return output < 0 ? 0 : (output > 255 ? 255 : parseInt(output))
   }
 }
 
