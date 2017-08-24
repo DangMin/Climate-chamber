@@ -1,37 +1,33 @@
 function Pid (pid) {
-  this.error = 0
   this.previousError = 0
   this.accumulator = 0
-
-  this.integral = 0
-  this.proportional = 0
-  this.derivative = 0
 
   this.ki = pid.integral
   this.kd = pid.derivative
   this.kp = pid.proportional
   this.dt = 1
   this.targetValue = null
+  this.lastMeasure = null
 
-  this.output = measuredValue => {
-    console.log(`${this.targetValue} - ${measuredValue}`)
-    this.error = this.targetValue - measuredValue
-    if (this.error > 190 || this.error < -190) {
+  this.output = (measuredValue, dt) => {
+    // console.log(`${this.targetValue} - ${measuredValue} - dt ${dt}`)
+    let error = this.targetValue - measuredValue
+    if (error > 190 || error < -190) {
       return 0
     }
-    console.log(`Error: ${this.error}`)
-    this.accumulator += this.error
+    // console.log(`Error: ${this.error}`)
+    this.accumulator += error * (dt/1000)
 
-    this.proportional = this.kp * this.error
-    this.integral     = this.ki * this.accumulator
-    this.derivative   = this.kd * (this.previousError - this.error)
-    console.log(`PID: ${this.proportional} - ${this.integral} - ${this.derivative}`)
+    let proportional = this.kp * error
+    let integral     = this.ki * this.accumulator
+    let derivative   = this.kd * ((error - this.previousError)/(dt/1000))
+    // console.log(`PID: ${proportional} - ${integral} - ${derivative}`)
 
-    let output = this.proportional + this.integral + this.derivative
-    console.log(`output: ${output}`)
-    this.previousError = this.error
+    let output = proportional + integral + derivative
+    // console.log(`output: ${output}`)
+    this.previousError = error
 
-    return output < 0 ? 0 : (output > 255 ? 255 : parseInt(output))
+    return output < 0 ? 0 : output > 255 ? 255 : parseInt(output)
   }
 }
 

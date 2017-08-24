@@ -153,6 +153,7 @@ io.on('connection', socket => {
         }
         case 0x42: {
           command.idle ? sendMsg(serialport, command.command.idle()) : sendMsg(serialport, command.command.o())
+          emitter.emit('control', { signal: 'command-params', data: command.output() })
           command.setReady(false)
           break
         }
@@ -166,7 +167,7 @@ io.on('connection', socket => {
   })
   /* Endblock */
 
-  emitter.on('control-error', data => {
+  emitter.on('control', data => {
     socket.emit(data.signal, data.data)
   })
 
@@ -178,11 +179,11 @@ io.on('connection', socket => {
     if (serialport.isOpen()) {
       serialport.close(err => {
         if (err) {
-          emitter.emit('control-error', {
+          emitter.emit('control', {
             signal: 'connection-timeout',
             data:{ error: true, status: serialport.isOpen(), message: 'Connection timeout but cannot close serial connection.'}})
         } else {
-          emitter.emit('control-error', {
+          emitter.emit('control', {
             signal: 'connection-timeout',
             data: { error: false, status: serialport.isOpen(), message: 'Connection timeout' }
           })

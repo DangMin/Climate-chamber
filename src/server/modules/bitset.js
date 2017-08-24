@@ -20,7 +20,7 @@ function Bitset (value = 0, bits = 8) {
 }
 
 function transform (value, bits) {
-  var rslt = Array(bits).fill(0)
+  var rslt = value >= 0 ? Array(bits).fill(0) : Array(bits).fill(1)
 
   var v
   if (isNumber(value)) {

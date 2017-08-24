@@ -9,14 +9,9 @@ function Controller() {
   this.program = {}
   this.steps = []
 
-  this.running = false
-
   this.currentIndex = 0
   this.currentCycle = 1
   this.currentStep = {}
-
-  this.tempPid = {}
-  this.humidPid = {}
 
   this.currentTimeout = null
   this.currentInterval = null
@@ -25,6 +20,7 @@ function Controller() {
   this.timeLeft = null
   this.programStart = null
   this.programEnd = null
+  this.lastMeasure = null
 
   this.temperaturePid = null
   this.humidityPid = null
@@ -45,18 +41,18 @@ function Controller() {
         this.command = cmd
         this.setup()
       } else {
-        emitter.emit('control-error', { signal: 'err', data: { msg: 'No step has been set.' } })
+        emitter.emit('control', { signal: 'err', data: { msg: 'No step has been set.' } })
         this.reset()
       }
     } else {
-      emitter.emit('control-error', { signal: 'err', data: { msg: this.program && this.program._id == program._id ? 'This program is already started' : 'Another program is running.' } })
+      emitter.emit('control', { signal: 'err', data: { msg: this.program && this.program._id == program._id ? 'This program is already started' : 'Another program is running.' } })
     }
   }
 
   this.fetch = _ => {
     if (!isEmpty(this.program)) {
-      console.log(this.currentStep)
-      emitter.emit('control-error', { signal: 'display', data: {
+      // console.log(this.currentStep)
+      emitter.emit('control', { signal: 'display', data: {
         timeleft: this.timeLeft,
         program: {
           name: this.program.name,
@@ -64,7 +60,7 @@ function Controller() {
           currentStep: this.currentStep.order
         }}})
     } else {
-      emitter.emit('control-error', { signal: 'display', data: {}})
+      emitter.emit('control', { signal: 'display', data: {}})
     }
   }
 
@@ -72,13 +68,12 @@ function Controller() {
     let time = this.currentStep.time.split(':')
     let ms = parseInt(time[0])*hour + parseInt(time[1])*minute
     const timeStart = new Date()
-    this.running = true
     this.timeEnd = new Date(timeStart.getTime() + ms)
     this.temperaturePid.targetValue = this.currentStep.temperature
     this.humidityPid.targetValue = this.currentStep.humidity
     this.command.idle = false
-    console.log(`temperature target value: ${this.temperaturePid.targetValue}\n
-PID: ${this.temperaturePid.kp} - ${this.temperaturePid.ki} - ${this.temperaturePid.kd}`)
+    // console.log(`temperature target value: ${this.temperaturePid.targetValue}\n
+    // PID: ${this.temperaturePid.kp} - ${this.temperaturePid.ki} - ${this.temperaturePid.kd}`)
     //this.currentTimeout = setTimeout(this.switchStep, ms)
     this.setInterval()
     // this.currentInterval = setInterval(this.control, 1000)
@@ -93,7 +88,7 @@ PID: ${this.temperaturePid.kp} - ${this.temperaturePid.ki} - ${this.temperatureP
       } else {
         this.prepareControl()
         this.timeLeft = (this.timeEnd.getTime() - new Date().getTime())/1000
-        emitter.emit('control-error', { signal: 'display', data: {
+        emitter.emit('control', { signal: 'display', data: {
           timeleft: this.timeLeft,
           program: {
             name: this.program.name,
@@ -126,7 +121,7 @@ PID: ${this.temperaturePid.kp} - ${this.temperaturePid.ki} - ${this.temperatureP
       const total = this.programEnd.getTime() - this.programStart.getTime()
       this.command.idle = true
       this.reset()
-      emitter.emit('control-error', { signal: 'reset-display' })
+      emitter.emit('control', { signal: 'reset-display' })
     }
   }
 
@@ -137,14 +132,26 @@ PID: ${this.temperaturePid.kp} - ${this.temperaturePid.ki} - ${this.temperatureP
     const tempOutput = this.chamber.dryTemperature
     const humidOutput = this.chamber.humidity
 
-    this.command.temperaturePower = this.temperaturePid.output(tempOutput)
-    this.command.humidityPower = this.humidityPid.output(humidOutput)
+    let dt
+    if (this.lastMeasure == null) {
+      this.lastMeasure = new Date()
+      dt = this.lastMeasure - this.programStart
+    } else {
+      let t = new Date()
+      dt = t - this.lastMeasure
+      this.lastMeasure = t
+    }
+
+    this.command.temperaturePower = this.temperaturePid.output(tempOutput, dt)
+    this.command.humidityPower = this.humidityPid.output(humidOutput, dt)
 
     if (tempOutput <= 0) {
+      console.log('On: C1 - V1')
       this.command.cvBlock.set(1, on)
       this.command.vfBlock.set(1, on)
       this.command.switchHeaters(off)
     } else {
+      console.log('On: T1 - T2')
       this.command.switchHeaters(on)
       this.command.switchCoolers(off)
     }
@@ -152,6 +159,7 @@ PID: ${this.temperaturePid.kp} - ${this.temperaturePid.ki} - ${this.temperatureP
     if (humidOutput <= 0) {
       this.command.switchHumidifiers(off)
     } else {
+      console.log('On: H1 - H2')
       this.command.switchHumidifiers(on)
     }
   }
@@ -159,8 +167,6 @@ PID: ${this.temperaturePid.kp} - ${this.temperaturePid.ki} - ${this.temperatureP
   this.reset = _ => {
     this.program = {}
     this.steps = []
-
-    this.running = false
 
     this.currentIndex = 0
     this.currentCycle = 1
