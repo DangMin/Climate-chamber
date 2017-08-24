@@ -11,8 +11,6 @@ import * as Error from 'components/indicators/errorIndicator'
 
 import { tabHandler, formatDisplay } from 'global'
 
-// const socket = io('http://localhost:8080')
-
 domready(() => {
   const components = {
     'js-user': User,
@@ -41,5 +39,3 @@ domready(() => {
     Indicator.setTitle(Error.title).setBody(Error.body(data.message)).show()
   })
 })
-
-export { socket }

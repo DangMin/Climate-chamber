@@ -16,6 +16,7 @@
     "mithril": "^1.1.1",
     "mongoose": "^4.11.1",
     "nunjucks": "^3.0.1",
+    "require_optional": "^1.0.1",
     "serialport": "git+ssh://git@github.com/DangMin/dm-serialport.git#4x",
     "vision": "^4.1.1"
   },

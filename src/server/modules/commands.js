@@ -126,8 +126,8 @@ function Command () {
     this.vfBlock.set(2, value)
   }
   this.switchHumidifiers = value => {
-    this.htBlock.set(0, value)
-    this.htBlock.set(1, value)
+    this.htBlock.set(2, value)
+    this.htBlock.set(3, value)
   }
   this.setReady = (value) => {
     this.ready = this.ready == value ? this.ready : value

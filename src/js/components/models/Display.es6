@@ -10,6 +10,12 @@ const model = {
   cycle: '-',
   step: '-',
   name: '----------',
+  signals: {
+    h1: false, h2: false, t1: false, t2: false,
+    p3: false, p2: false, p1: false, lnv: false,
+    c1: false, v4: false, fan: false, v1: false,
+    v2c2: false, v3: false
+  },
 
   fetch: _ => {
     socket.emit('req-display')
@@ -39,6 +45,13 @@ socket.on('reset-display', _ => {
   model.step = '-'
   model.name = '----------'
   m.redraw()
+})
+
+socket.on('command-params', data => {
+  console.log(data)
+  for (let signal in data) {
+    model.signals[signal] = data[signal] == 1 ? true : false
+  }
 })
 
 export default model
