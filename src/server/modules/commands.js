@@ -96,8 +96,9 @@ function Command () {
       let base = [this.htBlock, this.plBlock, this.cvBlock, this.vfBlock, this.humidPw1, this.humidPw2, this.tempPw1, this.tempPw2].forEach(param => {
         body.push(param.toNumber())
       })
-      let msg = header.concat(body)
+      let msg = header.concat(body, SIGNAL.ext)
       let cks = checkSum(msg)
+      console.log(Buffer.from(msg.concat(cks, FOOTER)))
       return Buffer.from(msg.concat(cks, FOOTER))
     }
   }

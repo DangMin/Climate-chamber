@@ -27,6 +27,7 @@ function Pid (pid) {
     // console.log(`output: ${output}`)
     this.previousError = error
 
+    console.log(output < 0 ? 0 : output > 255 ? 255 : parseInt(output))
     return output < 0 ? 0 : output > 255 ? 255 : parseInt(output)
   }
 }

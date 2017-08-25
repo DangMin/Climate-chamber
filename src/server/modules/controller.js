@@ -146,12 +146,10 @@ function Controller() {
     this.command.humidityPower = this.humidityPid.output(humidOutput, dt)
 
     if (tempOutput <= 0) {
-      console.log('On: C1 - V1')
       this.command.cvBlock.set(1, on)
       this.command.vfBlock.set(1, on)
       this.command.switchHeaters(off)
     } else {
-      console.log('On: T1 - T2')
       this.command.switchHeaters(on)
       this.command.switchCoolers(off)
     }
@@ -159,7 +157,6 @@ function Controller() {
     if (humidOutput <= 0) {
       this.command.switchHumidifiers(off)
     } else {
-      console.log('On: H1 - H2')
       this.command.switchHumidifiers(on)
     }
   }
