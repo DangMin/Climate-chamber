@@ -1,8 +1,12 @@
 import m from 'mithril'
-import { setDigit, toTimer } from '../../global'
+import { setDigit, toTimer, stringValidate } from '../../global'
 import { isEmpty } from 'lodash'
 import { socket } from '../../global'
 
+const regexes = {
+  temperature: /^(\+|-|)\d{2,3}\.\d{2}/g,
+  humidity: /\d{2,3}\.\d{1,2}/g
+}
 const model = {
   dryTemperature: '---.--',
   humidity: '---.--',
@@ -23,8 +27,8 @@ const model = {
 }
 
 socket.on('chamber-info', data => {
-  model.dryTemperature = data[0]
-  model.humidity = data[2]
+  model.dryTemperature = stringValidate(data[0], regexes.temperature)
+  model.humidity = stringValidate(data[2], regexes.humidity)
   m.redraw()
 })
 

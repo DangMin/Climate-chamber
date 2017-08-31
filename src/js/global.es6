@@ -81,4 +81,11 @@ const toTimer = ms => {
   return `${hours}:${mins}:${sec}`
 }
 
-export { tabHandler, serialize, formatDate, formatDisplay, setDigit, toTimer }
+const stringValidate = (string, regex) => {
+  const rslt = string.match(regex)
+  return rslt.length != 0 ? rslt[0] : null
+}
+
+export {
+  switchTab, tabHandler, serialize, formatDate, formatDisplay, setDigit, toTimer, stringValidate
+}
