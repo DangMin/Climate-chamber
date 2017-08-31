@@ -76,7 +76,8 @@ function Command () {
       v4: this.cvBlock.get(0),
       fan: this.vfBlock.get(0),
       v1: this.vfBlock.get(1),
-      v2c2: this.vfBlock.get(2),
+      v2: this.vfBlock.get(2),
+      c2: this.vfBlock.get(2),
       v3: this.vfBlock.get(3),
       temperaturePower: this.temperaturePower,
       humidityPower: this.humidityPower

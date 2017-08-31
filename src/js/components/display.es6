@@ -54,7 +54,7 @@ const c = {
               return m('.flex-container__cell.flex-container--horizontal', [
                 row.map(item => {
                   return m('.signal-tag.flex-container__cell.centered-text',
-                    { class: D.signals[item.toLowerCase()] ? 'signal-tag--active' : ''}, item)
+                    { class: D.signals[item.toLowerCase()] == true ? 'signal-tag--active' : ''}, item)
                 })
               ])
             })

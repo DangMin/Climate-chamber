@@ -23,7 +23,7 @@ const { sendMsg } = require('./helpers')
 const server = new Server()
 server.connection(Config.server)
 
-const io = Socket(server.listener)
+const io = Socket(server.listener, Config.socket.options)
 
 module.exports.listener = server.listener
 
@@ -62,134 +62,148 @@ let serialCheck = setInterval(_ => {
 
 io.on('connection', socket => {
   console.log(`Socket is open on ${server.info.port}`)
-  socket.setMaxListeners(100)
+  socket.setMaxListeners(Infinity)
   /* Block: Open - close serial connection */
-  socket.on('req-connect', cb => {
-    if (!serialport.isOpen()) {
-      serialport.open(err => {
-        if (err) {
-          cb({ error: true, message: 'Cannot open serialport', status: serialport.isOpen() })
-        } else {
-          const interval_1 = setInterval(_ => emitter.emit('get-chamber-info'), 1000)
-          if (connectionTimeout == null) {
-            connectionTimeout = setInterval( _ => {
-              if (connectionCounter >= 5) {
-                emitter.emit('terminate-serial')
-                connectionCounter = 0
-                clearInterval(connectionTimeout)
-                connectionTimeout = null
-              } else {
-                ++connectionCounter
-              }
-            }, 1000)
+  const listeners = {
+    openSerial: callback => {
+      if (!serialport.isOpen()) {
+        serialport.open(err => {
+          if (err) {
+            callback({ error: true, message: 'Cannot open serialport', status: serialport.isOpen() })
+          } else {
+            const interval_1 = setInterval(_ => emitter.emit('get-chamber-info'), 1000)
+            if (connectionTimeout == null) {
+              connectionTimeout = setInterval( _ => {
+                if (connectionCounter >= 5) {
+                  emitter.emit('terminate-serial')
+                  connectionCounter = 0
+                  clearInterval(connectionTimeout)
+                  connectionTimeout = null
+                } else {
+                  ++connectionCounter
+                }
+              }, 1000)
+            }
+
+            callback({ error: false, message: null, status: serialport.isOpen() })
           }
-
-          cb({ error: false, message: null, status: serialport.isOpen() })
-        }
-      })
-    } else {
-      cb ({ error: true, message: 'Serialport is already open.', status: serialport.isOpen() })
-    }
-  })
-  socket.on('req-disconnect', cb => {
-    if (serialport.isOpen()) {
-      serialport.close(err => {
-        if (err) {
-          cb({ error: true, message: 'Cannot close serialport', status: serialport.isOpen() })
-        } else {
-          cb({ error: false, status: serialport.isOpen() })
-        }
-      })
-    } else {
-      cb({ error: true, message: 'Serialport is already closed.', status: serialport.isOpen() })
-    }
-  })
-  socket.on('disconnect-socket', _ => {
-    socket.disconnect(true)
-    if (serialport.isOpen()) {
-      serialport.close(err => {
-        if (err) {
-          throw err
-        }
-
-        console.log('serialport closed')
-      })
-    }
-  })
-  /* Endblock */
-
-  /* Block: Controller */
-  socket.on('req-display', _ => {
-    console.log('request display')
-    controller.fetch()
-  })
-  socket.on('req-startProgram', params => {
-    setImmediate( _ => {
+        })
+      } else {
+        callback ({ error: false, message: null, status: serialport.isOpen() })
+      }
+    },
+    closeSerial: callback => {
+      if (serialport.isOpen()) {
+        serialport.close(err => {
+          if (err) {
+            callback({ error: true, message: 'Cannot close serialport', status: serialport.isOpen() })
+          } else {
+            callback({ error: false, message: null, status: serialport.isOpen() })
+          }
+        })
+      } else {
+        callback({ error: false, message: null, status: serialport.isOpen() })
+      }
+    },
+    disconnect: _ => socket.disconnect(true),
+    requestDisplay: _ => controller.fetch(),
+    startProgram: params => setImmediate(_ => {
       if (command.isConnected) {
         controller.init(params.program, chamber, command, params.steps, params.pids)
       } else {
         emitter.emit('terminate-serial', { signal: 'err', data:{ msg: 'Serialport is not connected.' } })
       }
-    })
+    }),
+    stopProgram: params => controller.reset(params.program),
+    onData: data => {
+      connectionCounter = 0
+      if (command.ready && serialport.isOpen()) {
+        if (data[0] == 0x06) {
+          sendMsg(serialport, command.command.iy())
+        } else {
+          switch (data[2]) {
+          case 0x41: {
+            socket.emit('chamber-info', command.read(data))
+            chamber.setValue(command.read(data))
+            sendMsg(serialport, command.command.br())
+            break
+          }
+          case 0x42: {
+            command.idle ? sendMsg(serialport, command.command.idle()) : sendMsg(serialport, command.command.o())
+            emitter.emit('control', { signal: 'command-params', data: command.output() })
+            command.setReady(false)
+            break
+          }
+          case 0x49: {
+            sendMsg(serialport, command.command.aq())
+            break
+          }
+          }
+        }
+      }
+    },
+  }
+
+  const eventListeners = {
+    controlHandler: data => socket.emit(data.signal, data.data),
+    programHandler: data => socket.emit(data.signal, data.data),
+    terminateSerial: _ => {
+      if (serialport.isOpen()) {
+        serialport.close(err => {
+          if (err) {
+            emitter.emit('control', {
+              signal: 'connection-timeout',
+              data:{ error: true, status: serialport.isOpen(), message: 'Connection timeout but cannot close serial connection.'}})
+          } else {
+            emitter.emit('control', {
+              signal: 'connection-timeout',
+              data: { error: false, status: serialport.isOpen(), message: 'Connection timeout' }
+            })
+          }
+        })
+      }
+    },
+  }
+
+  socket.on('req-connect', cb => {
+    listeners.openSerial(cb)
+  })
+  socket.on('req-disconnect', cb => {
+    listeners.closeSerial(cb)
+  })
+  socket.on('disconnect-socket', _ => {
+    listeners.disconnect()
+  })
+  /* Endblock */
+
+  /* Block: Controller */
+  socket.on('req-display', _ => {
+    listeners.requestDisplay()
+  })
+  socket.on('req-startProgram', params => {
+    listeners.startProgram(params)
   })
   socket.on('req-stopProgram', params => {
-    controller.reset(params.program)
+    listeners.stopProgram(params)
   })
   /* Endblock */
 
   /* Block: Read from/ reply to serial connection */
   serialport.on('data', data => {
-    connectionCounter = 0
-    if (command.ready && serialport.isOpen()) {
-      if (data[0] == 0x06) {
-        sendMsg(serialport, command.command.iy())
-      } else {
-        switch (data[2]) {
-        case 0x41: {
-          socket.emit('chamber-info', command.read(data))
-          chamber.setValue(command.read(data))
-          sendMsg(serialport, command.command.br())
-          break
-        }
-        case 0x42: {
-          command.idle ? sendMsg(serialport, command.command.idle()) : sendMsg(serialport, command.command.o())
-          emitter.emit('control', { signal: 'command-params', data: command.output() })
-          command.setReady(false)
-          break
-        }
-        case 0x49: {
-          sendMsg(serialport, command.command.aq())
-          break
-        }
-        }
-      }
-    }
+    listeners.onData(data)
   })
   /* Endblock */
 
   emitter.on('control', data => {
-    socket.emit(data.signal, data.data)
+    eventListeners.controlHandler(data)
   })
 
   emitter.on('program', msg => {
-    socket.emit(msg.signal, msg.data)
+    eventListeners.programHandler(msg)
   })
 
   emitter.on('terminate-serial', _ => {
-    if (serialport.isOpen()) {
-      serialport.close(err => {
-        if (err) {
-          emitter.emit('control', {
-            signal: 'connection-timeout',
-            data:{ error: true, status: serialport.isOpen(), message: 'Connection timeout but cannot close serial connection.'}})
-        } else {
-          emitter.emit('control', {
-            signal: 'connection-timeout',
-            data: { error: false, status: serialport.isOpen(), message: 'Connection timeout' }
-          })
-        }
-      })
-    }
+    eventListeners.terminateSerial()
   })
 })
 

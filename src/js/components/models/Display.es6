@@ -33,7 +33,6 @@ socket.on('chamber-info', data => {
 })
 
 socket.on('display', data => {
-  console.log(data)
   if (!isEmpty(data)) {
     model.timeLeft = toTimer(data.timeleft)
     model.cycle = data.program.currentCycle
@@ -52,10 +51,11 @@ socket.on('reset-display', _ => {
 })
 
 socket.on('command-params', data => {
-  console.log(data)
+  console.log('command params')
   for (let signal in data) {
     model.signals[signal] = data[signal] == 1 ? true : false
   }
+  m.redraw()
 })
 
 export default model

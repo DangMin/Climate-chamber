@@ -1,6 +1,6 @@
 import Io from 'socket.io-client'
 
-export const socket = Io('http://localhost:8080')
+export const socket = Io('http://localhost:8080', { transports: ['websocket']})
 
 // Internal functions
 const switchTab = (activeId, activeClass) => {

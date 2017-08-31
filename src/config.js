@@ -5,6 +5,9 @@ const Config = {
     host: 'localhost',
     port: 8080
   },
+  socket: {
+    options: { transports: ['websocket']}
+  },
   good: {
     register: require('good'),
     options: { reporters: { console: [
