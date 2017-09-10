@@ -10,6 +10,7 @@ const ObjectId = Mongoose.Types.ObjectId
 exports.index = (request, reply) => {
   reply.view('template')
 }
+
 exports.getPrograms = (request, reply) => {
   Models.Program.find({}, (err, programs) => {
     if (err) {

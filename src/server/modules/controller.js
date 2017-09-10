@@ -1,3 +1,4 @@
+const { Graph } = require('../models')
 const { isEmpty } = require('lodash')
 const emitter = require('../emitter')
 const Pid = require('./pid')
@@ -65,6 +66,7 @@ function Controller() {
   }
 
   this.setup = _ => {
+    console.log('Start program: == setup ==')
     let time = this.currentStep.time.split(':')
     let ms = parseInt(time[0])*hour + parseInt(time[1])*minute
     const timeStart = new Date()

@@ -168,9 +168,11 @@ io.on('connection', socket => {
   socket.on('req-connect', cb => {
     listeners.openSerial(cb)
   })
+  
   socket.on('req-disconnect', cb => {
     listeners.closeSerial(cb)
   })
+
   socket.on('disconnect-socket', _ => {
     listeners.disconnect()
   })
