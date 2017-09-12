@@ -1,4 +1,4 @@
-function Pid (pid) {
+function Pid (pid, targetValue) {
   this.previousError = 0
   this.accumulator = 0
 
@@ -6,7 +6,7 @@ function Pid (pid) {
   this.kd = pid.derivative
   this.kp = pid.proportional
   this.dt = 1
-  this.targetValue = null
+  this.targetValue = targetValue
   this.lastMeasure = null
 
   this.output = (measuredValue, dt) => {

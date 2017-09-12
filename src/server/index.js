@@ -48,7 +48,7 @@ const serialport = new Serialport(Config.defaultPort, Config.serialport(Serialpo
 const emitter = require('./emitter')
 const command = new Command()
 const chamber = new Chamber()
-const controller = new Controller()
+const controller = new Controller(chamber, command)
 
 let connectionCounter = 0
 let connectionTimeout = null
@@ -109,7 +109,7 @@ io.on('connection', socket => {
     requestDisplay: _ => controller.fetch(),
     startProgram: params => setImmediate(_ => {
       if (command.isConnected) {
-        controller.init(params.program, chamber, command, params.steps, params.pids)
+        controller.initiate(params.program, params.steps, params.pids)
       } else {
         emitter.emit('terminate-serial', { signal: 'err', data:{ msg: 'Serialport is not connected.' } })
       }
