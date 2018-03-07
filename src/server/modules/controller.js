@@ -2,6 +2,12 @@ const { isEmpty } = require('lodash')
 const emitter = require('../emitter')
 const Pid = require('./pid')
 
+const { History } = require('../models')
+const ObjectId = require('mongoose').Types.ObjectId
+const fs = require('fs')
+const moment = require('moment')
+
+const directory = 'datalog/'
 const hour = 1000*60*60
 const minute = 1000*60
 
@@ -28,6 +34,10 @@ function Controller() {
   this.chamber = null
   this.command = null
 
+  this.secCount = 0
+  this.totalSec = 0
+  this.logfile = null
+
   this.init = (program, chamber, cmd, steps, pids) => {
     if (isEmpty(this.program)) {
       this.program = program
@@ -39,6 +49,22 @@ function Controller() {
         this.humidityPid = new Pid(pids.humidity)
         this.chamber = chamber
         this.command = cmd
+        this.totalSec = 0
+
+        History.create({
+          program_id: this.program._id,
+          temperature_pid: pids.temperature._id,
+          humidity_pid: pids.humidity._id
+        }, (error, history) => {
+          if (error) {
+            console.log(error)
+          } else {
+            this.logfile = `${directory}${history._id}.txt`
+            console.log(this.program)
+            fs.appendFile(this.logfile, `${this.program.name} - ${moment().format('MMMM Do YYYY, HH:mm:ss')} - ${this.program.cycles} - ${this.steps.length}\n`)
+          }
+        })
+
         this.setup()
       } else {
         emitter.emit('control', { signal: 'err', data: { msg: 'No step has been set.' } })
@@ -68,6 +94,7 @@ function Controller() {
     let time = this.currentStep.time.split(':')
     let ms = parseInt(time[0])*hour + parseInt(time[1])*minute
     const timeStart = new Date()
+    this.secCount = 0
     this.timeEnd = new Date(timeStart.getTime() + ms)
     this.temperaturePid.targetValue = this.currentStep.temperature
     this.humidityPid.targetValue = this.currentStep.humidity
@@ -87,7 +114,14 @@ function Controller() {
         this.timeLeft = null
       } else {
         this.prepareControl()
-        this.timeLeft = (this.timeEnd.getTime() - new Date().getTime())/1000
+        const currentTime = new Date()
+        this.timeLeft = (this.timeEnd.getTime() - currentTime.getTime())/1000
+        ++this.secCount
+
+        fs.appendFile(this.logfile,
+          `${this.currentCycle} ${this.currentIndex+1} ${++this.totalSec} ${this.secCount} ${this.chamber.dryTemperature} ${this.chamber.wetTemperature} ${this.chamber.humidity}\n`
+        , error => console.log(error ? error : ''))
+
         emitter.emit('control', { signal: 'display', data: {
           timeleft: this.timeLeft,
           program: {
@@ -102,6 +136,7 @@ function Controller() {
   this.switchStep = _ => {
     console.log('enter switch step')
     if (this.steps[this.currentIndex+1]) {
+      console.log('step left')
       this.command.idle = true
       ++this.currentIndex
       console.log(`next step: ${this.currentIndex}`)

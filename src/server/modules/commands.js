@@ -99,7 +99,7 @@ function Command () {
       })
       let msg = header.concat(body, SIGNAL.ext)
       let cks = checkSum(msg)
-      console.log(Buffer.from(msg.concat(cks, FOOTER)))
+      // console.log(Buffer.from(msg.concat(cks, FOOTER)))
       return Buffer.from(msg.concat(cks, FOOTER))
     }
   }

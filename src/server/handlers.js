@@ -1,3 +1,4 @@
+const fs = require('fs')
 const Joi = require('joi')
 const Boom = require('boom')
 const Models = require('./models')
@@ -10,6 +11,9 @@ const ObjectId = Mongoose.Types.ObjectId
 exports.index = (request, reply) => {
   reply.view('template')
 }
+
+/* ---------- Programs ---------- */
+/* Method: GET - Get all programs */
 exports.getPrograms = (request, reply) => {
   Models.Program.find({}, (err, programs) => {
     if (err) {
@@ -18,35 +22,7 @@ exports.getPrograms = (request, reply) => {
     reply({ success: true, programs: programs})
   })
 }
-exports.addProgram = (request, reply) => {
-  const payload = request.payload
-  Models.Program.create(request.payload, err => {
-    let res = {}
-    if (err) {
-      res = { success: false, err: err }
-    } else {
-      res = { success: true }
-    }
-
-    reply(res)
-  })
-}
-exports.removeProgram = (request, reply) => {
-  const payload = request.payload
-  Models.Step.remove({ program_id: payload._id }, err => {
-    if (err) {
-      reply({ success: false, error: err })
-    }
-
-    Models.Program.remove(payload, err => {
-      if (err) {
-        reply({ success: false, error: err})
-      }
-
-      reply({ success: true })
-    })
-  })
-}
+/* Method: GET - Get program by ID */
 exports.getProgramById = (request, reply) => {
   let res = { error: null }
   Models.Program.findOne({ _id: request.params.programId }, (err, program) => {
@@ -65,6 +41,21 @@ exports.getProgramById = (request, reply) => {
     }
   })
 }
+/* Method: POST - Add new program */
+exports.addProgram = (request, reply) => {
+  const payload = request.payload
+  Models.Program.create(request.payload, err => {
+    let res = {}
+    if (err) {
+      res = { success: false, err: err }
+    } else {
+      res = { success: true }
+    }
+
+    reply(res)
+  })
+}
+/* Method: POST - Edit program */
 exports.editProgram = (request, reply) => {
   const payload = request.payload
   Models.Program.update({ _id: payload._id }, { name: payload.name, cycles: payload.cycles }, error => {
@@ -74,7 +65,37 @@ exports.editProgram = (request, reply) => {
     reply({ success: true, error: null })
   })
 }
+/* Method: DELETE - remove a program */
+exports.removeProgram = (request, reply) => {
+  const payload = request.payload
+  Models.Step.remove({ program_id: payload._id }, err => {
+    if (err) {
+      reply({ success: false, error: err })
+    }
 
+    Models.Program.remove(payload, err => {
+      if (err) {
+        reply({ success: false, error: err})
+      }
+
+      reply({ success: true })
+    })
+  })
+}
+/* ----------- End of Programs ---------- */
+
+/* ----------- Steps ----------- */
+/* Method: GET - Get all steps */
+exports.getSteps = (request, reply) => {
+  Models.Step.where('program_id', ObjectId(request.params.programId)).sort({ order: 1 }).exec( (err, steps) => {
+    if (!err) {
+      reply({ success: true, steps: steps })
+    } else {
+      reply({ success: false, error: err })
+    }
+  })
+}
+/* Method: GET - Get a step by ID */
 exports.getStepById = (request, reply) => {
   const params = request.params
   Models.Step.findOne({ _id: params._id }, (err, step) => {
@@ -87,6 +108,7 @@ exports.getStepById = (request, reply) => {
     }
   })
 }
+/* Method: POST - Add a new step */
 exports.addStep = (request, reply) => {
   const payload = request.payload
   Models.Step.where('program_id', payload.program_id).sort({ order: -1 }).limit(1).exec((err, step) => {
@@ -117,15 +139,9 @@ exports.addStep = (request, reply) => {
     }
   })
 }
-exports.getSteps = (request, reply) => {
-  Models.Step.where('program_id', ObjectId(request.params.programId)).sort({ order: 1 }).exec( (err, steps) => {
-    if (!err) {
-      reply({ success: true, steps: steps })
-    } else {
-      reply({ success: false, error: err })
-    }
-  })
-}
+/* Method: POST - Edit a step */
+exports.editStep = (request, reply) => {}
+/* Method: DELETE - Remove a step */
 exports.removeStep = (request, reply) => {
   Models.Step.findOne({_id: ObjectId(request.payload._id) }, (err, step) => {
     if (!err && step) {
@@ -144,8 +160,10 @@ exports.removeStep = (request, reply) => {
     }
   })
 }
-exports.editStep = (request, reply) => {}
+/* ----------- End of Steps ----------- */
 
+/* ----------- PIDs ----------- */
+/* Method: GET - Get all PID parameters */
 exports.getPids = (request, reply) => {
   Models.Pid.find({}, (err, pids) => {
     if (err) {
@@ -155,6 +173,29 @@ exports.getPids = (request, reply) => {
     reply({ success: true, pids: pids })
   })
 }
+/* Method: GET - Get PID parameters by ID */
+exports.getPidById = (request, reply) => {
+  Models.Pid.findOne({ _id: request.params._id, type: request.params.type }, (err, pid) => {
+    if (err) {
+      reply({ success: false, error: err })
+    }
+
+    reply({ success: true, pid: pid })
+  })
+}
+/* Method: GET - Get default PID parameters */
+exports.getDefaultPid = (request, reply) => {
+  Models.Pid.find({ default: true }).select('proportional integral derivative type').exec((err, pids) => {
+    if (err) {
+      reply({ success: false, error: err })
+    }
+
+    let rslt = keyBy(pids, 'type')
+    rslt.success = true
+    reply(rslt)
+  })
+}
+/* Method: POST - Add new PID parameters */
 exports.addPid = (request, reply) => {
   const payload = request.payload
   console.log(typeof payload.default)
@@ -172,17 +213,7 @@ exports.addPid = (request, reply) => {
     reply( err ? { success: false, error: err } : { success: true })
   })
 }
-
-exports.getPidById = (request, reply) => {
-  Models.Pid.findOne({ _id: request.params._id, type: request.params.type }, (err, pid) => {
-    if (err) {
-      reply({ success: false, error: err })
-    }
-
-    reply({ success: true, pid: pid })
-  })
-}
-
+/* Method: POST - Set PID parameters as default */
 exports.setDefaultPid = (request, reply) => {
   Models.Pid
     .where('_id').ne(request.payload._id)
@@ -200,7 +231,7 @@ exports.setDefaultPid = (request, reply) => {
       })
     })
 }
-
+/* Method: POST - Unset PID parameters as default */
 exports.unsetDefaultPid = (request, reply) => {
   Models.Pid.update(request.payload, { $set: { default: false } }, err => {
     if (err) {
@@ -210,7 +241,7 @@ exports.unsetDefaultPid = (request, reply) => {
     reply({ success: true })
   })
 }
-
+/* Method: DELETE - remove a PID parameters */
 exports.removePid = (request, reply) => {
   Models.Pid.remove(request.payload, err => {
     if (err) {
@@ -220,15 +251,49 @@ exports.removePid = (request, reply) => {
     reply({ success: true })
   })
 }
+/* ----------- End of PIDs ----------- */
 
-exports.getDefaultPids = (request, reply) => {
-  Models.Pid.find({ default: true }).select('proportional integral derivative type').exec((err, pids) => {
-    if (err) {
-      reply({ success: false, error: err })
+/* ----------- History ----------- */
+/* Method: GET - Get all histories */
+exports.getHistories = (request, reply) => {
+  Models.History.find().populate('program_id').exec((error, histories) => {
+    if (error) {
+      reply({ success: false, error: error })
+    } else {
+      reply({ success: true, histories: histories })
     }
-
-    let rslt = keyBy(pids, 'type')
-    rslt.success = true
-    reply(rslt)
   })
 }
+/* Method: GET - Get history by ID */
+exports.getHistoryById = (request, reply) => {
+  Models.History.findOne({
+    _id: request.params._id
+  }, (err, history) => {
+    if (err) {
+      reply({ success: false, error: err })
+    } else {
+      let contents = []
+      const filename = history._id+'.txt'
+      fs.readFile(`datalog/${filename}`, 'utf8', (err, data) => {
+        if (err || isEmpty(data)) {
+          console.log(err)
+          reply({ success: true, history: history, content: null, error: 'No data available!'})
+        }
+        else {
+          sets = data.split('\n')
+          sets.forEach((set, index) => {
+            if (index ==  0)
+              contents[index] = set.split(' - ')
+            else
+              contents[index] = set.split(' ')
+          })
+
+          isEmpty(contents) ?
+            reply({ success: true, history: history, contents: null }) :
+            reply({ success: true, history: history, contents: contents })
+        }
+      })
+    }
+  })
+}
+/* ----------- End of History ----------- */
