@@ -1,14 +1,16 @@
 .display
-  >div
-    height 100%
-  table
-    height 100%
-    width 96%
-    margin 0 2% 0 2%
-    font-size 14px
-    td
-      text-align right
-      padding-right 5px
+  &__container
+    width 100%
+    >div
+      height 100%
+    table
+      height 100%
+      width 96%
+      margin 0 2% 0 2%
+      font-size 14px
+      td
+        text-align right
+        padding-right 5px
 
 .meter
   &__container
@@ -21,13 +23,15 @@
     text-align center
     border base-border
     width 96%
-    margin 0 2% 0
+    margin 0 2%
+    padding 15% 0
 
 .signal-tag
   margin 5px 10px
   background-color #000
   color white
   font-weight bold
-  border-radius 50%
+  height 50px
+  border-radius 10px
   &--active
     background-color red

@@ -5,6 +5,11 @@ import { socket } from '../../global'
 
 let SerialState = {
   state: false,
+  checkStatus: _ => {
+    socket.emit('isSerialportOpen', data => {
+      SerialState.state = data.status
+    })
+  },
   reqConnection: () => {
     if (!SerialState.state) {
       socket.emit('req-connect', data => {
@@ -12,7 +17,6 @@ let SerialState = {
           Indicator.setTitle(Error.title).setBody(Error.body(data.message)).show()
         } else {
           SerialState.state = data.status
-          m.redraw()
         }
       })
     }
@@ -24,7 +28,6 @@ let SerialState = {
           Indicator.setTitle(Error.title).setBody(Error.body(data.message)).show()
         } else {
           SerialState.state = data.status
-          m.redraw()
         }
       })
     }

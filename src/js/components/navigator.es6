@@ -4,9 +4,11 @@ import Programs from './programs'
 import Pid from './pid'
 import Graph from './graph'
 import About from './about'
+import Display from './display'
 
 const links = [
-  { route: '/', name: 'Programs', component: Programs },
+  { route: '/', name: 'Home', component: Display },
+  { route: '/programs', name: 'Programs', component: Programs },
   { route: '/pid', name: 'PID', component: Pid },
   { route: '/graph', name: 'Graph', component: Graph },
   { route: '/about', name: 'About', component: About }

@@ -18,11 +18,11 @@ const c = {
               })
             ])
           ]),
-          m('.table__body', { onclick: P.flushPid.bind(event, 'temperature') }, [
-            !isEmpty(P.list.temp) ? P.list.temp.map(item => {
+          m('.table__body', [
+            !isEmpty(P.list.temperature) ? P.list.temperature.map(item => {
               return m(`.table__row[data-id=${item._id}][data-type=${item.type}]`, {
                 class: P.current[item.type] && item._id === P.current[item.type]._id ? 'pid--active' : '',
-                onclick: P.current[item.type] && item._id === P.current[item.type]._id ? P.flushPid.bind(event, item.type) : P.choosePid.bind(event)
+                onclick: P.choosePid.bind(event)
               }, [
                 m('.table__cell.centered-text', item.default ? m('i.fa.fa-check') : ''),
                 m('.table__cell-2.centered-text', item.proportional),
@@ -78,11 +78,11 @@ const c = {
               })
             ])
           ]),
-          m('.table__body', { onclick: P.flushPid.bind(event, 'humidity') }, [
-            !isEmpty(P.list.humid) ? P.list.humid.map(item => {
+          m('.table__body', [
+            !isEmpty(P.list.humidity) ? P.list.humidity.map(item => {
               return m(`.table__row[data-id=${item._id}][data-type=${item.type}]`, {
                 class: P.current[item.type] && item._id === P.current[item.type]._id ? 'pid--active' : '',
-                onclick: P.current[item.type] && item._id === P.current[item.type]._id ? P.flushPid.bind(event, item.type) : P.choosePid.bind(event)
+                onclick: P.choosePid.bind(event)
               }, [
                 m('.table__cell.centered-text', item.default ? m('i.fa.fa-check') : ''),
                 m('.table__cell-2.centered-text', item.proportional),

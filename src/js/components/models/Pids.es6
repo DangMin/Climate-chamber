@@ -8,8 +8,8 @@ const model = {
     humid: false
   },
   list: {
-    temp: [],
-    humid: []
+    temperature: [],
+    humidity: []
   },
   current: {
     temperature: null,
@@ -32,12 +32,10 @@ const model = {
   },
   fetch: _ => {
     m.request({ method: 'GET', url: '/pids', }).then(rslt => {
-      console.log(rslt.pids)
-      model.list.temp = filter(rslt.pids, item => item.type == 'temperature')
-      model.list.humid = filter(rslt.pids, item => item.type == 'humidity')
+      model.list.temperature = filter(rslt.pids, item => item.type == 'temperature')
+      model.list.humidity = filter(rslt.pids, item => item.type == 'humidity')
       model.default.temperature = find(rslt.pids, { 'type': 'temperature', 'default': true })
       model.default.humidity = find(rslt.pids, { 'type': 'humidity', 'default': true })
-      console.log(model.default)
     })
   },
   addPid: (formId, e) => {
@@ -55,19 +53,14 @@ const model = {
     model.form.humid = false
   },
   choosePid: e => {
-    const target = e.currentTarget
-    m.request({ method: 'GET', url: `/pids/${target.dataset.id}-${target.dataset.type}` }).then(rslt => {
-      if (rslt.error) {
-        console.log(rslt.error)
-      }
+    const dataset = e.currentTarget.dataset
+    const chosen = find(model.list[dataset.type], {'_id': dataset.id})
+    if (!model.current[dataset.type])
+      model.current[dataset.type] = chosen
+    else
+      model.current[dataset.type] = chosen._id === model.current[dataset.type]._id ? null : chosen
 
-      model.current[rslt.pid.type] = rslt.pid
-      console.log(model.current[rslt.pid.type])
-    })
-  },
-  flushPid: (type, e) => {
-    const target = e.currentTarget
-    model.current[type] = null
+    console.log(model.current[dataset.type])
   },
   setDefault: (type, e) => {
     if (model.current[type]) {

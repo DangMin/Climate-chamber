@@ -26,19 +26,15 @@ flexcell(n=1)
   locate(absolute)
 
 .sidebar
-  locate(absolute, 0, 0, 0, null)
+  locate(absolute, 10vh, 0, 0, null)
   width 20vw
   border-right base-border
   flexbox(column)
-  &--upper
-    height 40vh
-    width 100%
-    border-bottom base-border
   &--lower
     flex 1
 
 .header
-  locate(absolute, 0, 20vw, null, 0)
+  locate(absolute, 0, 0, null, 0)
   height 10vh
   flexbox(row)
   border-bottom base-border
@@ -54,7 +50,7 @@ flexcell(n=1)
   border-bottom base-border
 
 .content-container
-  locate(absolute, 40vh, 20vw, 0, 0)
+  locate(absolute, 10vh, 20vw, 0, 0)
   flexbox()
   padding 5px
 
@@ -167,4 +163,5 @@ input
 @import "./components/navs.styl"
 @import "./components/pid.styl"
 @import "./components/programs.styl"
+@import "./components/status.styl"
 @import "./components/user.styl"

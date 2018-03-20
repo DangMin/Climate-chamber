@@ -105,6 +105,9 @@ io.on('connection', socket => {
         callback({ error: false, message: null, status: serialport.isOpen() })
       }
     },
+    isSerialportOpen: callback => {
+      callback({ status: serialport.isOpen() })
+    },
     disconnect: _ => socket.disconnect(true),
     requestDisplay: _ => controller.fetch(),
     startProgram: params => setImmediate(_ => {
@@ -173,6 +176,9 @@ io.on('connection', socket => {
   })
   socket.on('disconnect-socket', _ => {
     listeners.disconnect()
+  })
+  socket.on('isSerialportOpen', cb => {
+    listeners.isSerialportOpen(cb)
   })
   /* Endblock */
 

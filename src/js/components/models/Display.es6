@@ -51,7 +51,7 @@ socket.on('reset-display', _ => {
 })
 
 socket.on('command-params', data => {
-  console.log('command params')
+  console.log(data)
   for (let signal in data) {
     model.signals[signal] = data[signal] == 1 ? true : false
   }

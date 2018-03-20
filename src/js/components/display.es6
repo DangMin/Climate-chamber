@@ -11,29 +11,29 @@ const c = {
     D.fetch()
   },
   view: _ => {
-    return m('.flex-container--horizontal', [
-      m('.flex-container__cell-3', [
-        m('table',[
-          m('tr', [
-            m('th', 'Program'),
-            m('td', D.name)
-          ]),
-          m('tr', [
-            m('th', 'Cycle'),
-            m('td', D.cycle)
-          ]),
-          m('tr', [
-            m('th', 'Step'),
-            m('td', D.step)
-          ]),
-          m('tr', [
-            m('th', 'Timeleft'),
-            m('td', D.timeLeft)
+    return m('.flex-container--vertical.display__container', [
+      m('.flex-container__cell.flex-container--horizontal', [
+        m('.flex-container__cell-3', [
+          m('table',[
+            m('tr', [
+              m('th', 'Program'),
+              m('td', D.name)
+            ]),
+            m('tr', [
+              m('th', 'Cycle'),
+              m('td', D.cycle)
+            ]),
+            m('tr', [
+              m('th', 'Step'),
+              m('td', D.step)
+            ]),
+            m('tr', [
+              m('th', 'Timeleft'),
+              m('td', D.timeLeft)
+            ])
           ])
-        ])
-      ]),
-      m('.flex-container__cell-7.flex-container--vertical', [
-        m('.flex-container__cell-3.flex-container--horizontal', [
+        ]),
+        m('.flex-container__cell-7.flex-container--horizontal', [
           m('.flex-container__cell.flex-container--vertical', [
             m('.flex-container__cell.centered-text', 'Thermometer'),
             m('.flex-container__cell-3.meter__container', [
@@ -46,10 +46,11 @@ const c = {
               m('p.meter--large', D.humidity)
             ])
           ])
-        ]),
+        ])
+      ]),
+      m('.flex-container__cell.flex-container--vertical', [
         m('.flex-container__cell-2.flex-container--horizontal', [
-          m('.flex-container__cell-3'),
-          m('.flex-container__cell-7.flex-container--vertical', [
+          m('.flex-container__cell', [
             signals.map(row => {
               return m('.flex-container__cell.flex-container--horizontal', [
                 row.map(item => {

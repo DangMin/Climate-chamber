@@ -2,22 +2,21 @@ import m from 'mithril'
 import domready from 'domready'
 
 import { socket } from './global'
-import User from 'components/user'
 import Header from 'components/header'
 import Display from 'components/display'
 import Navigator from 'components/navigator'
 import Indicator from 'components/indicator'
+import Status from 'components/status'
 import * as Error from 'components/indicators/errorIndicator'
 
 import { tabHandler, formatDisplay } from 'global'
 
 domready(() => {
   const components = {
-    'js-user': User,
     'js-navs': Navigator,
     'js-header': Header,
-    'js-display': Display,
     'js-indicator': Indicator,
+    'js-status': Status
   }
 
   tabHandler('navs__option')
@@ -30,7 +29,6 @@ domready(() => {
     dom && m.mount(dom, components[id])
   })
 
-  socket.on('incoming', data => console.log(data))
   socket.on('err', data => {
     Indicator.setTitle(Error.title).setBody(Error.body(data.msg)).show()
   })
